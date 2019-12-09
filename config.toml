@@ -1,7 +1,7 @@
 ##########################################
 # 站点配置
 
-baseURL = "https://jjmeg.me/"
+baseURL = "https://jjmeg.github.io/"
 title = "JJMeg's blog"
 languageCode = "zh-CN"
 hasCJKLanguage = true
@@ -88,7 +88,7 @@ uglyURLs = false
     # 头像
     avatar = "/icons/jjmeg.png"
     # 网站（默认值：baseURL）
-    website = "https://jjmeg.me/"
+    website = "https://jjmeg.github.io/"
     # 推特
     twitter = "Meg He"
 
