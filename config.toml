@@ -1,8 +1,8 @@
 ##########################################
 # 站点配置
 
-baseURL = "https://example.com/"
-title = "Hugo 主题 MemE"
+baseURL = "https://jjmeg.me/"
+title = "JJMeg's blog"
 languageCode = "zh-CN"
 hasCJKLanguage = true
 # 版权信息（支持 Markdown）
@@ -80,17 +80,17 @@ uglyURLs = false
 # 作者信息
 [author]
     # 名字
-    name = "reuixiy"
+    name = "JJMeg"
     # 邮箱
-    email = "reuixiy@gmail.com"
+    email = "jjmeg.he@gmail.com"
     # 座右铭或简介
-    motto = "Viva La Vida"
+    motto = "It never rains but it pours."
     # 头像
-    avatar = "/icons/apple-touch-icon.png"
+    avatar = "/icons/jjmeg.png"
     # 网站（默认值：baseURL）
-    website = "https://io-oi.me/"
+    website = "https://jjmeg.me/"
     # 推特
-    twitter = "reuixiy"
+    twitter = "Meg He"
 
 # 相关文章
 [related]
@@ -171,24 +171,24 @@ uglyURLs = false
         weight = 2
         pre = "internal"
         post = "archive"
-    [[menu.main]]
-        url = "/categories/"
-        name = "分类"
-        weight = 3
-        pre = "internal"
-        post = "th"
+    # [[menu.main]]
+    #     url = "/categories/"
+    #     name = "分类"
+    #     weight = 3
+    #     pre = "internal"
+    #     post = "th"
     [[menu.main]]
         url = "/tags/"
         name = "标签"
         weight = 4
         pre = "internal"
         post = "tags"
-    [[menu.main]]
-        url = "/about/"
-        name = "关于"
-        weight = 5
-        pre = "internal"
-        post = "user-circle"
+    # [[menu.main]]
+    #     url = "/about/"
+    #     name = "关于"
+    #     weight = 5
+    #     pre = "internal"
+    #     post = "user-circle"
 
 
 
@@ -365,7 +365,7 @@ uglyURLs = false
     displayListTitle = true
 
     # 日期的格式
-    listDateFormat = "1 月 2 日"
+    listDateFormat = "01 月 02 日"
     # 注意：请遵循格式 https://gohugo.io/functions/format/
 
     # 日期的位置
