@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="theme-color" content="#fff" />
+        <script>
+            const theme = localStorage.getItem('theme');
+            if (theme === "dark") {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1c1c21');
+            } else if (theme === "light") {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff');
+            }
+        </script>
+
+    
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    
+    <meta name="renderer" content="webkit" />
+
+    <meta name="generator" content="Hugo 0.60.1" />
+
+    <title>Golang系列教程--基础结构与类型 | JJMeg&#39;s blog</title>
+
+    <link rel="stylesheet" href="/css/meme.min.011867e2a16e3c49f879fe5160040670d1881e489e00ff2f5cab4c8a4f53966c.css" integrity="sha256-ARhn4qFuPEn4ef5RYAQGcNGIHkieAP8vXKtMik9Tlmw=" data-instant-track />
+
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,500,700,700i|Noto+Serif+SC:400,500,700|Source+Code+Pro:400,400i,700,700i&display=swap&subset=chinese-simplified" rel="stylesheet" />
+
+    <meta name="author" content="JJMeg" />
+    
+    
+    <meta name="description" content="📜本文内容 📚基础类型 📖布尔型 📖数值类型 📖字符串 📖基础类型默认取值 📖错误类型 📚变量 📖指……" />
+    <meta name="keywords" content="" />
+    
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="JJMeg&#39;s blog" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="JJMeg&#39;s blog" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
+
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "datePublished": "2019-12-11T18:00:47+08:00",
+        "dateModified": "2019-12-11T19:39:35+08:00",
+        "url": "https://jjmeg.github.io/posts/golang-basic-struct-and-types/",
+        "name": "Golang系列教程--基础结构与类型",
+        "description": "📜本文内容 📚基础类型 📖布尔型 📖数值类型 📖字符串 📖基础类型默认取值 📖错误类型 📚变量 📖指……",
+        "keywords": "",
+        "image": "https://jjmeg.github.io/icons/apple-touch-icon.png",
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "JJMeg's blog",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://jjmeg.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://jjmeg.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://jjmeg.github.io/"
+        }
+    }
+</script>
+
+    
+
+
+
+<meta name="twitter:card" content="summary" />
+
+<meta name="twitter:site" content="@reuixiy" />
+<meta name="twitter:creator" content="@Meg He" />
+
+    
+
+
+
+
+
+
+<meta property="og:title" content="Golang系列教程--基础结构与类型" />
+<meta property="og:description" content="📜本文内容 📚基础类型 📖布尔型 📖数值类型 📖字符串 📖基础类型默认取值 📖错误类型 📚变量 📖指……" />
+<meta property="og:url" content="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
+<meta property="og:site_name" content="JJMeg&#39;s blog" />
+<meta property="og:locale" content="zh-CN" /><meta property="og:image" content="https://jjmeg.github.io/icons/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        <div class="site-brand">
+            
+            <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="120" height="127"><image width="120" height="127" href="data:image/png;base64,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 ahi7fBg4gnGrHo7+v+AgyBsd2Abd8ADHaamzgTBc3IM5nGLvZfZrFGPDTrHEyZ7vFlDj9K4CuJWW AXxN6N0I6E26STfpJt2km3STbgz6f1JK+2lVaGhpAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTEy LTA5VDIzOjE0OjM3LTA3OjAwjN0bdgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0xMi0wOVQyMzox NDozNy0wNzowMP2Ao8oAAABDdEVYdHNvZnR3YXJlAC91c3IvbG9jYWwvaW1hZ2VtYWdpY2svc2hh cmUvZG9jL0ltYWdlTWFnaWNrLTcvL2luZGV4Lmh0bWy9tXkKAAAAY3RFWHRzdmc6Y29tbWVudAAg R2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAu IFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICDOSJALAAAAGHRFWHRUaHVtYjo6RG9jdW1lbnQ6 OlBhZ2VzADGn/7svAAAAGHRFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA2MjRPhRsuAAAAF3RFWHRU aHVtYjo6SW1hZ2U6OldpZHRoADU4OC1rUYsAAAAZdEVYdFRodW1iOjpNaW1ldHlwZQBpbWFnZS9w bmc/slZOAAAAF3RFWHRUaHVtYjo6TVRpbWUAMTU0Njk3OTExMCzm4UIAAAASdEVYdFRodW1iOjpT aXplADg5NzUwQn0gG9IAAABidEVYdFRodW1iOjpVUkkAZmlsZTovLy9ob21lL3d3d3Jvb3QvbmV3 c2l0ZS93d3cuZWFzeWljb24ubmV0L2Nkbi1pbWcuZWFzeWljb24uY24vZmlsZXMvMTIwLzEyMDYz NDYucG5n6NWxlwAAAABJRU5ErkJggg=="/></svg></a>
+            
+        </div>
+    </header>
+
+            
+    <nav class="nav">
+        <ul class="menu" id="menu">
+            
+                
+            
+            
+            
+                <li class="menu-item"><a href="/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon menu-item-icon"><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg><span class="menu-item-name">首页</span></a>
+                </li>
+            
+                <li class="menu-item"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon menu-item-icon"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">文章</span></a>
+                </li>
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon menu-item-icon"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">标签</span></a>
+                </li>
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon menu-item-icon"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于</span></a>
+                </li>
+            
+        </ul>
+    </nav>
+
+            
+            
+    
+        
+            
+        
+        <div id="theme-toggle" onclick="modeSwitcher()">🌞</div>
+    
+
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        <article class="content post" data-align="justify" data-type="posts">
+
+            <h1 class="post-title">Golang系列教程--基础结构与类型</h1>
+
+            
+
+            
+                
+            
+
+            
+                <div class="post-meta">
+    
+        
+        <time datetime="2019-12-11T18:00:47+08:00" class="post-meta-item published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>2019.12.11</time>
+    
+    
+        
+        <time datetime="2019-12-11T19:39:35+08:00" class="post-meta-item modified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>2019.12.11</time>
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1437</span>
+    
+    
+        
+        <span class="post-meta-item readingtime"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>3&nbsp;分钟</span>
+    
+</div>
+            
+
+            <div class="post-body">
+
+<h1 id="本文内容"><a href="#本文内容" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#基础类型">基础类型</a>
+
+<ul>
+<li>📖<a href="#布尔型">布尔型</a></li>
+<li>📖<a href="#数值类型">数值类型</a></li>
+<li>📖<a href="#字符串">字符串</a></li>
+<li>📖<a href="#基础类型默认取值">基础类型默认取值</a></li>
+<li>📖<a href="#错误类型">错误类型</a></li>
+</ul></li>
+<li>📚<a href="#变量">变量</a>
+
+<ul>
+<li>📖<a href="#指针变量">指针变量</a></li>
+<li>📖<a href="#指向指针的指针">指向指针的指针</a></li>
+<li>📖<a href="#变量命名">变量命名</a></li>
+<li>📖<a href="#变量声明程序例子">变量声明程序例子</a></li>
+<li>📖<a href="#变量生命周期">变量生命周期</a></li>
+<li>📖<a href="#值类型和引用类型">值类型和引用类型</a></li>
+</ul></li>
+<li>📚<a href="#常量">常量</a>
+
+<ul>
+<li>📖<a href="#常量定义">常量定义</a></li>
+<li>📖<a href="#常量模拟枚举">常量模拟枚举</a></li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h1 id="基础类型"><a href="#基础类型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵基础类型</h1>
+
+<h3 id="布尔型"><a href="#布尔型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>布尔型</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">bool</td>
+<td align="center">1字节</td>
+<td align="center">true和false</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="数值类型"><a href="#数值类型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>数值类型</h3>
+
+<h6 id="1-无符号整型"><a href="#1-无符号整型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>1.无符号整型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">uint8又称byte</td>
+<td align="center">1字节</td>
+<td align="center">0~255</td>
+</tr>
+
+<tr>
+<td align="center">uint16</td>
+<td align="center">2字节</td>
+<td align="center">0~65535</td>
+</tr>
+
+<tr>
+<td align="center">uint32</td>
+<td align="center">4字节</td>
+<td align="center">0~4294967295</td>
+</tr>
+
+<tr>
+<td align="center">uint64</td>
+<td align="center">8字节</td>
+<td align="center">0~18446744073709551615</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="2-有符号整型"><a href="#2-有符号整型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>2.有符号整型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">int8</td>
+<td align="center">1字节</td>
+<td align="center">-128~127</td>
+</tr>
+
+<tr>
+<td align="center">int16</td>
+<td align="center">2字节</td>
+<td align="center">-32768~32767</td>
+</tr>
+
+<tr>
+<td align="center">int32</td>
+<td align="center">4字节</td>
+<td align="center">-2147483648~2147483647</td>
+</tr>
+
+<tr>
+<td align="center">int64</td>
+<td align="center">8字节</td>
+<td align="center">-9223372036854775808~9223372036854775807</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>注：Golang中的int在未明确指定位数时，默认为int32</strong></p>
+
+<h6 id="3-浮点型"><a href="#3-浮点型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>3.浮点型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">float32</td>
+<td align="center">4字节</td>
+<td align="center">1.4e-45~3.4e38</td>
+</tr>
+
+<tr>
+<td align="center">float64</td>
+<td align="center">8字节</td>
+<td align="center">4.9e-324~1.8e308</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="字符串"><a href="#字符串" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>字符串</h3>
+
+<p>Go中的字符串由字节组成，不可变类型，使用UTF-8编码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>常用处理字符串的包
+- strconv：提供了多种数值与字符串转化的函数
+- strings：提供多种字符串处理的方法</p>
+
+<h3 id="基础类型默认取值"><a href="#基础类型默认取值" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>基础类型默认取值</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">布尔型</th>
+<th align="center">数值类型</th>
+<th align="center">字符串</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">false</td>
+<td align="center">0</td>
+<td align="center">&quot;&quot;</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="错误类型"><a href="#错误类型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>错误类型</h3>
+
+<ul>
+<li><p>Go内置的接口，Go中的errors包实现了Error()函数，当然也可以自定义实现错误类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="kt">error</span> <span class="kd">interface</span> <span class="p">{</span>
+<span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">TestError</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Msg</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="c1">// 实现了Error接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="nx">TestError</span><span class="p">)</span> <span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Msg</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<hr />
+
+<h1 id="变量"><a href="#变量" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵变量</h1>
+
+<ul>
+<li>声明形式：
+
+<ul>
+<li><code>var [变量名] [变量类型]</code>: <code>var name string</code></li>
+<li><code>new</code>: <code>b := new(bool)</code>  <code>new</code>会分配被置零的存储，在此<code>b</code>的值为<code>false</code></li>
+<li><code>make</code>: <code>make(chan bool)</code> 新建<code>map</code>、<code>slice</code>、<code>channel</code>类型的数据</li>
+</ul></li>
+<li>注意：
+
+<ul>
+<li>关键字不能作为变量名，例如const/var/import等</li>
+<li>首字母大写则该变量可导出</li>
+<li>函数内声明的为局部变量，全局变量则在import语句后作声明</li>
+</ul></li>
+<li>初始化：
+
+<ul>
+<li>未手动赋值，变量被初始化成默认值，<code>int:0</code>，<code>string:&quot;&quot;</code>，<code>bool:false</code></li>
+</ul></li>
+</ul>
+
+<h3 id="指针变量"><a href="#指针变量" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>指针变量</h3>
+
+<h6 id="1-和-的区别"><a href="#1-和-的区别" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>1.* 和 &amp; 的区别</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">&amp;</th>
+<th align="center">*</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">取地址符号</td>
+<td align="center">指针运算符</td>
+</tr>
+
+<tr>
+<td align="center">对变量取地址</td>
+<td align="center">一个变量是指针类型<br/>指针变量所处的存储单元<br/></td>
+</tr>
+
+<tr>
+<td align="center">a = *&amp;a</td>
+<td align="center">a = <em>&amp;</em>&amp;<em>&amp;</em>&amp;*&amp;a</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>*&amp;可以相互抵消，&amp;*不可以抵消</strong></p>
+
+<h3 id="指向指针的指针"><a href="#指向指针的指针" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>指向指针的指针</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">i</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="kd">var</span> <span class="nx">ptr</span> <span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">i</span>
+<span class="kd">var</span> <span class="nx">pptr</span> <span class="o">*</span><span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ptr</span></code></pre></td></tr></table>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th align="center">ptr</th>
+<th align="center">pptr</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">ptr是一个指针变量</br>ptr的类型是*int</td>
+<td align="center">pptr是一个指针变量</br>pptr的类型是**int，也是&amp;ptr</td>
+</tr>
+
+<tr>
+<td align="center">*ptr = 1</td>
+<td align="center">**pptr = 1</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="变量命名"><a href="#变量命名" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>变量命名</h3>
+
+<p>推荐阅读：驼峰命名法</p>
+
+<h3 id="变量声明程序例子"><a href="#变量声明程序例子" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>变量声明程序例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">qq</span> <span class="kt">int</span>
+<span class="kd">type</span> <span class="nx">pp</span> <span class="kt">float32</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="c1">// 用var声明变量，用 = 赋值，Go会自动检测变量的类型
+</span><span class="c1"></span> <span class="kd">var</span> <span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;haha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+
+ <span class="c1">// 省略var关键字，用 := 初始化，Go会自动检测变量的类型
+</span><span class="c1"></span> <span class="nx">name1</span> <span class="o">:=</span> <span class="s">&#34;hahaha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name1</span><span class="p">)</span>
+
+ <span class="kd">var</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+ <span class="kd">var</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span> <span class="p">=</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;ha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span>
+
+ <span class="c1">//默认初始化为0
+</span><span class="c1"></span> <span class="kd">var</span> <span class="nx">a1</span> <span class="nx">qq</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a1</span><span class="p">)</span>
+ <span class="kd">var</span> <span class="nx">s1</span> <span class="nx">pp</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">haha
+hahaha
+<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> ha
+<span class="m">0</span>
+<span class="m">0</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="变量生命周期"><a href="#变量生命周期" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>变量生命周期</h3>
+
+<ul>
+<li>包级别变量：整个程序执行过程</li>
+<li>局部变量：每次执行声明时建立一个实体，一直生存到它不可访问，函数的参数和返回值都是局部变量，不可访问后，其实体所占的内存空间将被收回</li>
+</ul>
+
+<h3 id="值类型和引用类型"><a href="#值类型和引用类型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>值类型和引用类型</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">值类型</th>
+<th align="center">引用类型</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">基本数据类型</br>数组</br>结构体</td>
+<td align="center">指针</br>slice</br>map</br>channel</br>interface</td>
+</tr>
+
+<tr>
+<td align="center">变量直接存储值，内存通常在栈中分配</td>
+<td align="center">变量存储的值是一个地址，这个地址对应的空间 才真正存储数据，内存通常在堆上分配，当没有任何变量引用这个地址时，会被GC回收</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h1 id="常量"><a href="#常量" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵常量</h1>
+
+<ul>
+<li>常量是无法改变的，在声明时就已确定好具体的值，通常包含基本数据类型和字符串类型</li>
+<li>用关键字const修饰</li>
+<li>常量可作枚举</li>
+</ul>
+
+<h3 id="常量定义"><a href="#常量定义" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>常量定义</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">pacakge</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">const</span><span class="p">(</span>
+  <span class="nx">Country</span> <span class="p">=</span> <span class="s">&#34;China&#34;</span>
+  <span class="nx">Weight</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="常量模拟枚举"><a href="#常量模拟枚举" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>常量模拟枚举</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">Weight</span> <span class="kt">int</span>
+
+<span class="kd">const</span> <span class="p">(</span>
+	<span class="nx">State1</span> <span class="nx">Weight</span> <span class="p">=</span> <span class="kc">iota</span> <span class="c1">//开始生成枚举常量，State1为0
+</span><span class="c1"></span>	<span class="nx">State2</span>
+	<span class="nx">State3</span>
+	<span class="nx">State4</span>
+	<span class="nx">State5</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d, %d, %d, %d, %d\n&#34;</span><span class="p">,</span><span class="nx">State1</span><span class="p">,</span> <span class="nx">State2</span><span class="p">,</span> <span class="nx">State3</span><span class="p">,</span> <span class="nx">State4</span><span class="p">,</span> <span class="nx">State5</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">level</span> <span class="nx">Weight</span> <span class="p">=</span> <span class="nx">State5</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;level is: %d\n&#34;</span><span class="p">,</span><span class="nx">level</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">0, 1, 2, 3, <span class="m">4</span>
+level is: <span class="m">4</span></code></pre></td></tr></table>
+</div>
+</div></div>
+
+        </article>
+
+        
+
+        
+    
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author">作者：<a href="https://jjmeg.github.io/" target="_blank">JJMeg</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link">链接：<a href="/posts/golang-basic-struct-and-types/" target="_blank">https://jjmeg.github.io/posts/golang-basic-struct-and-types/</a></li>
+            
+            
+                <li class="copyright-item license">版权：<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">CC BY-NC-SA 4.0</a></li>
+            
+        </ul>
+    
+
+
+        
+
+        
+
+        
+    
+    
+
+
+        
+    
+
+
+        
+
+        
+
+        
+
+        
+
+    </div>
+</main>
+
+            
+    <a href="#" class="back-to-top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+
+            
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            
+                
+            
+            
+
+            
+                
+            
+            
+
+            
+                
+            
+            
+
+            <div class="site-info">©&nbsp;2019–2019<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>JJMeg</div>
+
+            
+                <div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank">MemE</a></div>
+            
+
+            
+                <div class="site-copyright"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">CC BY-NC-SA 4.0</a></div>
+            
+
+            
+
+            
+        </div>
+    </footer>
+
+        </div>
+        <script src="/js/meme.min.535088d2894d2a0bfac5b83091fb5a73d17ef26116dd4ef1d9cca5fc40d02120.js" integrity="sha256-U1CI0olNKgv6xbgwkftac9F+8mEW3U7x2cyl/EDQISA=" data-no-instant></script>
+
+
+    <script data-no-instant>InstantClick.init();</script>
+
+
+    <script data-no-instant>
+        InstantClick.on('change', function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === "dark") {
+                goDarkMeta();
+                goDark();
+            } else if (theme === "light") {
+                goLightMeta();
+                goLight();
+            }
+        });
+    </script>
+
+    
+
+
+
+
+
+
+    </body>
+</html>
