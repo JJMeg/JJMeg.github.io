@@ -3,18 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jjmeg.github.io/posts/golang-array-and-slice/</loc>
-    <lastmod>2019-12-12T13:40:25+08:00</lastmod>
+    <loc>https://jjmeg.github.io/posts/golang-map/</loc>
+    <lastmod>2019-12-12T14:57:37+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/</loc>
-    <lastmod>2019-12-12T13:40:25+08:00</lastmod>
+    <lastmod>2019-12-12T14:57:37+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/</loc>
-    <lastmod>2019-12-12T13:40:25+08:00</lastmod>
+    <lastmod>2019-12-12T14:57:37+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/posts/golang-array-and-slice/</loc>
+    <lastmod>2019-12-12T14:05:37+08:00</lastmod>
   </url>
   
   <url>
