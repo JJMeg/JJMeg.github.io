@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Fri, 13 Dec 2019 15:26:36 +0800</lastBuildDate>
+        <lastBuildDate>Fri, 13 Dec 2019 15:40:19 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
@@ -62,9 +62,11 @@
 </ul></li>
 </ul>
 
+<hr />
+
 <h1 id="struct">🐵struct</h1>
 
-<h3 id="struct的声明">struct的声明</h3>
+<h6 id="struct的声明">🐒struct的声明</h6>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -258,9 +260,7 @@
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
-<ol>
-<li>嵌入匿名成员</li>
-</ol>
+<p><strong>3. 嵌入匿名成员</strong></p>
 
 <p>匿名成员即没有变量命名的成员，可以直接访问匿名成员结构体内的变量</p>
 <div class="highlight"><div class="chroma">
