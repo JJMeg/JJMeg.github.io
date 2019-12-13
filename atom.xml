@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-13T14:42:49+08:00</updated>
+    <updated>2019-12-13T14:57:23+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -16,6 +16,418 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">Golang系列教程--函数</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-function/" />
+            <id>https://jjmeg.github.io/posts/golang-function/</id>
+            <updated>2019-12-13T14:57:16+08:00</updated>
+            <published>2019-12-13T14:44:55+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「函数」 函数是将能够完成一定的功能的语句的包装集合，供外部调用。 📜本文内容 📚函数结构……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「函数」</center>
+<center>函数是将能够完成一定的功能的语句的包装集合，供外部调用。</center></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#函数结构">函数结构</a>
+
+<ul>
+<li>📖<a href="#参数及返回值缺省">参数及返回值缺省</a></li>
+<li>📖<a href="#参数缺省">参数缺省</a></li>
+<li>📖<a href="#返回值缺省">返回值缺省</a></li>
+<li>📖<a href="#多返回值">多返回值</a></li>
+<li>📖<a href="#多参数">多参数</a></li>
+<li>📖<a href="#参数为引用类型">参数为引用类型</a></li>
+</ul></li>
+<li>📖<a href="#函数回调">函数回调</a></li>
+<li>📖<a href="#匿名函数">匿名函数</a></li>
+<li>📖<a href="#闭包">闭包</a></li>
+</ul>
+
+<hr />
+
+<h1 id="函数结构">🐵函数结构</h1>
+
+<p>包含函数名，参数和返回值三个部分，其中，参数及返回值可缺省</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nx">函数名</span><span class="p">(</span> <span class="nx">参数1</span><span class="p">,</span> <span class="nx">参数2</span><span class="p">,</span> <span class="nx">参数3</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">(</span><span class="nx">返回值类型1</span><span class="p">,</span> <span class="nx">返回值类型2</span><span class="p">,</span> <span class="nx">返回值类型3</span><span class="p">)</span><span class="p">{</span>
+
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="参数及返回值缺省">🐒参数及返回值缺省</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello World!&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="参数缺省">🐒参数缺省</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 单返回值
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s">&#34;Hello World!&#34;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="返回值缺省">🐒返回值缺省</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="nx">hello</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">hello</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="多返回值">🐒多返回值</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span><span class="p">,</span> <span class="kt">bool</span><span class="p">{</span>
+  <span class="k">return</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">,</span> <span class="kc">true</span>
+<span class="p">}</span>
+
+<span class="c1">// 命名返回值
+</span><span class="c1"></span><span class="c1">// user及age均被初始化为默认值
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="nx">user</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">{</span>
+  <span class="nx">user</span> <span class="p">=</span> <span class="s">&#34;heihei&#34;</span>
+  <span class="nx">age</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="k">return</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="多参数">🐒多参数</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 参数个数确定
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Sum</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span><span class="nx">num2</span><span class="p">,</span><span class="nx">num3</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+  <span class="k">return</span> <span class="nx">num1</span> <span class="o">+</span> <span class="nx">num2</span> <span class="o">+</span> <span class="nx">num3</span>
+<span class="p">}</span>
+
+
+<span class="c1">// 参数个数不确定，利用for range遍历参数
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Sum</span><span class="p">(</span><span class="nx">nums</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+  <span class="nx">sum</span> <span class="o">:=</span> <span class="mi">0</span>
+
+  <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">value</span> <span class="p">=</span> <span class="k">range</span> <span class="nx">nums</span><span class="p">{</span>
+    <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">value</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">sum</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="参数为引用类型">🐒参数为引用类型</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">,</span><span class="nx">c</span> <span class="kt">int</span>
+    <span class="nx">a</span> <span class="p">=</span> <span class="mi">1</span>
+    <span class="nx">b</span> <span class="p">=</span> <span class="mi">2</span>
+    <span class="nx">c</span> <span class="p">=</span> <span class="mi">3</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">a</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">c</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">//传入的参数为指针变量
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Sum</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span><span class="nx">num2</span><span class="p">,</span><span class="nx">num3</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+  <span class="k">return</span> <span class="o">*</span><span class="nx">num1</span> <span class="o">+</span> <span class="o">*</span><span class="nx">num2</span> <span class="o">+</span> <span class="o">*</span><span class="nx">num3</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="函数回调">🐵函数回调</h3>
+
+<p>函数回调就是函数作为其他函数的参数，在其他函数内调用执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">ss</span> <span class="o">:=</span> <span class="s">&#34;golang&#34;</span>
+  <span class="nx">ss1</span> <span class="o">:=</span> <span class="s">&#34;world&#34;</span>
+  <span class="nf">sayhello</span><span class="p">(</span><span class="nx">ss</span><span class="p">,</span> <span class="nx">ss1</span><span class="p">,</span> <span class="nx">appenStr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">appenStr</span><span class="p">(</span><span class="nx">prefix</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">suffix</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">prefix</span><span class="p">,</span> <span class="nx">name</span> <span class="p">,</span> <span class="nx">suffix</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">sayhello</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">suffix</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">f</span> <span class="kd">func</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">,</span> <span class="kt">string</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">f</span> <span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">suffix</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">hello golang world</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="匿名函数">🐵匿名函数</h3>
+
+<p><strong>📎匿名函数是不需要定义函数名称的函数实现方式，例如下面这个函数就是一个匿名函数</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+  <span class="k">return</span> <span class="nx">num1</span> <span class="o">+</span> <span class="nx">num2</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>📎可以将匿名函数引用给其他变量，也可以把匿名函数设为其他函数的返回值</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">,</span><span class="nx">c</span> <span class="kt">int</span>
+    <span class="nx">a</span> <span class="p">=</span> <span class="mi">9</span>
+    <span class="nx">b</span> <span class="p">=</span> <span class="mi">2</span>
+    <span class="nx">c</span> <span class="p">=</span> <span class="mi">1</span>
+    <span class="nx">f</span> <span class="o">:=</span> <span class="nf">Anonymous</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">Anonymous</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">r</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">num3</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">num1</span> <span class="o">+</span> <span class="nx">num2</span> <span class="o">-</span> <span class="nx">num3</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">r</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>以上程序完成 num1 + num2 - num3 = 9 + 2 -1 = 10</p>
+
+<p><strong>📎匿名函数的传参</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">ss</span> <span class="o">:=</span> <span class="s">&#34;hello world!&#34;</span>
+
+    <span class="kd">func</span><span class="p">(</span><span class="nx">hello</span> <span class="kt">string</span><span class="p">)</span><span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">hello</span><span class="p">)</span>
+    <span class="p">}</span><span class="p">(</span><span class="nx">ss</span><span class="p">)</span>
+    <span class="c1">// 后面的括号中的ss作为参数传到匿名函数中
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><pre><code>hello world!</code></pre>
+<h3 id="闭包">🐵闭包</h3>
+
+<p>闭包能够读取其他函数内部变量的函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">ss</span> <span class="o">:=</span> <span class="s">&#34;world&#34;</span>
+
+    <span class="nf">hello</span><span class="p">(</span><span class="nx">ss</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">hello</span><span class="p">(</span><span class="nx">ss</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="nx">text</span> <span class="o">:=</span> <span class="s">&#34;hello&#34;</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="nx">ss</span>
+
+  <span class="nx">f</span> <span class="o">:=</span> <span class="kd">func</span> <span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="nf">f</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><pre><code>hello world</code></pre>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Golang系列教程--流程控制</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-process-control/" />
@@ -785,7 +1197,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--数组和切片</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-array-and-slice/" />
             <id>https://jjmeg.github.io/posts/golang-array-and-slice/</id>
-            <updated>2019-12-12T14:05:37+08:00</updated>
+            <updated>2019-12-13T14:52:21+08:00</updated>
             <published>2019-12-12T11:30:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -826,7 +1238,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 <li>数组是值类型</li>
 </ul>
 
-<h6 id="声明方式">声明方式</h6>
+<h6 id="声明方式">🐒声明方式</h6>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -882,7 +1294,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
   <span class="o">[</span><span class="m">1</span> <span class="m">2</span> 3<span class="o">]</span></code></pre></td></tr></table>
 </div>
 </div>
-<h6 id="遍历方式">遍历方式</h6>
+<h6 id="遍历方式">🐒遍历方式</h6>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -984,7 +1396,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 </div></li>
 </ul>
 
-<h6 id="一个切片例子">一个切片例子</h6>
+<h6 id="一个切片例子">🐒一个切片例子</h6>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -1018,7 +1430,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 <pre class="chroma"><code class="language-shell" data-lang="shell">length of nums is:2, the capacity is <span class="m">5</span></code></pre></td></tr></table>
 </div>
 </div>
-<h6 id="容量和长度">容量和长度</h6>
+<h6 id="容量和长度">🐒容量和长度</h6>
 
 <ul>
 <li>长度：表示当前切片包含的元素个数</li>
@@ -1026,7 +1438,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 <li>上述例子中，nums指向array数组从第3到第5的部分，那么当前nums元素个数为2，nums是从第3个开始的，最多可以到第8个，那么切片的容量最多为5</li>
 </ul>
 
-<h6 id="切片的创建">切片的创建</h6>
+<h6 id="切片的创建">🐒切片的创建</h6>
 
 <ul>
 <li>新建数组，指向数组的部分，如上述例子中</li>
@@ -1091,7 +1503,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础结构与类型</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
             <id>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</id>
-            <updated>2019-12-11T19:39:35+08:00</updated>
+            <updated>2019-12-13T14:51:47+08:00</updated>
             <published>2019-12-11T18:00:47+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1160,7 +1572,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 
 <h3 id="数值类型">数值类型</h3>
 
-<h6 id="1-无符号整型">1.无符号整型</h6>
+<h6 id="1-无符号整型">🐒1.无符号整型</h6>
 
 <table>
 <thead>
@@ -1198,7 +1610,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 </tbody>
 </table>
 
-<h6 id="2-有符号整型">2.有符号整型</h6>
+<h6 id="2-有符号整型">🐒2.有符号整型</h6>
 
 <table>
 <thead>
@@ -1238,7 +1650,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 
 <p><strong>注：Golang中的int在未明确指定位数时，默认为int32</strong></p>
 
-<h6 id="3-浮点型">3.浮点型</h6>
+<h6 id="3-浮点型">🐒3.浮点型</h6>
 
 <table>
 <thead>
@@ -1374,7 +1786,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
 
 <h3 id="指针变量">指针变量</h3>
 
-<h6 id="1-和-的区别">1.* 和 &amp; 的区别</h6>
+<h6 id="1-和-的区别">🐒1.* 和 &amp; 的区别</h6>
 
 <table>
 <thead>

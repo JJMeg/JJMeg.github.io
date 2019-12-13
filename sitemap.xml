@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jjmeg.github.io/posts/golang-process-control/</loc>
-    <lastmod>2019-12-13T14:42:41+08:00</lastmod>
+    <loc>https://jjmeg.github.io/posts/golang-function/</loc>
+    <lastmod>2019-12-13T14:57:16+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/</loc>
-    <lastmod>2019-12-13T14:42:41+08:00</lastmod>
+    <lastmod>2019-12-13T14:57:16+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/</loc>
+    <lastmod>2019-12-13T14:57:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/posts/golang-process-control/</loc>
     <lastmod>2019-12-13T14:42:41+08:00</lastmod>
   </url>
   
@@ -24,12 +29,12 @@
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-array-and-slice/</loc>
-    <lastmod>2019-12-12T14:05:37+08:00</lastmod>
+    <lastmod>2019-12-13T14:52:21+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</loc>
-    <lastmod>2019-12-11T19:39:35+08:00</lastmod>
+    <lastmod>2019-12-13T14:51:47+08:00</lastmod>
   </url>
   
   <url>
