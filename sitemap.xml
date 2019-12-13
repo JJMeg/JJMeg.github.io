@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jjmeg.github.io/posts/golang-map/</loc>
-    <lastmod>2019-12-13T14:31:19+08:00</lastmod>
+    <loc>https://jjmeg.github.io/posts/golang-process-control/</loc>
+    <lastmod>2019-12-13T14:42:41+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/</loc>
-    <lastmod>2019-12-13T14:31:19+08:00</lastmod>
+    <lastmod>2019-12-13T14:42:41+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/</loc>
+    <lastmod>2019-12-13T14:42:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/posts/golang-map/</loc>
     <lastmod>2019-12-13T14:31:19+08:00</lastmod>
   </url>
   

@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-13T14:40:23+08:00</updated>
+    <updated>2019-12-13T14:42:49+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -17,58 +17,1062 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
         <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income.1/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income.1/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
+            <title type="text">Golang系列教程--流程控制</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-process-control/" />
+            <id>https://jjmeg.github.io/posts/golang-process-control/</id>
+            <updated>2019-12-13T14:42:41+08:00</updated>
+            <published>2019-12-13T14:21:15+08:00</published>
             <author>
                     <name>JJMeg</name>
                     <uri>https://jjmeg.github.io/</uri>
                     <email>jjmeg.he@gmail.com</email>
                     </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「流程控制」 开发人员控制程序执行路径的方式，常见的流程控制语句包括条件判断、循环、跳……]]></summary>
             
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
+                <content type="html"><![CDATA[
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+<p><center>「流程控制」</center>
+<p style="text-indent:2em">开发人员控制程序执行路径的方式，常见的流程控制语句包括条件判断、循环、跳转，以实现程序的执行顺序控制。</p></p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<h1 id="本文内容">📜本文内容</h1>
 
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
+<ul>
+<li>📖<a href="#if/else分支">if/else分支</a></li>
+<li>📖<a href="#switch分支">switch分支</a></li>
+<li>📖<a href="#select分支">select分支</a></li>
+<li>📖<a href="#for循环">for循环</a></li>
+<li>📖<a href="#goto跳转">goto跳转</a></li>
+</ul>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<hr />
+
+<h6 id="if-else分支">🐵if/else分支</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="k">if</span> <span class="nx">条件</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">...</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">...</span>
+<span class="p">}</span>
+
+<span class="c1">//条件可写在同一行，但是不同条件间要加上;隔开
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">条件1</span><span class="p">;</span> <span class="nx">条件2</span> <span class="p">.</span><span class="p">.</span> <span class="p">{</span>
+  <span class="o">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">personAge</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
+  	<span class="s">&#34;Amy&#34;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  	<span class="s">&#34;Daming&#34;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  	<span class="s">&#34;Lily&#34;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span><span class="p">;</span> <span class="nx">ok</span> <span class="o">==</span> <span class="kc">true</span><span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Amy’s value is &#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Amy is not here.&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"> Amy’s value is <span class="m">1</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="switch分支">🐵switch分支</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="k">switch</span> <span class="nx">变量</span><span class="p">:</span><span class="p">{</span>
+  <span class="k">case</span> <span class="nx">条件1</span><span class="p">:</span>
+    <span class="o">...</span>
+  <span class="k">case</span> <span class="nx">条件2</span><span class="p">:</span>
+    <span class="o">...</span>
+  <span class="k">case</span> <span class="nx">条件3</span><span class="p">:</span>
+    <span class="o">...</span>
+  <span class="k">case</span> <span class="nx">条件4</span><span class="p">:</span>
+    <span class="o">...</span>
+  <span class="k">case</span> <span class="nx">条件5</span><span class="p">,</span> <span class="nx">条件6</span><span class="p">,</span> <span class="nx">条件7</span><span class="p">,</span> <span class="nx">条件8</span><span class="p">:</span><span class="c1">//多个条件选项并列用,隔开
+</span><span class="c1"></span>    <span class="o">...</span>
+  <span class="k">default</span><span class="p">:</span><span class="c1">//上述条件不满足时进入此逻辑
+</span><span class="c1"></span>    <span class="o">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">number</span> <span class="o">:=</span> <span class="mi">3</span>
+  <span class="k">switch</span> <span class="nx">number</span><span class="p">{</span>
+  <span class="k">case</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number是基础类&#34;</span><span class="p">)</span>
+    <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number是特别类&#34;</span><span class="p">)</span>
+    <span class="k">default</span><span class="p">:</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number为其他类&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>注意:</strong></p>
+
+<ul>
+<li>与其他语言不同，Go中的switch，在执行完一个case后默认退出switch，不会再做其他的case判断</li>
+
+<li><p>fallthrough：用于继续执行下一个case</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="k">switch</span> <span class="nx">number</span> <span class="o">:=</span> <span class="mi">6</span> <span class="p">;</span><span class="p">{</span>
+  <span class="k">case</span> <span class="nx">number</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number大于0&#34;</span><span class="p">)</span>
+      <span class="k">fallthrough</span>
+  <span class="k">case</span> <span class="nx">number</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+      <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number小于10&#34;</span><span class="p">)</span>
+      <span class="k">fallthrough</span>
+  <span class="k">case</span> <span class="nx">number</span> <span class="p">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+      <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;number大于5&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">number大于0
+number小于10
+number大于5</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<h6 id="select分支">🐵select分支</h6>
+
+<p>select监听IO操作，常用于监听channel，可阅读 <a href="/posts/golang-channel.md">Golang系列教程--Channel</a></p>
+
+<h6 id="for循环">🐵for循环</h6>
+
+<p>Go语言中没有while语句，用for来描述循环</p>
+<pre><code>for 初始值 ; 满足范围; 操作{
+  ...
+}</code></pre><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="nx">k</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">k</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span><span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;k is :%d\n&#34;</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 多个变量控制，用,隔开
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">j</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="p">=</span> <span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">j</span><span class="o">+</span><span class="mi">1</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d * %d = %d\n&#34;</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="o">*</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">k is :1
+k is :2
+k is :3
+k is :4
+k is :5
+k is :6
+k is :7
+k is :8
+k is :9
+k is :10
+
+<span class="c1"># 多个变量控制输出结果</span>
+<span class="m">1</span> * <span class="nv">10</span> <span class="o">=</span> <span class="m">10</span>
+<span class="m">2</span> * <span class="nv">9</span> <span class="o">=</span> <span class="m">18</span>
+<span class="m">3</span> * <span class="nv">8</span> <span class="o">=</span> <span class="m">24</span>
+<span class="m">4</span> * <span class="nv">7</span> <span class="o">=</span> <span class="m">28</span>
+<span class="m">5</span> * <span class="nv">6</span> <span class="o">=</span> <span class="m">30</span>
+<span class="m">6</span> * <span class="nv">5</span> <span class="o">=</span> <span class="m">30</span>
+<span class="m">7</span> * <span class="nv">4</span> <span class="o">=</span> <span class="m">28</span>
+<span class="m">8</span> * <span class="nv">3</span> <span class="o">=</span> <span class="m">24</span>
+<span class="m">9</span> * <span class="nv">2</span> <span class="o">=</span> <span class="m">18</span>
+<span class="m">10</span> * <span class="nv">1</span> <span class="o">=</span> <span class="m">10</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>支持continue和break</strong></p>
+
+<p>break用于终止当前所在的for循环，continue表明本次循环中不执行continue后续的语句，直接进入下一次循环</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// continue完成了只输出k&gt;5的取值
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">k</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">k</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span><span class="p">{</span>
+        <span class="k">if</span> <span class="nx">k</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">{</span>
+            <span class="k">continue</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;k is :%d\n&#34;</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">// break让i=10时退出for循环
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">;</span> <span class="nx">i</span> <span class="p">=</span> <span class="nx">i</span><span class="o">+</span><span class="mi">1</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">10</span><span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34; is :%d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;i is :%d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">本例中continue的效果
+k is :6
+k is :7
+k is :8
+k is :9
+k is :10
+
+本例中break的效果
+i is :1
+i is :2
+i is :3
+i is :4
+i is :5
+i is :6
+i is :7
+i is :8
+i is :9
+i is :10</code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="goto跳转">🐵goto跳转</h6>
+
+<p>goto使得程序直接到指定行执行，不过不建议常用，goto容易造成程序流程混乱</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">;</span> <span class="nx">i</span> <span class="p">=</span> <span class="nx">i</span><span class="o">+</span><span class="mi">1</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+          <span class="k">goto</span> <span class="nx">Find</span>
+      <span class="p">}</span>
+      <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;i is :%d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+
+  <span class="nx">Find</span><span class="p">:</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;偶数出现&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">i is :1
+偶数出现</code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Golang系列教程--Map</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-map/" />
+            <id>https://jjmeg.github.io/posts/golang-map/</id>
+            <updated>2019-12-13T14:31:19+08:00</updated>
+            <published>2019-12-12T14:14:35+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「Map」 键值对的无序集合，key唯一，根据key可快速查找数据，底层用哈希表实现。……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「Map」</center>
+<p style="text-indent:2em">键值对的无序集合，key唯一，根据key可快速查找数据，底层用哈希表实现。</p></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📖<a href="#map的初始化">map的初始化</a></li>
+<li>📖<a href="#map插入元素">map插入元素</a></li>
+<li>📖<a href="#map删除元素">map删除元素</a></li>
+<li>📖<a href="#map访问元素">map访问元素</a></li>
+<li>📖<a href="#map的遍历">map的遍历</a></li>
+</ul>
+
+<h6 id="map的初始化">🐵map的初始化</h6>
+
+<p>使用<code>make</code>关键字，<code>make(map[T]T)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 创建一个key为string，value为int类型的map
+</span><span class="c1"></span><span class="nx">map1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+<span class="c1">// 复合map，key为string，value为一个map
+</span><span class="c1"></span><span class="nx">map2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="map插入元素">🐵map插入元素</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span>	<span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 声明map
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">personAge</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
+  <span class="c1">// 初始化map
+</span><span class="c1"></span>	<span class="nx">personAge</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+
+  <span class="c1">// 插入数据
+</span><span class="c1"></span>	<span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="mi">1</span>
+	<span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Daming&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="mi">2</span>
+
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Create a map&#34;</span><span class="p">:</span> <span class="nx">personAge</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Create a map : map<span class="o">[</span>Daming:2 Amy:1<span class="o">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="map删除元素">🐵map删除元素</h6>
+
+<p>使用内置函数<code>delete(map,key)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 声明map
+</span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">personAge</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
+  <span class="c1">// 初始化map
+</span><span class="c1"></span>  <span class="nx">personAge</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+
+  <span class="c1">// 插入数据
+</span><span class="c1"></span>	<span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="mi">1</span>
+	<span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Daming&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="mi">2</span>
+
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Create a map :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">)</span>
+
+  <span class="c1">// 删除一个数据
+</span><span class="c1"></span>	<span class="nb">delete</span><span class="p">(</span><span class="nx">personAge</span><span class="p">,</span> <span class="s">&#34;Amy&#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;delete Amy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Create a map : map<span class="o">[</span>Daming:2 amy:1<span class="o">]</span>
+Delete Amy : map<span class="o">[</span>Daming:2<span class="o">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="map访问元素">🐵map访问元素</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">personAge</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
+  	<span class="s">&#34;Amy&#34;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  	<span class="s">&#34;Daming&#34;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  	<span class="s">&#34;Lily&#34;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 1. 通过key的内容直接获取：不存在则返回值类型的0值，例如map[string]string，不存在的返回&#34;&#34;
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Jimmy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Jimmy&#34;</span><span class="p">]</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Amy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span><span class="p">)</span>
+
+  <span class="c1">// 2. personAge[&#34;Jimmy&#34;]返回两个参数
+</span><span class="c1"></span>  <span class="nx">value</span> <span class="p">,</span><span class="nx">ok</span> <span class="o">:=</span> <span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Jimmy&#34;</span><span class="p">]</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Jimmy exists ? &#34;</span><span class="p">,</span><span class="nx">ok</span><span class="p">)</span>
+
+  <span class="nx">value</span> <span class="p">,</span><span class="nx">ok</span> <span class="p">=</span> <span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Amy exists ? %v the value is : %d&#34;</span><span class="p">,</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>在访问元素时，第一个参数是访问的元素的值，第二个参数为元素是否存在，存在则是true，不存在为false，此外，不存在的元素的返回值是元素取值的默认0值。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Get Jimmy : <span class="m">0</span>
+Get Amy : <span class="m">1</span>
+Jimmy exists ?  <span class="nb">false</span>
+Amy exists ? <span class="nb">true</span> the value is :1</code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="map的遍历">🐵map的遍历</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">personAge</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
+  	<span class="s">&#34;Amy&#34;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  	<span class="s">&#34;Daming&#34;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  	<span class="s">&#34;Lily&#34;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">personAge</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;key: %s, value: %d\n&#34;</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">key: Amy, value: <span class="m">1</span>
+key: Daming, value: <span class="m">2</span>
+key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Golang系列教程--数组和切片</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-array-and-slice/" />
+            <id>https://jjmeg.github.io/posts/golang-array-and-slice/</id>
+            <updated>2019-12-12T14:05:37+08:00</updated>
+            <published>2019-12-12T11:30:21+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[📜本文内容 📚数组 📖声明方式 📖遍历方式 📚切片 📖一个切片例子 📖容量和长度 📖切片的创建 📚数……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li><p>📚<a href="#数组">数组</a></p>
+
+<ul>
+<li>📖<a href="#声明方式">声明方式</a></li>
+<li>📖<a href="#遍历方式">遍历方式</a></li>
+</ul></li>
+
+<li><p>📚<a href="#切片">切片</a></p>
+
+<ul>
+<li>📖<a href="#一个切片例子">一个切片例子</a></li>
+<li>📖<a href="#容量和长度">容量和长度</a></li>
+<li>📖<a href="#切片的创建">切片的创建</a></li>
+</ul></li>
+
+<li><p>📚<a href="#数组和切片区别">数组和切片区别</a></p></li>
+</ul>
+
+<h3 id="数组">🐵数组</h3>
+
+<ul>
+<li>相同元素的固定容量的集合，一旦被声明，容量固定，若插入新数据超出数组范围将报错误</li>
+<li>数组是值类型</li>
+</ul>
+
+<h6 id="声明方式">声明方式</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go">  <span class="kn">package</span> <span class="nx">main</span>
+
+  <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+  <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="c1">//1
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">num1</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="kt">int</span>
+
+    <span class="c1">//2
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">num2</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">int</span>
+    <span class="nx">num2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">=</span> <span class="mi">1</span>
+    <span class="nx">num2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">=</span> <span class="mi">2</span>
+    <span class="nx">num2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">=</span> <span class="mi">3</span>
+
+    <span class="c1">//2
+</span><span class="c1"></span>    <span class="nx">num3</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n%v\n%v\n&#34;</span><span class="p">,</span><span class="nx">num1</span><span class="p">,</span><span class="nx">num2</span><span class="p">,</span><span class="nx">num3</span><span class="p">)</span>
+  <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">  <span class="o">[</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> 0<span class="o">]</span>
+  <span class="o">[</span><span class="m">1</span> <span class="m">2</span> 3<span class="o">]</span>
+  <span class="o">[</span><span class="m">1</span> <span class="m">2</span> 3<span class="o">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="遍历方式">遍历方式</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go">  <span class="kn">package</span> <span class="nx">main</span>
+
+  <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+  <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">nums</span> <span class="p">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
+
+    <span class="c1">//内置函数len取长度，通过数组索引做遍历
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d\n&#34;</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">//使用range遍历，i为下标，v为该下标存储的数值
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span><span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">nums</span><span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Index:%d\tvalue:%d\n&#34;</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="nx">v</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">  len方式遍历结果：
+    <span class="m">1</span>
+    <span class="m">2</span>
+    <span class="m">3</span>
+    <span class="m">4</span>
+    <span class="m">5</span>
+    <span class="m">6</span>
+    <span class="m">7</span>
+    <span class="m">8</span>
+  range方式遍历结果：
+    Index:0	value:1
+    Index:1	value:2
+    Index:2	value:3
+    Index:3	value:4
+    Index:4	value:5
+    Index:5	value:6
+    Index:6	value:7
+    Index:7	value:8</code></pre></td></tr></table>
+</div>
+</div>
+<hr />
+
+<h3 id="切片">🐵切片</h3>
+
+<ul>
+<li>是数组的部分，引用数组的一段内容，实际不存储任何值</li>
+
+<li><p>对切片的修改即是对引用的数组的修改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">nums</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="p">[</span><span class="p">]</span><span class="kt">int</span> <span class="p">=</span> <span class="nx">nums</span><span class="p">[</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<h6 id="一个切片例子">一个切片例子</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 新建了一个int数组，将数组的引用分配给一个切片
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">array</span> <span class="p">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">nums</span> <span class="p">=</span> <span class="nx">array</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;length of nums is:%d, the capacity is %d\n &#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">,</span> <span class="nb">cap</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">length of nums is:2, the capacity is <span class="m">5</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="容量和长度">容量和长度</h6>
+
+<ul>
+<li>长度：表示当前切片包含的元素个数</li>
+<li>容量：表示切片可包含的最多元素个数</li>
+<li>上述例子中，nums指向array数组从第3到第5的部分，那么当前nums元素个数为2，nums是从第3个开始的，最多可以到第8个，那么切片的容量最多为5</li>
+</ul>
+
+<h6 id="切片的创建">切片的创建</h6>
+
+<ul>
+<li>新建数组，指向数组的部分，如上述例子中</li>
+
+<li><p>make：<code>make([]T, len, cap)</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">i</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<hr />
+
+<h3 id="数组和切片区别">🐵数组和切片区别</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">数组</th>
+<th align="center">切片</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">值类型</td>
+<td align="center">引用类型</td>
+</tr>
+
+<tr>
+<td align="center">存储数据</td>
+<td align="center">不存储数据</td>
+</tr>
+
+<tr>
+<td align="center">长度不可变</td>
+<td align="center">长度可变，但有最大容量</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
             
             
@@ -84,58 +1088,688 @@ labore et dolore magnam aliquam quaerat voluptatem.</p>
         </entry>
     
         <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income.2/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income.2/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
+            <title type="text">Golang系列教程--基础结构与类型</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
+            <id>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</id>
+            <updated>2019-12-11T19:39:35+08:00</updated>
+            <published>2019-12-11T18:00:47+08:00</published>
             <author>
                     <name>JJMeg</name>
                     <uri>https://jjmeg.github.io/</uri>
                     <email>jjmeg.he@gmail.com</email>
                     </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[📜本文内容 📚基础类型 📖布尔型 📖数值类型 📖字符串 📖基础类型默认取值 📖错误类型 📚变量 📖指……]]></summary>
             
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
+                <content type="html"><![CDATA[
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+<h1 id="本文内容">📜本文内容</h1>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<ul>
+<li>📚<a href="#基础类型">基础类型</a>
 
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
+<ul>
+<li>📖<a href="#布尔型">布尔型</a></li>
+<li>📖<a href="#数值类型">数值类型</a></li>
+<li>📖<a href="#字符串">字符串</a></li>
+<li>📖<a href="#基础类型默认取值">基础类型默认取值</a></li>
+<li>📖<a href="#错误类型">错误类型</a></li>
+</ul></li>
+<li>📚<a href="#变量">变量</a>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<ul>
+<li>📖<a href="#指针变量">指针变量</a></li>
+<li>📖<a href="#指向指针的指针">指向指针的指针</a></li>
+<li>📖<a href="#变量命名">变量命名</a></li>
+<li>📖<a href="#变量声明程序例子">变量声明程序例子</a></li>
+<li>📖<a href="#变量生命周期">变量生命周期</a></li>
+<li>📖<a href="#值类型和引用类型">值类型和引用类型</a></li>
+</ul></li>
+<li>📚<a href="#常量">常量</a>
+
+<ul>
+<li>📖<a href="#常量定义">常量定义</a></li>
+<li>📖<a href="#常量模拟枚举">常量模拟枚举</a></li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h1 id="基础类型">🐵基础类型</h1>
+
+<h3 id="布尔型">布尔型</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">bool</td>
+<td align="center">1字节</td>
+<td align="center">true和false</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="数值类型">数值类型</h3>
+
+<h6 id="1-无符号整型">1.无符号整型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">uint8又称byte</td>
+<td align="center">1字节</td>
+<td align="center">0~255</td>
+</tr>
+
+<tr>
+<td align="center">uint16</td>
+<td align="center">2字节</td>
+<td align="center">0~65535</td>
+</tr>
+
+<tr>
+<td align="center">uint32</td>
+<td align="center">4字节</td>
+<td align="center">0~4294967295</td>
+</tr>
+
+<tr>
+<td align="center">uint64</td>
+<td align="center">8字节</td>
+<td align="center">0~18446744073709551615</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="2-有符号整型">2.有符号整型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">int8</td>
+<td align="center">1字节</td>
+<td align="center">-128~127</td>
+</tr>
+
+<tr>
+<td align="center">int16</td>
+<td align="center">2字节</td>
+<td align="center">-32768~32767</td>
+</tr>
+
+<tr>
+<td align="center">int32</td>
+<td align="center">4字节</td>
+<td align="center">-2147483648~2147483647</td>
+</tr>
+
+<tr>
+<td align="center">int64</td>
+<td align="center">8字节</td>
+<td align="center">-9223372036854775808~9223372036854775807</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>注：Golang中的int在未明确指定位数时，默认为int32</strong></p>
+
+<h6 id="3-浮点型">3.浮点型</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">内存占用大小</th>
+<th align="center">取值范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">float32</td>
+<td align="center">4字节</td>
+<td align="center">1.4e-45~3.4e38</td>
+</tr>
+
+<tr>
+<td align="center">float64</td>
+<td align="center">8字节</td>
+<td align="center">4.9e-324~1.8e308</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="字符串">字符串</h3>
+
+<p>Go中的字符串由字节组成，不可变类型，使用UTF-8编码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;hello&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>常用处理字符串的包
+- strconv：提供了多种数值与字符串转化的函数
+- strings：提供多种字符串处理的方法</p>
+
+<h3 id="基础类型默认取值">基础类型默认取值</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">布尔型</th>
+<th align="center">数值类型</th>
+<th align="center">字符串</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">false</td>
+<td align="center">0</td>
+<td align="center">&quot;&quot;</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="错误类型">错误类型</h3>
+
+<ul>
+<li><p>Go内置的接口，Go中的errors包实现了Error()函数，当然也可以自定义实现错误类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="kt">error</span> <span class="kd">interface</span> <span class="p">{</span>
+<span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">TestError</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Msg</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="c1">// 实现了Error接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="nx">TestError</span><span class="p">)</span> <span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Msg</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<hr />
+
+<h1 id="变量">🐵变量</h1>
+
+<ul>
+<li>声明形式：
+
+<ul>
+<li><code>var [变量名] [变量类型]</code>: <code>var name string</code></li>
+<li><code>new</code>: <code>b := new(bool)</code>  <code>new</code>会分配被置零的存储，在此<code>b</code>的值为<code>false</code></li>
+<li><code>make</code>: <code>make(chan bool)</code> 新建<code>map</code>、<code>slice</code>、<code>channel</code>类型的数据</li>
+</ul></li>
+<li>注意：
+
+<ul>
+<li>关键字不能作为变量名，例如const/var/import等</li>
+<li>首字母大写则该变量可导出</li>
+<li>函数内声明的为局部变量，全局变量则在import语句后作声明</li>
+</ul></li>
+<li>初始化：
+
+<ul>
+<li>未手动赋值，变量被初始化成默认值，<code>int:0</code>，<code>string:&quot;&quot;</code>，<code>bool:false</code></li>
+</ul></li>
+</ul>
+
+<h3 id="指针变量">指针变量</h3>
+
+<h6 id="1-和-的区别">1.* 和 &amp; 的区别</h6>
+
+<table>
+<thead>
+<tr>
+<th align="center">&amp;</th>
+<th align="center">*</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">取地址符号</td>
+<td align="center">指针运算符</td>
+</tr>
+
+<tr>
+<td align="center">对变量取地址</td>
+<td align="center">一个变量是指针类型<br/>指针变量所处的存储单元<br/></td>
+</tr>
+
+<tr>
+<td align="center">a = *&amp;a</td>
+<td align="center">a = <em>&amp;</em>&amp;<em>&amp;</em>&amp;*&amp;a</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>*&amp;可以相互抵消，&amp;*不可以抵消</strong></p>
+
+<h3 id="指向指针的指针">指向指针的指针</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">i</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="kd">var</span> <span class="nx">ptr</span> <span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">i</span>
+<span class="kd">var</span> <span class="nx">pptr</span> <span class="o">*</span><span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ptr</span></code></pre></td></tr></table>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th align="center">ptr</th>
+<th align="center">pptr</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">ptr是一个指针变量</br>ptr的类型是*int</td>
+<td align="center">pptr是一个指针变量</br>pptr的类型是**int，也是&amp;ptr</td>
+</tr>
+
+<tr>
+<td align="center">*ptr = 1</td>
+<td align="center">**pptr = 1</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="变量命名">变量命名</h3>
+
+<p>推荐阅读：驼峰命名法</p>
+
+<h3 id="变量声明程序例子">变量声明程序例子</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">qq</span> <span class="kt">int</span>
+<span class="kd">type</span> <span class="nx">pp</span> <span class="kt">float32</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="c1">// 用var声明变量，用 = 赋值，Go会自动检测变量的类型
+</span><span class="c1"></span> <span class="kd">var</span> <span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;haha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+
+ <span class="c1">// 省略var关键字，用 := 初始化，Go会自动检测变量的类型
+</span><span class="c1"></span> <span class="nx">name1</span> <span class="o">:=</span> <span class="s">&#34;hahaha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name1</span><span class="p">)</span>
+
+ <span class="kd">var</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+ <span class="kd">var</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span> <span class="p">=</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#34;ha&#34;</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span>
+
+ <span class="c1">//默认初始化为0
+</span><span class="c1"></span> <span class="kd">var</span> <span class="nx">a1</span> <span class="nx">qq</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a1</span><span class="p">)</span>
+ <span class="kd">var</span> <span class="nx">s1</span> <span class="nx">pp</span>
+ <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">haha
+hahaha
+<span class="m">1</span> <span class="m">2</span> <span class="m">3</span> ha
+<span class="m">0</span>
+<span class="m">0</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="变量生命周期">变量生命周期</h3>
+
+<ul>
+<li>包级别变量：整个程序执行过程</li>
+<li>局部变量：每次执行声明时建立一个实体，一直生存到它不可访问，函数的参数和返回值都是局部变量，不可访问后，其实体所占的内存空间将被收回</li>
+</ul>
+
+<h3 id="值类型和引用类型">值类型和引用类型</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">值类型</th>
+<th align="center">引用类型</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">基本数据类型</br>数组</br>结构体</td>
+<td align="center">指针</br>slice</br>map</br>channel</br>interface</td>
+</tr>
+
+<tr>
+<td align="center">变量直接存储值，内存通常在栈中分配</td>
+<td align="center">变量存储的值是一个地址，这个地址对应的空间 才真正存储数据，内存通常在堆上分配，当没有任何变量引用这个地址时，会被GC回收</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h1 id="常量">🐵常量</h1>
+
+<ul>
+<li>常量是无法改变的，在声明时就已确定好具体的值，通常包含基本数据类型和字符串类型</li>
+<li>用关键字const修饰</li>
+<li>常量可作枚举</li>
+</ul>
+
+<h3 id="常量定义">常量定义</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">pacakge</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">const</span><span class="p">(</span>
+  <span class="nx">Country</span> <span class="p">=</span> <span class="s">&#34;China&#34;</span>
+  <span class="nx">Weight</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="常量模拟枚举">常量模拟枚举</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">Weight</span> <span class="kt">int</span>
+
+<span class="kd">const</span> <span class="p">(</span>
+	<span class="nx">State1</span> <span class="nx">Weight</span> <span class="p">=</span> <span class="kc">iota</span> <span class="c1">//开始生成枚举常量，State1为0
+</span><span class="c1"></span>	<span class="nx">State2</span>
+	<span class="nx">State3</span>
+	<span class="nx">State4</span>
+	<span class="nx">State5</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d, %d, %d, %d, %d\n&#34;</span><span class="p">,</span><span class="nx">State1</span><span class="p">,</span> <span class="nx">State2</span><span class="p">,</span> <span class="nx">State3</span><span class="p">,</span> <span class="nx">State4</span><span class="p">,</span> <span class="nx">State5</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">level</span> <span class="nx">Weight</span> <span class="p">=</span> <span class="nx">State5</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;level is: %d\n&#34;</span><span class="p">,</span><span class="nx">level</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">0, 1, 2, 3, <span class="m">4</span>
+level is: <span class="m">4</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+        <entry>
+            <title type="text">Golang系列教程--基础概念</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-concetps/" />
+            <id>https://jjmeg.github.io/posts/golang-basic-concetps/</id>
+            <updated>2019-12-11T19:39:59+08:00</updated>
+            <published>2019-12-10T13:47:14+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[📜本文内容 👉包的概念package 👉 Go程序的结构 👉 Go的执行 👉 可见性规则 👉 Go的编……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li><p>👉<a href="#包的概念package">包的概念package</a></p></li>
+
+<li><p>👉 <a href="#Go程序的结构">Go程序的结构</a></p></li>
+
+<li><p>👉 <a href="#Go的执行">Go的执行</a></p></li>
+
+<li><p>👉 <a href="#可见性规则">可见性规则</a></p></li>
+
+<li><p>👉 <a href="#Go的编译过程">Go的编译过程</a></p></li>
+</ul>
+
+<hr />
+
+<h3 id="包的概念package">👽包的概念package</h3>
+
+<ul>
+<li>每个go文件仅属于一个包，一个包可以多个go文件</li>
+<li>所有包名为小写字母</li>
+<li>包编译完为pack1.a，包的依赖关系决定程序构建顺序，包为编译单元，每个目录只包含一个包</li>
+<li><strong>包内文件或重新编译有修改，引用该包的其他程序也要重新编译</strong></li>
+<li>包名也可作为命名空间使用，eg：pack1.Id, pack2.Id</li>
+<li>包名自命名，eg：import fm &quot;fmt&quot;  fm.Println(&quot;hello&quot;)</li>
+<li>导入未使用的包时会报错，导入包的语句后可以定义全局变量，在本包内都可访问</li>
+<li>包编译完为pack1.a</li>
+</ul>
+
+<h3 id="go程序的结构">👽Go程序的结构</h3>
+
+<ol>
+<li>import包</li>
+<li>声明常量、全局变量、类型定义</li>
+
+<li><p>init()若含有，则包首先执行init()且只执行一次,<strong>任何文件可以包含任意多个init()，按照声明的顺序执行</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">init</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/*........*/</span> <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>若是main包，此处写main函数</p></li>
+
+<li><p>其他函数</p></li>
+</ol>
+
+<h3 id="go的执行">👽Go的执行</h3>
+
+<ol>
+<li>按顺序导入所有被main包引用的包，每个包执行以下流程：
+
+<ul>
+<li>若该包又引入了其他包，从1继续，但每个包只能导入一次</li>
+<li>相反的顺序初始化变量、常量，有init()执行init()</li>
+</ul></li>
+<li>回到main执行一样的初始化和init()过程</li>
+</ol>
+
+<h3 id="可见性规则">👽可见性规则</h3>
+
+<ul>
+<li>类似java中的public、private关键字</li>
+<li>标识符以大写字母开头，外部包即可访问，eg：struct Person{}，Person对象即可被外部包访问(导出/public)</li>
+<li>以小写字母，即private，仅包内可见可用</li>
+<li>在导入一个外部包后，只能够访问该包中导出的对象</li>
+</ul>
+
+<h3 id="go的编译过程">👽Go的编译过程</h3>
+
+<ul>
+<li>run: compile and run Go program
+
+<ul>
+<li>go run执行完后生成归档文件和可执行文件</li>
+<li>go run -a强制编译所有代码</li>
+</ul></li>
+<li>build: compile packages and dependencies
+
+<ul>
+<li>go build在目录中执行，将产生与目录同名的可执行文件</li>
+<li>若编译库源码文件，build完不产生任何结果，build只检查库源码文件的有效性，不输出任何文件</li>
+<li>go build 后不接路径则默认编译的包的路径为当前目录</li>
+<li>-o 指定输出名称</li>
+<li>过程与go run相似，但最后会将生成的可执行文件移动(不是复制，go run产生的exe不存在了)到目录下</li>
+</ul></li>
+<li>install: download and install packages and dependencies
+
+<ul>
+<li>编译并安装指定的代码包、依赖包</li>
+<li>go install将build命令生成的可执行文件移动到GOPATH/bin下</li>
+<li>过程与go build类似，但最后安装编译后的结果文件到指定目录</li>
+<li>命令后可接路径</li>
+<li>不支持对库源码文件的安装</li>
+</ul></li>
+<li>get: download and install packages and dependencies
+
+<ul>
+<li>go get从远程仓库下载</li>
+<li>-d只做下载操作不安装</li>
+</ul></li>
+</ul>
 ]]></content>
             
             
@@ -151,259 +1785,47 @@ labore et dolore magnam aliquam quaerat voluptatem.</p>
         </entry>
     
         <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income.3/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income.3/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
+            <title type="text">Hello World</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
+            <id>https://jjmeg.github.io/posts/hello-world/</id>
+            <updated>2019-12-12T11:14:05+08:00</updated>
+            <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
                     <uri>https://jjmeg.github.io/</uri>
                     <email>jjmeg.he@gmail.com</email>
                     </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
-            
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
-
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
-]]></content>
-            
-            
-            
-            
-            
-                
-                    
-                
-                    
-                
-            
-        </entry>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     
-        <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income.4/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income.4/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
-            <author>
-                    <name>JJMeg</name>
-                    <uri>https://jjmeg.github.io/</uri>
-                    <email>jjmeg.he@gmail.com</email>
-                    </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
+    <summary type="html"><![CDATA[This is a test article. 「What」 首次尝试博客是在2017年 👉 基于Hexo 👉 JJMeg0 学业繁忙（拖拉机本……]]></summary>
             
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
+                <content type="html"><![CDATA[<p>This is a <del>test</del> article.</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+<p><br />
+「What」</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<p>首次尝试博客是在2017年 👉 基于<a href="https://hexo.io/" target="_blank">Hexo</a> 👉 <a href="https://github.com/JJMeg/JJMeg0.github.io" target="_blank">JJMeg0</a></p>
 
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
+<p><del>学业繁忙</del>（拖拉机本机💅），遂落灰...</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
-]]></content>
-            
-            
-            
-            
-            
-                
-                    
-                
-                    
-                
-            
-        </entry>
-    
-        <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income.5/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income.5/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
-            <author>
-                    <name>JJMeg</name>
-                    <uri>https://jjmeg.github.io/</uri>
-                    <email>jjmeg.he@gmail.com</email>
-                    </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
-            
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
+<p><del>社（毕）会（业）人（了）</del>（互联网🐶）开始营业🕘...</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+<p><br />
+「Why」</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<p>云计算行业萌新，近半年接触<a href="https://golang.org/" target="_blank">Go</a>，听闻<a href="https://gohugo.io/" target="_blank">Hugo</a>构建编译速度，（搓手）尝试⚡，体验 hin👌。</p>
 
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
+<p><br />
+「How」</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
-]]></content>
-            
-            
-            
-            
-            
-                
-                    
-                
-                    
-                
-            
-        </entry>
-    
-        <entry>
-            <title type="text">Amazon increase income 1.5 Million</title>
-            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/blog/amazon-increase-income/" />
-            <id>https://jjmeg.github.io/blog/amazon-increase-income/</id>
-            <updated>2019-12-09T17:05:53+08:00</updated>
-            <published>2019-05-12T12:14:34+06:00</published>
-            <author>
-                    <name>JJMeg</name>
-                    <uri>https://jjmeg.github.io/</uri>
-                    <email>jjmeg.he@gmail.com</email>
-                    </author>
-            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html"><![CDATA[This is meta description.]]></summary>
-            
-                <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-mollit anim id est laborum.</p>
+<p>🔍主题选用👻 <a href="https://io-oi.me/" target="_blank">一休儿</a> 👻超级优秀的💖 <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank">meme</a> 💖，</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.</p>
+<p>✒ 编辑器为 <a href="https://atom.io/" target="_blank">Atom</a> ✒，写作由 <a href="https://www.markdown.cn/" target="_blank">Markdown</a> 支持。</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<p><br />
+<br /></p>
 
-<blockquote>
-<p>Dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-</blockquote>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-labore et dolore magnam aliquam quaerat voluptatem.</p>
+<p><center>Enjoy it!</center></p>
 ]]></content>
             
             
