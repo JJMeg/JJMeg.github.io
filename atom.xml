@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-13T14:57:23+08:00</updated>
+    <updated>2019-12-13T15:26:36+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -17,10 +17,469 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
         <entry>
+            <title type="text">Golang系列教程--结构体struct和方法method</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
+            <id>https://jjmeg.github.io/posts/golang-struct-and-method/</id>
+            <updated>2019-12-13T15:26:31+08:00</updated>
+            <published>2019-12-13T15:02:59+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「struct💞method」 Go没有类的概念，将多个不同类型的数据集合在一起，可以……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「struct💞method」</center>
+<p style="text-indent:2em">Go没有类的概念，将多个不同类型的数据集合在一起，可以用到struct，method则是赋给某变量的函数。</p></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#struct">struct</a>
+
+<ul>
+<li>📖<a href="#struct的声明">struct的声明</a></li>
+<li>📖<a href="#struct的初始化">struct的初始化</a></li>
+<li>📖<a href="#struct的嵌套">struct的嵌套</a></li>
+<li>📖<a href="#成员的可见性">成员的可见性</a></li>
+</ul></li>
+<li>📚<a href="#method">method</a>
+
+<ul>
+<li>📖<a href="#method的声明">method的声明</a></li>
+<li>📖<a href="#一些约束">一些约束</a></li>
+</ul></li>
+</ul>
+
+<h1 id="struct">🐵struct</h1>
+
+<h3 id="struct的声明">struct的声明</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">结构名</span> <span class="kd">struct</span><span class="p">{</span>
+  <span class="nx">变量名1</span> <span class="nx">变量类型</span>
+  <span class="nx">变量名2</span> <span class="nx">变量类型</span>
+  <span class="o">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>     <span class="kt">string</span>
+	<span class="nx">Age</span>      <span class="kt">int</span>
+	<span class="nx">Region</span>   <span class="kt">string</span>
+<span class="p">}</span>
+<span class="c1">// 也可以简写为
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span><span class="p">,</span> <span class="nx">Region</span>   <span class="kt">string</span>
+	<span class="nx">Age</span>              <span class="kt">int</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="struct的初始化">🐒struct的初始化</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>     <span class="kt">string</span>
+	<span class="nx">Age</span>      <span class="kt">int</span>
+	<span class="nx">Region</span>   <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 声明
+</span><span class="c1"></span>  <span class="c1">// 1. 指定变量类型
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">amy</span> <span class="nx">Person</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+
+  <span class="c1">// 2. 构造空结构体，也可以完成声明
+</span><span class="c1"></span>  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span><span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">lily</span><span class="p">)</span>
+
+  <span class="c1">// 结构体变量初始化
+</span><span class="c1"></span>  <span class="c1">// 1. 对相应字段赋值
+</span><span class="c1"></span>	<span class="nx">amy</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;amy&#34;</span>
+	<span class="nx">amy</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">10</span>
+	<span class="nx">amy</span><span class="p">.</span><span class="nx">Region</span> <span class="p">=</span> <span class="s">&#34;China&#34;</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+
+  <span class="c1">// 2. 直接写在结构体中
+</span><span class="c1"></span>  <span class="nx">lily</span> <span class="p">=</span> <span class="nx">Person</span><span class="p">{</span>
+    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
+    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">Region</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">lily</span><span class="p">)</span>
+
+  <span class="c1">// 修改结构体中的变量
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">p</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">amy</span>
+	<span class="nx">p</span><span class="p">.</span><span class="nx">Region</span> <span class="p">=</span> <span class="s">&#34;USA&#34;</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span> <span class="m">0</span> <span class="o">}</span>
+<span class="o">{</span> <span class="m">0</span> <span class="o">}</span>
+<span class="o">{</span>amy <span class="m">10</span> China<span class="o">}</span>
+<span class="o">{</span>lily <span class="m">10</span> China<span class="o">}</span>
+<span class="o">{</span>amy <span class="m">10</span> USA<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="struct的嵌套">🐒struct的嵌套</h6>
+
+<p><strong>1. 嵌入本身的结构体，使用指针嵌入</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Tree</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Value</span>     <span class="kt">int</span>
+	<span class="nx">Left</span>      <span class="o">*</span><span class="nx">Tree</span>
+	<span class="nx">Right</span>     <span class="o">*</span><span class="nx">Tree</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>2. 嵌入其他结构体</strong></p>
+
+<p>变相实现了继承，Person拥有了Region的所有属性</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Name</span>      <span class="kt">string</span>
+  <span class="nx">Age</span>       <span class="kt">int</span>
+  <span class="nx">Location</span>  <span class="nx">Region</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Region</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Country</span> <span class="kt">string</span>
+  <span class="nx">City</span>    <span class="kt">string</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<ol>
+<li>嵌入匿名成员</li>
+</ol>
+
+<p>匿名成员即没有变量命名的成员，可以直接访问匿名成员结构体内的变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Name</span>      <span class="kt">string</span>
+  <span class="nx">Age</span>       <span class="kt">int</span>
+  <span class="nx">Region</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Region</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Country</span> <span class="kt">string</span>
+  <span class="nx">City</span>    <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">region</span> <span class="o">:=</span> <span class="nx">Region</span><span class="p">{</span>
+    <span class="nx">Country</span><span class="p">:</span>  <span class="s">&#34;China&#34;</span><span class="p">,</span>
+    <span class="nx">City</span><span class="p">:</span>     <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span>
+    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
+    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">Region</span><span class="p">:</span> <span class="nx">region</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 可以直接访问Region中的Country和City
+</span><span class="c1"></span>  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Her country is: &#34;</span><span class="p">,</span> <span class="nx">lily</span><span class="p">.</span><span class="nx">Country</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Her country is:  China</code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="成员的可见性">🐒成员的可见性</h6>
+
+<p>成员的可见性是对外部package而言的，若某个变量对外部包可见，那么称这个变量是可导出的，在Go中，通过成员首字母大小写表明可见性，大写为可导出，小写不可导出，不可导出的成员只能在同一个包内访问</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">person</span>
+
+<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>     <span class="kt">string</span>
+	<span class="nx">Age</span>      <span class="kt">int</span>
+	<span class="nx">loaction</span> <span class="kt">string</span>
+<span class="p">}</span>
+<span class="o">/</span><span class="o">/</span> <span class="nx">Person结构体对外可见</span><span class="err">，</span><span class="nx">但是其内部的变量只有Name和Age成员对外可见</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span>
+    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
+    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">location</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span><span class="c1">//这里会报错，外部的main包无法方位person包中Person结构体的不可见成员
+</span><span class="c1"></span>  <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<hr />
+
+<h1 id="method">🐵method</h1>
+
+<p>method 方法，附属给一个接收者的函数，接收者是某种类型的变量</p>
+
+<h6 id="method的声明">🐒method的声明</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">接收者变量名称</span> <span class="nx">接收者变量类型</span><span class="p">)</span> <span class="nx">方法名</span><span class="p">(</span><span class="p">)</span> <span class="nx">返回值</span> <span class="p">{</span>
+  <span class="o">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">Print</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+  <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="一些约束">🐒一些约束</h6>
+
+<ul>
+<li>只能为当前所在包内的类型定义方法</li>
+<li>接收者可为值类型和指针类型，不可为接口类型和指针的指针类型</li>
+
+<li><p>接收者为指针类型时，可用于修改其内容，接收者为值类型时不会改动其内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 接收者为指针类型
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">Setname</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nf">Setname</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+<span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+<span class="c1">// 接收者为值类型
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="nx">Person</span><span class="p">)</span> <span class="nf">Print</span><span class="p">(</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">person</span><span class="p">)</span>
+<span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<p><strong>同一个接收者的方法不可重名，若接收者是一个结构体，其方法名不可以和该结构体内的成员重名</strong></p>
+]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">Golang系列教程--函数</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-function/" />
             <id>https://jjmeg.github.io/posts/golang-function/</id>
-            <updated>2019-12-13T14:57:16+08:00</updated>
+            <updated>2019-12-13T15:01:28+08:00</updated>
             <published>2019-12-13T14:44:55+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -128,13 +587,13 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span><span class="p">,</span> <span class="kt">bool</span><span class="p">{</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">bool</span><span class="p">)</span><span class="p">{</span>
   <span class="k">return</span> <span class="s">&#34;Hello World!&#34;</span><span class="p">,</span> <span class="kc">true</span>
 <span class="p">}</span>
 
 <span class="c1">// 命名返回值
 </span><span class="c1"></span><span class="c1">// user及age均被初始化为默认值
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="nx">user</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">HelloWorld</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="nx">user</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">age</span> <span class="kt">int</span><span class="p">)</span><span class="p">{</span>
   <span class="nx">user</span> <span class="p">=</span> <span class="s">&#34;heihei&#34;</span>
   <span class="nx">age</span> <span class="p">=</span> <span class="mi">10</span>
   <span class="k">return</span>
@@ -2200,7 +2659,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
             <id>https://jjmeg.github.io/posts/hello-world/</id>
-            <updated>2019-12-12T11:14:05+08:00</updated>
+            <updated>2019-12-13T15:13:47+08:00</updated>
             <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2235,9 +2694,8 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
 <p>✒ 编辑器为 <a href="https://atom.io/" target="_blank">Atom</a> ✒，写作由 <a href="https://www.markdown.cn/" target="_blank">Markdown</a> 支持。</p>
 
 <p><br />
-<br /></p>
-
-<p><center>Enjoy it!</center></p>
+<br />
+<center>Enjoy it!</center></p>
 ]]></content>
             
             
