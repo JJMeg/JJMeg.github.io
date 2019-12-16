@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-13T15:40:19+08:00</updated>
+    <updated>2019-12-16T11:30:52+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">Golang系列教程--结构体struct和方法method</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
             <id>https://jjmeg.github.io/posts/golang-struct-and-method/</id>
-            <updated>2019-12-13T15:38:41+08:00</updated>
+            <updated>2019-12-16T11:30:17+08:00</updated>
             <published>2019-12-13T15:02:59+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -471,6 +471,20 @@
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -479,7 +493,7 @@
             <title type="text">Golang系列教程--函数</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-function/" />
             <id>https://jjmeg.github.io/posts/golang-function/</id>
-            <updated>2019-12-13T15:01:28+08:00</updated>
+            <updated>2019-12-16T11:29:56+08:00</updated>
             <published>2019-12-13T14:44:55+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -883,6 +897,20 @@
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -891,7 +919,7 @@
             <title type="text">Golang系列教程--流程控制</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-process-control/" />
             <id>https://jjmeg.github.io/posts/golang-process-control/</id>
-            <updated>2019-12-13T14:42:41+08:00</updated>
+            <updated>2019-12-16T11:30:11+08:00</updated>
             <published>2019-12-13T14:21:15+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1370,6 +1398,20 @@ i is :10</code></pre></td></tr></table>
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -1378,7 +1420,7 @@ i is :10</code></pre></td></tr></table>
             <title type="text">Golang系列教程--Map</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-map/" />
             <id>https://jjmeg.github.io/posts/golang-map/</id>
-            <updated>2019-12-13T14:31:19+08:00</updated>
+            <updated>2019-12-16T11:30:05+08:00</updated>
             <published>2019-12-12T14:14:35+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1648,6 +1690,20 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -1656,7 +1712,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--数组和切片</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-array-and-slice/" />
             <id>https://jjmeg.github.io/posts/golang-array-and-slice/</id>
-            <updated>2019-12-13T14:52:21+08:00</updated>
+            <updated>2019-12-16T11:29:35+08:00</updated>
             <published>2019-12-12T11:30:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1954,6 +2010,20 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -1962,7 +2032,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础结构与类型</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
             <id>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</id>
-            <updated>2019-12-13T14:51:47+08:00</updated>
+            <updated>2019-12-16T11:29:48+08:00</updated>
             <published>2019-12-11T18:00:47+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2515,6 +2585,20 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
                     
                 
                     
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
                 
             
         </entry>
@@ -2523,7 +2607,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础概念</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-concetps/" />
             <id>https://jjmeg.github.io/posts/golang-basic-concetps/</id>
-            <updated>2019-12-11T19:39:59+08:00</updated>
+            <updated>2019-12-16T11:29:43+08:00</updated>
             <published>2019-12-10T13:47:14+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2650,6 +2734,20 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
                 
                     
                 
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
                     
                 
             
