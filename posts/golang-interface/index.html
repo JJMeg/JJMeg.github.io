@@ -32,7 +32,7 @@
 
     <meta name="generator" content="Hugo 0.60.1" />
 
-    <title>Golang系列教程--结构体struct和方法method | JJMeg&#39;s blog</title>
+    <title>Golang系列教程--接口Interface | JJMeg&#39;s blog</title>
 
     <link rel="stylesheet" href="/css/meme.min.011867e2a16e3c49f879fe5160040670d1881e489e00ff2f5cab4c8a4f53966c.css" integrity="sha256-ARhn4qFuPEn4ef5RYAQGcNGIHkieAP8vXKtMik9Tlmw=" data-instant-track />
 
@@ -41,7 +41,7 @@
     <meta name="author" content="JJMeg" />
     
     
-    <meta name="description" content="「struct💞method」 Go没有类的概念，将多个不同类型的数据集合在一起，可以……" />
+    <meta name="description" content="「interface」 接口，即一些方法的集合，在Go中，interface也是一种类……" />
     <meta name="keywords" content="golang, go基础" />
     
     <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
@@ -61,7 +61,7 @@
     
 
     
-    <link rel="canonical" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
+    <link rel="canonical" href="https://jjmeg.github.io/posts/golang-interface/" />
 
 
 
@@ -70,15 +70,15 @@
     {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "datePublished": "2019-12-13T15:02:59+08:00",
-        "dateModified": "2019-12-16T11:30:17+08:00",
-        "url": "https://jjmeg.github.io/posts/golang-struct-and-method/",
-        "headline": "Golang系列教程--结构体struct和方法method",
-        "description": "「struct💞method」 Go没有类的概念，将多个不同类型的数据集合在一起，可以……",
+        "datePublished": "2019-12-17T09:52:40+08:00",
+        "dateModified": "2019-12-17T09:58:10+08:00",
+        "url": "https://jjmeg.github.io/posts/golang-interface/",
+        "headline": "Golang系列教程--接口Interface",
+        "description": "「interface」 接口，即一些方法的集合，在Go中，interface也是一种类……",
         "keywords": "golang, go基础",
         "inLanguage" : "zh-CN",
         "articleSection": "posts",
-        "wordCount":  1201 ,
+        "wordCount":  947 ,
         "image": "https://jjmeg.github.io/icons/jjmeg.png",
         "author": {
             "@type": "Person",
@@ -121,14 +121,14 @@
 
 
 
-<meta property="og:title" content="Golang系列教程--结构体struct和方法method" />
-<meta property="og:description" content="「struct💞method」 Go没有类的概念，将多个不同类型的数据集合在一起，可以……" />
-<meta property="og:url" content="https://jjmeg.github.io/posts/golang-struct-and-method/" />
+<meta property="og:title" content="Golang系列教程--接口Interface" />
+<meta property="og:description" content="「interface」 接口，即一些方法的集合，在Go中，interface也是一种类……" />
+<meta property="og:url" content="https://jjmeg.github.io/posts/golang-interface/" />
 <meta property="og:site_name" content="JJMeg&#39;s blog" />
 <meta property="og:locale" content="zh-CN" /><meta property="og:image" content="https://jjmeg.github.io/icons/jjmeg.png" />
     <meta property="og:type" content="article" />
-    <meta property="article:published_time" content="2019-12-13T15:02:59+08:00" />
-    <meta property="article:modified_time" content="2019-12-16T11:30:17+08:00" />
+    <meta property="article:published_time" content="2019-12-17T09:52:40+08:00" />
+    <meta property="article:modified_time" content="2019-12-17T09:58:10+08:00" />
     
     <meta property="article:section" content="posts" />
     <meta property="article:tag" content="golang, go基础" />
@@ -186,7 +186,7 @@
 
         <article class="content post" data-align="justify" data-type="posts">
 
-            <h1 class="post-title">Golang系列教程--结构体struct和方法method</h1>
+            <h1 class="post-title">Golang系列教程--接口Interface</h1>
 
             
 
@@ -198,7 +198,7 @@
                 <div class="post-meta">
     
         
-        <time datetime="2019-12-13T15:02:59+08:00" class="post-meta-item published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>2019.12.13</time>
+        <time datetime="2019-12-17T09:52:40+08:00" class="post-meta-item published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>2019.12.17</time>
     
     
     
@@ -211,44 +211,31 @@
     
     
         
-        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1201</span>
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>947</span>
     
     
         
-        <span class="post-meta-item readingtime"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>3&nbsp;分钟</span>
+        <span class="post-meta-item readingtime"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>2&nbsp;分钟</span>
     
 </div>
             
 
             <div class="post-body">
 
-<p><center>「struct💞method」</center>
-<p style="text-indent:2em">Go没有类的概念，将多个不同类型的数据集合在一起，可以用到struct，method则是赋给某变量的函数。</p></p>
+<p><center>「interface」</center>
+<p style="text-indent:2em">接口，即一些方法的集合，在Go中，interface也是一种类型，属于指针类型，常用接口实现多态。</p></p>
 
 <h1 id="本文内容"><a href="#本文内容" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>📜本文内容</h1>
 
 <ul>
-<li>📚<a href="#struct">struct</a>
-
-<ul>
-<li>📖<a href="#struct的声明">struct的声明</a></li>
-<li>📖<a href="#struct的初始化">struct的初始化</a></li>
-<li>📖<a href="#struct的嵌套">struct的嵌套</a></li>
-<li>📖<a href="#成员的可见性">成员的可见性</a></li>
-</ul></li>
-<li>📚<a href="#method">method</a>
-
-<ul>
-<li>📖<a href="#method的声明">method的声明</a></li>
-<li>📖<a href="#一些约束">一些约束</a></li>
-</ul></li>
+<li>📚<a href="#interface的声明">interface的声明</a></li>
+<li>📚<a href="#interface的实现">interface的实现</a></li>
+<li>📚<a href="#interface嵌套">interface嵌套</a></li>
 </ul>
 
 <hr />
 
-<h1 id="struct"><a href="#struct" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵struct</h1>
-
-<h6 id="struct的声明"><a href="#struct的声明" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒struct的声明</h6>
+<h3 id="interface的声明"><a href="#interface的声明" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵interface的声明</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -258,14 +245,46 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">结构名</span> <span class="kd">struct</span><span class="p">{</span>
-  <span class="nx">变量名1</span> <span class="nx">变量类型</span>
-  <span class="nx">变量名2</span> <span class="nx">变量类型</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">接口名</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nx">方法1</span>
+  <span class="nx">方法2</span>
   <span class="o">...</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
 </div>
-<p>例如</p>
+</div>
+<h3 id="interface的实现"><a href="#interface的实现" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵interface的实现</h3>
+
+<p><strong>1. 接口中所有的方法没有方法体，都没有实现细节，也不能包含变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nx">Name</span> <span class="kt">string</span> <span class="c1">//这里会报错，不可以包含变量
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>2. 接口不能创建实例，但可以指向一个自定义类型的变量，只要是自定义类型均可以实现接口，例如结构体可以实现接口</strong></p>
+
+<ul>
+<li><p>错误示例：非自定义类型实现自定义接口
+int类型是Go的内置类型，我们自定义的AInterface接口在Go中未实现，因此自定义接口需要由自定义的类型实现</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -278,21 +297,149 @@
 </span><span class="lnt"> 8
 </span><span class="lnt"> 9
 </span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>     <span class="kt">string</span>
-	<span class="nx">Age</span>      <span class="kt">int</span>
-	<span class="nx">Region</span>   <span class="kt">string</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+<span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="c1">// 也可以简写为
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span><span class="p">,</span> <span class="nx">Region</span>   <span class="kt">string</span>
-	<span class="nx">Age</span>              <span class="kt">int</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span><span class="c1">// 这里报错：cannot define new methods on non-local type int
+</span><span class="c1"></span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span> <span class="c1">// cannot use i (type int) as type AInterface in assignment:
+</span><span class="c1"></span>	                     <span class="c1">// int does not implement AInterface (missing Say method)
+</span><span class="c1"></span><span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>正确示例：自定义类型实现自定义接口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+<span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 自定义了类型integer
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="c1">// 用integer去实现AInterface接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+<span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><pre><code>hello</code></pre></li>
+</ul>
+
+<p><strong>3. 实现某个接口中的所有方法才能称得上是接口实现</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="c1">// 用integer去只实现了接口中的Say方法
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
-<h6 id="struct的初始化"><a href="#struct的初始化" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒struct的初始化</h6>
+<p>由于只实现了部分方法，编译将报错，提示未实现Write方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cannot use i <span class="o">(</span><span class="nb">type</span> integer<span class="o">)</span> as <span class="nb">type</span> AInterface in assignment:
+	integer does not implement AInterface <span class="o">(</span>missing Write method<span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>4. 一个自定义类型可以实现多个接口</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -327,124 +474,54 @@
 </span><span class="lnt">30
 </span><span class="lnt">31
 </span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>     <span class="kt">string</span>
-	<span class="nx">Age</span>      <span class="kt">int</span>
-	<span class="nx">Region</span>   <span class="kt">string</span>
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// 声明
-</span><span class="c1"></span>  <span class="c1">// 1. 指定变量类型
-</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">amy</span> <span class="nx">Person</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="kd">type</span> <span class="nx">BInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
 
-  <span class="c1">// 2. 构造空结构体，也可以完成声明
-</span><span class="c1"></span>  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span><span class="p">}</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">lily</span><span class="p">)</span>
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
 
-  <span class="c1">// 结构体变量初始化
-</span><span class="c1"></span>  <span class="c1">// 1. 对相应字段赋值
-</span><span class="c1"></span>	<span class="nx">amy</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;amy&#34;</span>
-	<span class="nx">amy</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="mi">10</span>
-	<span class="nx">amy</span><span class="p">.</span><span class="nx">Region</span> <span class="p">=</span> <span class="s">&#34;China&#34;</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="c1">// 实现AInterface接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-  <span class="c1">// 2. 直接写在结构体中
-</span><span class="c1"></span>  <span class="nx">lily</span> <span class="p">=</span> <span class="nx">Person</span><span class="p">{</span>
-    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
-    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="nx">Region</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
-  <span class="p">}</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">lily</span><span class="p">)</span>
+<span class="c1">// 同时实现BInterface接口B
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;world&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-  <span class="c1">// 修改结构体中的变量
-</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">p</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">amy</span>
-	<span class="nx">p</span><span class="p">.</span><span class="nx">Region</span> <span class="p">=</span> <span class="s">&#34;USA&#34;</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">c</span> <span class="nx">BInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span> <span class="m">0</span> <span class="o">}</span>
-<span class="o">{</span> <span class="m">0</span> <span class="o">}</span>
-<span class="o">{</span>amy <span class="m">10</span> China<span class="o">}</span>
-<span class="o">{</span>lily <span class="m">10</span> China<span class="o">}</span>
-<span class="o">{</span>amy <span class="m">10</span> USA<span class="o">}</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">hello
+world</code></pre></td></tr></table>
 </div>
 </div>
-<h6 id="struct的嵌套"><a href="#struct的嵌套" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒struct的嵌套</h6>
+<h3 id="interface嵌套"><a href="#interface嵌套" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵interface嵌套</h3>
 
-<p><strong>1. 嵌入本身的结构体，使用指针嵌入</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Tree</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Value</span>     <span class="kt">int</span>
-	<span class="nx">Left</span>      <span class="o">*</span><span class="nx">Tree</span>
-	<span class="nx">Right</span>     <span class="o">*</span><span class="nx">Tree</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div>
-<p><strong>2. 嵌入其他结构体</strong></p>
-
-<p>变相实现了继承，Person拥有了Region的所有属性</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Name</span>      <span class="kt">string</span>
-  <span class="nx">Age</span>       <span class="kt">int</span>
-  <span class="nx">Location</span>  <span class="nx">Region</span>
-<span class="p">}</span>
-
-<span class="kd">type</span> <span class="nx">Region</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Country</span> <span class="kt">string</span>
-  <span class="nx">City</span>    <span class="kt">string</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div>
-<p><strong>3. 嵌入匿名成员</strong></p>
-
-<p>匿名成员即没有变量命名的成员，可以直接访问匿名成员结构体内的变量</p>
+<p>接口可以嵌套接口，但实现接口时必须全部实现</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -484,173 +561,35 @@
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Name</span>      <span class="kt">string</span>
-  <span class="nx">Age</span>       <span class="kt">int</span>
-  <span class="nx">Region</span>
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nx">BInterface</span><span class="c1">//嵌套B接口
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">BInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Region</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Country</span> <span class="kt">string</span>
-  <span class="nx">City</span>    <span class="kt">string</span>
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-
-  <span class="nx">region</span> <span class="o">:=</span> <span class="nx">Region</span><span class="p">{</span>
-    <span class="nx">Country</span><span class="p">:</span>  <span class="s">&#34;China&#34;</span><span class="p">,</span>
-    <span class="nx">City</span><span class="p">:</span>     <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
-  <span class="p">}</span>
-
-  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span>
-    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
-    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="nx">Region</span><span class="p">:</span> <span class="nx">region</span><span class="p">,</span>
-  <span class="p">}</span>
-
-  <span class="c1">// 可以直接访问Region中的Country和City
-</span><span class="c1"></span>  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Her country is: &#34;</span><span class="p">,</span> <span class="nx">lily</span><span class="p">.</span><span class="nx">Country</span><span class="p">)</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">Her country is:  China</code></pre></td></tr></table>
-</div>
-</div>
-<h6 id="成员的可见性"><a href="#成员的可见性" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒成员的可见性</h6>
-
-<p>成员的可见性是对外部package而言的，若某个变量对外部包可见，那么称这个变量是可导出的，在Go中，通过成员首字母大小写表明可见性，大写为可导出，小写不可导出，不可导出的成员只能在同一个包内访问</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">person</span>
-
-<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>     <span class="kt">string</span>
-	<span class="nx">Age</span>      <span class="kt">int</span>
-	<span class="nx">loaction</span> <span class="kt">string</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;world&#34;</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="o">/</span><span class="o">/</span> <span class="nx">Person结构体对外可见</span><span class="err">，</span><span class="nx">但是其内部的变量只有Name和Age成员对外可见</span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-
-  <span class="nx">lily</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span>
-    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;lily&#34;</span><span class="p">,</span>
-    <span class="nx">Age</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="nx">location</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span><span class="c1">//这里会报错，外部的main包无法方位person包中Person结构体的不可见成员
-</span><span class="c1"></span>  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">c</span> <span class="nx">BInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div>
-<hr />
-
-<h1 id="method"><a href="#method" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵method</h1>
-
-<p>method 方法，附属给一个接收者的函数，接收者是某种类型的变量</p>
-
-<h6 id="method的声明"><a href="#method的声明" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒method的声明</h6>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">接收者变量名称</span> <span class="nx">接收者变量类型</span><span class="p">)</span> <span class="nx">方法名</span><span class="p">(</span><span class="p">)</span> <span class="nx">返回值</span> <span class="p">{</span>
-  <span class="o">...</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">Print</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
-  <span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div>
-<h6 id="一些约束"><a href="#一些约束" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐒一些约束</h6>
-
-<ul>
-<li>只能为当前所在包内的类型定义方法</li>
-<li>接收者可为值类型和指针类型，不可为接口类型和指针的指针类型</li>
-
-<li><p>接收者为指针类型时，可用于修改其内容，接收者为值类型时不会改动其内容</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 接收者为指针类型
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">Setname</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
-
-<span class="nx">person</span><span class="p">.</span><span class="nf">Setname</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
-
-<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
-<span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span>
-<span class="c1">// 接收者为值类型
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">person</span> <span class="nx">Person</span><span class="p">)</span> <span class="nf">Print</span><span class="p">(</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">person</span><span class="p">)</span>
-<span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div></li>
-</ul>
-
-<p><strong>同一个接收者的方法不可重名，若接收者是一个结构体，其方法名不可以和该结构体内的成员重名</strong></p>
-</div>
+</div></div>
 
         </article>
 
@@ -667,7 +606,7 @@
                 
                 
                 
-                <li class="copyright-item link">链接：<a href="/posts/golang-struct-and-method/" target="_blank">https://jjmeg.github.io/posts/golang-struct-and-method/</a></li>
+                <li class="copyright-item link">链接：<a href="/posts/golang-interface/" target="_blank">https://jjmeg.github.io/posts/golang-interface/</a></li>
             
             
                 <li class="copyright-item license">版权：<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">CC BY-NC-SA 4.0</a></li>
@@ -688,7 +627,7 @@
             <ul class="related-list">
                 
                     <li class="related-item">
-                        <a href="/posts/golang-interface/" class="related-link">Golang系列教程--接口Interface</a>
+                        <a href="/posts/golang-struct-and-method/" class="related-link">Golang系列教程--结构体struct和方法method</a>
                     </li>
                 
                     <li class="related-item">
@@ -750,13 +689,9 @@
     
         <ul class="post-nav">
             
-                <li class="post-nav-prev">
-                    <a href="/posts/golang-interface/" rel="prev">< Golang系列教程--接口Interface</a>
-                </li>
-            
             
                 <li class="post-nav-next">
-                    <a href="/posts/golang-function/" rel="next">Golang系列教程--函数 ></a>
+                    <a href="/posts/golang-struct-and-method/" rel="next">Golang系列教程--结构体struct和方法method ></a>
                 </li>
             
         </ul>

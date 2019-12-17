@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-16T11:30:52+08:00</updated>
+    <updated>2019-12-17T09:58:23+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -16,6 +16,418 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">Golang系列教程--接口Interface</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-interface/" />
+            <id>https://jjmeg.github.io/posts/golang-interface/</id>
+            <updated>2019-12-17T09:58:10+08:00</updated>
+            <published>2019-12-17T09:52:40+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「interface」 接口，即一些方法的集合，在Go中，interface也是一种类……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「interface」</center>
+<p style="text-indent:2em">接口，即一些方法的集合，在Go中，interface也是一种类型，属于指针类型，常用接口实现多态。</p></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#interface的声明">interface的声明</a></li>
+<li>📚<a href="#interface的实现">interface的实现</a></li>
+<li>📚<a href="#interface嵌套">interface嵌套</a></li>
+</ul>
+
+<hr />
+
+<h3 id="interface的声明">🐵interface的声明</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">接口名</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nx">方法1</span>
+  <span class="nx">方法2</span>
+  <span class="o">...</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="interface的实现">🐵interface的实现</h3>
+
+<p><strong>1. 接口中所有的方法没有方法体，都没有实现细节，也不能包含变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nx">Name</span> <span class="kt">string</span> <span class="c1">//这里会报错，不可以包含变量
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>2. 接口不能创建实例，但可以指向一个自定义类型的变量，只要是自定义类型均可以实现接口，例如结构体可以实现接口</strong></p>
+
+<ul>
+<li><p>错误示例：非自定义类型实现自定义接口
+int类型是Go的内置类型，我们自定义的AInterface接口在Go中未实现，因此自定义接口需要由自定义的类型实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+<span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span><span class="c1">// 这里报错：cannot define new methods on non-local type int
+</span><span class="c1"></span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span> <span class="c1">// cannot use i (type int) as type AInterface in assignment:
+</span><span class="c1"></span>	                     <span class="c1">// int does not implement AInterface (missing Say method)
+</span><span class="c1"></span><span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>正确示例：自定义类型实现自定义接口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+<span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 自定义了类型integer
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="c1">// 用integer去实现AInterface接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+<span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+<span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><pre><code>hello</code></pre></li>
+</ul>
+
+<p><strong>3. 实现某个接口中的所有方法才能称得上是接口实现</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="c1">// 用integer去只实现了接口中的Say方法
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>由于只实现了部分方法，编译将报错，提示未实现Write方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cannot use i <span class="o">(</span><span class="nb">type</span> integer<span class="o">)</span> as <span class="nb">type</span> AInterface in assignment:
+	integer does not implement AInterface <span class="o">(</span>missing Write method<span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>4. 一个自定义类型可以实现多个接口</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">BInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="c1">// 实现AInterface接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 同时实现BInterface接口B
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;world&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">c</span> <span class="nx">BInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">hello
+world</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="interface嵌套">🐵interface嵌套</h3>
+
+<p>接口可以嵌套接口，但实现接口时必须全部实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">type</span> <span class="nx">AInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+  <span class="nx">BInterface</span><span class="c1">//嵌套B接口
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">BInterface</span> <span class="kd">interface</span><span class="p">{</span>
+  <span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">integer</span> <span class="kt">int</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="nx">integer</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+   <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;world&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="nx">integer</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="nx">AInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
+
+  <span class="kd">var</span> <span class="nx">c</span> <span class="nx">BInterface</span> <span class="p">=</span> <span class="nx">i</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Golang系列教程--结构体struct和方法method</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
