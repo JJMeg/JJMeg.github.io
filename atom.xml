@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-17T09:58:23+08:00</updated>
+    <updated>2019-12-17T10:13:16+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -16,6 +16,352 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">Golang系列教程--协程Goroutine</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-goroutine/" />
+            <id>https://jjmeg.github.io/posts/golang-goroutine/</id>
+            <updated>2019-12-17T10:13:01+08:00</updated>
+            <published>2019-12-17T10:02:21+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「goroutine」 Go中实现并发的手段，Goroutine的创建和销毁的代价更小……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「goroutine」</center>
+<p style="text-indent:2em">Go中实现并发的手段，Goroutine的创建和销毁的代价更小，调度也独立于线程，因此Goroutine可视为轻量级的线程，又称协程。</p></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#goroutine的声明">goroutine的声明</a></li>
+<li>📚<a href="#goroutine例子">goroutine例子</a>
+
+<ul>
+<li>📖<a href="#未引入goroutine">未引入goroutine</a></li>
+<li>📖<a href="#引入goroutine">引入goroutine</a></li>
+<li>📖<a href="#实现goroutine结束">实现goroutine结束</a></li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h3 id="goroutine的声明">goroutine的声明</h3>
+
+<p>在函数前添加<code>go</code>关键字即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nf">say</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;hello world&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="nf">say</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">go</span> <span class="nf">say</span><span class="p">(</span><span class="p">)</span><span class="c1">// 创建了一个新协程
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="goroutine例子">goroutine例子</h3>
+
+<h6 id="未引入goroutine">未引入goroutine</h6>
+
+<p>程序串行执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="nx">round</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="mi">3</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Round:%s,\ti:%d\n&#34;</span><span class="p">,</span><span class="nx">round</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="nf">loop</span><span class="p">(</span><span class="s">&#34;A&#34;</span><span class="p">)</span>
+	<span class="nf">loop</span><span class="p">(</span><span class="s">&#34;B&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>loop是按顺序执行的，先执行loop(1)，再执行loop(2)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Round:A,	i:1
+Round:A,	i:2
+Round:A,	i:3
+Round:B,	i:1
+Round:B,	i:2
+Round:B,	i:3</code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="引入goroutine">引入goroutine</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="nx">round</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="mi">3</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Round:%s,\ti:%d\n&#34;</span><span class="p">,</span><span class="nx">round</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">loop</span><span class="p">(</span><span class="s">&#34;B&#34;</span><span class="p">)</span>
+  <span class="nf">loop</span><span class="p">(</span><span class="s">&#34;A&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>只运行了A轮结果，主线程运行，主线程也是一个goroutine，loop(&quot;A&quot;)在主线程中
+中运行loop(&quot;A&quot;)，新起一个goroutine运行loop(&quot;B&quot;)，goroutine没来得及跑loop(&quot;B&quot;)，主线程已经结束，所以只有loop(&quot;A&quot;)的结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Round:A,	i:1
+Round:A,	i:2
+Round:A,	i:3</code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="等待goroutine结束">等待goroutine结束</h6>
+
+<p><strong>1. 主线程等待</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="nx">round</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="mi">3</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Round:%s,\ti:%d\n&#34;</span><span class="p">,</span><span class="nx">round</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">loop</span><span class="p">(</span><span class="s">&#34;B&#34;</span><span class="p">)</span>
+  <span class="nf">loop</span><span class="p">(</span><span class="s">&#34;A&#34;</span><span class="p">)</span>
+  <span class="k">go</span> <span class="nf">loop</span><span class="p">(</span><span class="s">&#34;C&#34;</span><span class="p">)</span>
+  <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>先运行A轮再运行B轮，主线程建立后，新起一个goroutine运行loop(&quot;B&quot;)，主线程执行A轮，A轮执行完，有一秒钟等待时间，goroutine来得及跑loop(&quot;B&quot;)，再出现B轮的结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Round:A,	i:1
+Round:A,	i:2
+Round:A,	i:3
+Round:B,	i:1
+Round:B,	i:2
+Round:B,	i:3</code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>2. 使用sync.WaitGroup实现等待goroutine结束</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;sync&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">goRun</span><span class="p">(</span><span class="nx">round</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">wg</span> <span class="o">*</span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">(</span><span class="p">)</span>
+  <span class="nf">loop</span><span class="p">(</span><span class="nx">round</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="nx">round</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="mi">3</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Round:%s,\ti:%d\n&#34;</span><span class="p">,</span><span class="nx">round</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+
+  <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="k">go</span> <span class="nf">goRun</span><span class="p">(</span><span class="s">&#34;A&#34;</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">wg</span><span class="p">)</span>
+  <span class="k">go</span> <span class="nf">goRun</span><span class="p">(</span><span class="s">&#34;B&#34;</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">wg</span><span class="p">)</span>
+  <span class="k">go</span> <span class="nf">goRun</span><span class="p">(</span><span class="s">&#34;C&#34;</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">wg</span><span class="p">)</span>
+
+  <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>使用 <code>sync.WaitGroup</code> 来完成等待的操作，比起<code>time.Sleep()</code>更灵活，这种等待是协程之间实现同步的办法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Round:C,	i:1
+Round:C,	i:2
+Round:C,	i:3
+Round:A,	i:1
+Round:A,	i:2
+Round:A,	i:3
+Round:B,	i:1
+Round:B,	i:2
+Round:B,	i:3</code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Golang系列教程--接口Interface</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-interface/" />
