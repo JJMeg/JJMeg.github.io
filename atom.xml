@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2019-12-17T10:13:16+08:00</updated>
+    <updated>2019-12-18T11:48:20+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -16,6 +16,300 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">Golang系列教程--通道Channel</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-channel/" />
+            <id>https://jjmeg.github.io/posts/golang-channel/</id>
+            <updated>2019-12-18T11:48:11+08:00</updated>
+            <published>2019-12-18T11:31:10+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「channel」 channel 通道，goroutine是实现并发的手段，常用于goroutin……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「channel」</center>
+<p style="text-indent:2em">channel 通道，goroutine是实现并发的手段，常用于goroutine之间同步消息，发送和接收消息，可视为一个队列，实质是在goroutine之间共享内存。</p></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚<a href="#channel的声明及初始化">channel的声明及初始化</a></li>
+<li>📚<a href="#channel存取数据">channel存取数据</a></li>
+<li>📚<a href="#非缓冲channel">非缓冲channel</a>
+
+<ul>
+<li>📖<a href="#channel阻塞goroutine">channel阻塞goroutine</a></li>
+<li>📖<a href="#无缓冲channel引起的死锁案例">无缓冲channel引起的死锁案例</a></li>
+</ul></li>
+<li>📚<a href="#缓冲channel">缓冲channel</a></li>
+</ul>
+
+<hr />
+
+<h3 id="channel的声明及初始化">🐵channel的声明及初始化</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">//声明
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="nx">类型</span>
+<span class="c1">//初始化
+</span><span class="c1"></span><span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">类型</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span>
+<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="channel存取数据">🐵channel存取数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nx">x</span> <span class="c1">//往channel中存入数据 x
+</span><span class="c1"></span><span class="o">&lt;-</span> <span class="nx">ch</span> <span class="c1">// 从channel中取出数据
+</span><span class="c1"></span><span class="nx">x</span> <span class="o">&lt;-</span> <span class="nx">ch</span> <span class="o">/</span><span class="o">/</span><span class="nx">从channel中取出数据并赋值给</span> <span class="nx">x</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="非缓冲channel">🐵非缓冲channel</h3>
+
+<p>channel中只存储一个数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 这个channel中只存储一个数据
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">foo</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">0</span><span class="c1">//存消息，如果没有其他goroutine来取走这个数据，那么挂起foo，直到main函数把这个0取走
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">foo</span><span class="p">(</span><span class="p">)</span>
+	<span class="o">&lt;-</span> <span class="nx">ch</span><span class="c1">//从ch取消息，如果ch中没有数据，就挂起main线程，直到foo函数往ch内放数据
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>问题：goroutine已经执行完毕了如何去通知main线程？</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">complete</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span><span class="p">&lt;</span><span class="mi">10</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">complete</span> <span class="o">&lt;-</span> <span class="mi">0</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">loop</span><span class="p">(</span><span class="p">)</span>
+	<span class="o">&lt;-</span> <span class="nx">complete</span> <span class="c1">//直到线程跑完，取到消息
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="channel阻塞goroutine">🐒channel阻塞goroutine</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">channel</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">messages</span> <span class="kd">chan</span> <span class="kt">string</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span>
+	<span class="k">go</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">message</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+		<span class="nx">messages</span> <span class="o">&lt;-</span> <span class="nx">message</span> <span class="c1">// channel存消息
+</span><span class="c1"></span>    <span class="c1">// 若未取出这条消息，这个协程将被阻塞
+</span><span class="c1"></span>	<span class="p">}</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">&lt;-</span><span class="nx">messages</span><span class="p">)</span><span class="c1">//channel取消息，消息被取后，阻塞解除
+</span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>取数据：无缓冲的信道不存储数据，只负责数据的流通，从信道取数据时，若没有数据在信道中，那么当前线程阻塞</li>
+<li>存数据：没有其他goroutine拿走数据，数据还在信道中，当前这个线程也阻塞</li>
+</ul>
+
+<h6 id="无缓冲channel引起的死锁案例">🐒无缓冲channel引起的死锁案例</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">//例子1
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span>
+	<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span><span class="c1">//死锁了，没有线程取走这个数据
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;wrong&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">//例子2
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch1</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">ch2</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">say</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+	<span class="nx">ch1</span> <span class="o">&lt;-</span> <span class="o">&lt;-</span> <span class="nx">ch2</span><span class="c1">//ch1等待ch2的输出
+</span><span class="c1"></span><span class="p">}</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">say</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
+	<span class="o">&lt;-</span> <span class="nx">ch1</span>
+<span class="p">}</span>
+
+<span class="c1">//例子3
+</span><span class="c1"></span><span class="nx">c</span><span class="p">,</span> <span class="nx">quit</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span><span class="p">,</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>  <span class="c1">// c通道的数据没有被其他goroutine读取走 堵塞当前goroutine
+</span><span class="c1"></span>   <span class="nx">quit</span> <span class="o">&lt;-</span> <span class="mi">0</span> <span class="c1">// quit始终没有办法写入数据
+</span><span class="c1"></span><span class="p">}</span><span class="p">(</span><span class="p">)</span>
+<span class="o">&lt;-</span> <span class="nx">quit</span> <span class="c1">// quit 等待数据的写
+</span><span class="c1"></span>
+<span class="c1">//反例
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+       <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>
+    <span class="p">}</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span><span class="o">/</span><span class="o">/</span><span class="nx">main未等待其他goroutine</span> <span class="nx">自己先运行完毕了</span> <span class="nx">没有数据流入c通道</span> <span class="nx">一共执行了一个goroutine</span> <span class="nx">没有阻塞</span> <span class="nx">没有死锁</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="缓冲channel">🐵缓冲channel</h3>
+
+<p>容量未满不会阻塞，无缓冲信道从不存储数据，流入的数据必须流出才行，否则将阻塞当前线程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// 写入2个元素都不会阻塞当前goroutine, 存储个数达到2的时候会阻塞
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span>
+    <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">2</span>
+    <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">3</span>
+<span class="p">}</span><span class="o">/</span><span class="o">/</span><span class="nx">若再流入一个数据</span> <span class="nx">信道ch会阻塞main线程</span> <span class="nx">报死锁</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/" term="go基础" label="go基础" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">Golang系列教程--协程Goroutine</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-goroutine/" />
@@ -3515,7 +3809,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
             <id>https://jjmeg.github.io/posts/hello-world/</id>
-            <updated>2019-12-13T15:13:47+08:00</updated>
+            <updated>2019-12-18T09:58:05+08:00</updated>
             <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
