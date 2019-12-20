@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Wed, 18 Dec 2019 11:48:20 +0800</lastBuildDate>
+        <lastBuildDate>Fri, 20 Dec 2019 17:14:57 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
@@ -47,7 +47,7 @@
 
 <ul>
 <li>📚<a href="#channel的声明及初始化">channel的声明及初始化</a></li>
-<li>📚<a href="#channel存取数据">channel存取数据</a></li>
+<li>📚<a href="#channel存取数据及关闭">channel存取数据及关闭</a></li>
 <li>📚<a href="#非缓冲channel">非缓冲channel</a>
 
 <ul>
@@ -83,17 +83,19 @@
 <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span></code></pre></td></tr></table>
 </div>
 </div>
-<h3 id="channel存取数据">🐵channel存取数据</h3>
+<h3 id="channel存取数据及关闭">🐵channel存取数据及关闭</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nx">x</span> <span class="c1">//往channel中存入数据 x
 </span><span class="c1"></span><span class="o">&lt;-</span> <span class="nx">ch</span> <span class="c1">// 从channel中取出数据
-</span><span class="c1"></span><span class="nx">x</span> <span class="o">&lt;-</span> <span class="nx">ch</span> <span class="o">/</span><span class="o">/</span><span class="nx">从channel中取出数据并赋值给</span> <span class="nx">x</span></code></pre></td></tr></table>
+</span><span class="c1"></span><span class="nx">x</span> <span class="o">&lt;-</span> <span class="nx">ch</span> <span class="c1">//从channel中取出数据并赋值给 x
+</span><span class="c1"></span><span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span> <span class="o">/</span><span class="o">/</span> <span class="nx">关闭通道</span></code></pre></td></tr></table>
 </div>
 </div>
 <h3 id="非缓冲channel">🐵非缓冲channel</h3>
@@ -112,10 +114,14 @@
 </span><span class="lnt"> 9
 </span><span class="lnt">10
 </span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 这个channel中只存储一个数据
 </span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+<span class="c1">// 等同于
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="kd">func</span> <span class="nf">foo</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
 	<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">0</span><span class="c1">//存消息，如果没有其他goroutine来取走这个数据，那么挂起foo，直到main函数把这个0取走
