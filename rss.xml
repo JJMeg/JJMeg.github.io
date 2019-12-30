@@ -23,10 +23,85 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Fri, 20 Dec 2019 17:14:57 +0800</lastBuildDate>
+        <lastBuildDate>Mon, 30 Dec 2019 16:43:53 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
+        
+            <item>
+                <title>写在2019年最后</title>
+                <link>https://jjmeg.github.io/posts/2019-summary/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/2019-summary/</guid>
+                <pubDate>Mon, 30 Dec 2019 16:23:29 +0800</pubDate>
+                
+                    <author>jjmeg.he@gmail.com (JJMeg)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description><![CDATA[
+
+<p><center>🕚</center></p>
+
+<p style="text-indent:2em">2019年3月，签三方；</p>
+
+<p style="text-indent:2em">2019年6月，毕业；</p>
+
+<p style="text-indent:2em">2019年7月，正式到岗；</p>
+
+<p style="text-indent:2em">2019年要结束了。</p>
+
+<h3 id="这半年做了什么">这半年做了什么？</h3>
+
+<p style="text-indent:2em">进入新行业，了解新领域；</p>
+
+<p style="text-indent:2em">CRUD；</p>
+
+<p style="text-indent:2em">自我规范；</p>
+
+<p style="text-indent:2em">心态建设；</p>
+
+<p style="text-indent:2em">经营爱好；</p>
+
+<p style="text-indent:2em">健身。</p>
+
+<h3 id="对创新型产品的看法">对创新型产品的看法</h3>
+
+<p style="text-indent:2em">大饼；</p>
+
+<p style="text-indent:2em">新人雷区；</p>
+
+<p style="text-indent:2em">看清该产品的战略地位；</p>
+
+<p style="text-indent:2em">是否有高层大力支持；</p>
+
+<p style="text-indent:2em">不要想着能快速变现；</p>
+
+<p style="text-indent:2em">稳定的产品和业务才是王道。</p>
+
+<h3 id="2020年">2020年</h3>
+
+<p style="text-indent:2em">Enjoy it!</p>
+]]></description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/%E7%A2%8E%E5%BF%B5/">碎念</category>
+                                
+                            
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>Golang系列教程--通道Channel</title>
