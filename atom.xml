@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-01-02T16:18:25+08:00</updated>
+    <updated>2020-01-02T16:21:34+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -16,6 +16,174 @@
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">cache2go源码阅读（二）</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_ii/" />
+            <id>https://jjmeg.github.io/posts/cache2go_ii/</id>
+            <updated>2020-01-02T16:21:29+08:00</updated>
+            <published>2020-01-02T15:54:51+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[缓存表的排序 为了实现获取缓存表内最多访问的元素，引入这两个数据结构用于排序： 1 2 3 4……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<h3 id="缓存表的排序">缓存表的排序</h3>
+
+<p>为了实现获取缓存表内最多访问的元素，引入这两个数据结构用于排序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">CacheItemPair</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Key</span>         <span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">AccessCount</span> <span class="kt">int64</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">CacheItemPairList</span> <span class="p">[</span><span class="p">]</span><span class="nx">CacheItemPair</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>CacheItemPairList</code>是存储<code>CacheItemPair</code>的切片，有以下三个方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Swap</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span>      <span class="p">{</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">,</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span><span class="p">,</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Len</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span>           <span class="p">{</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Less</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">.</span><span class="nx">AccessCount</span> <span class="p">&gt;</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span><span class="p">.</span><span class="nx">AccessCount</span> <span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>为什么是这三个方法，进入<code>sort</code>包，包实现的排序都是对<code>Interface</code>这个接口做的，因此被排序的数据结构需要实现这三个方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Interface</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="c1">// Len is the number of elements in the collection.
+</span><span class="c1"></span>	<span class="nf">Len</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span>
+	<span class="c1">// Less reports whether the element with
+</span><span class="c1"></span>	<span class="c1">// index i should sort before the element with index j.
+</span><span class="c1"></span>	<span class="nf">Less</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span>
+	<span class="c1">// Swap swaps the elements with indexes i and j.
+</span><span class="c1"></span>	<span class="nf">Swap</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>借助<code>CacheItemPair</code>，存储<code>key</code>和访问次数<code>accessCount</code>，通过<code>CacheItemPairList</code>实现排序，排序完的列表，再遍历得到元素，构造新顺序的元素表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">MostAccessed</span><span class="p">(</span><span class="nx">count</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">[</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
+	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+
+	<span class="nx">p</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="nx">CacheItemPairList</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">{</span>
+		<span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">CacheItemPair</span><span class="p">{</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">.</span><span class="nx">accessCount</span><span class="p">}</span>
+		<span class="nx">i</span><span class="o">++</span>
+	<span class="p">}</span>
+	<span class="nx">sort</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span>
+
+	<span class="kd">var</span> <span class="nx">r</span> <span class="p">[</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span>
+	<span class="nx">c</span> <span class="o">:=</span> <span class="nb">int64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+	<span class="c1">// p经过排序后，通过遍历构造新的items list
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">p</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">c</span> <span class="o">&gt;=</span> <span class="nx">count</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+
+		<span class="nx">item</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">v</span><span class="p">.</span><span class="nx">Key</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
+			<span class="nx">r</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="nx">c</span><span class="o">++</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">r</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" term="源码阅读" label="源码阅读" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/cache2go/" term="cache2go" label="cache2go" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">cache2go源码阅读（一）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_i/" />
