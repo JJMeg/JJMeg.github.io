@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-01-07T11:18:36+08:00</updated>
+    <updated>2020-01-07T11:21:32+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">Mysql如何存储数据（一）?</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/how-mysql-store-data/" />
             <id>https://jjmeg.github.io/posts/how-mysql-store-data/</id>
-            <updated>2020-01-07T11:18:28+08:00</updated>
+            <updated>2020-01-07T11:21:11+08:00</updated>
             <published>2020-01-06T14:15:32+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -141,8 +141,9 @@ Mode                LastWriteTime         Length Name
 -a----         2020/1/7     10:44           <span class="m">1538</span> table_myisam_381.sdi</code></pre></td></tr></table>
 </div>
 </div>
-<p>MySQL在创建表时，创建了<code>.MYD</code> (&quot;MySQL Data&quot;)，<code>.MYI</code> (&quot;MySQL Index&quot;)，以及 <code>.sdi</code> (&quot;Serialized Dictionary Information&quot;)三个文件，在MySQL8.0以前，不是<code>.sdi</code>，而是<code>.frm</code> (&quot;Format&quot;)文件
-<code>.MYD</code>文件存储表数据，<code>.MYI</code>存储索引，<code>.sdi</code>存储表的元数据信息，从这三个文件看，能知道MySQL存储表时，需要表的元数据、索引数据以及行数据。那么在InnoDB存储引擎内有什么不同吗？</p>
+<p>MySQL在创建表时，创建了<code>.MYD</code> (&quot;MySQL Data&quot;)，<code>.MYI</code> (&quot;MySQL Index&quot;)，以及 <code>.sdi</code> (&quot;Serialized Dictionary Information&quot;)三个文件，在MySQL8.0以前，不是<code>.sdi</code>，而是<code>.frm</code> (&quot;Format&quot;)文件，<code>.sdi</code>文件内容为JSON文本。</p>
+
+<p><code>.MYD</code>文件存储表数据，<code>.MYI</code>存储索引，<code>.sdi</code>存储表的元数据信息，从这三个文件看，能知道MySQL存储表时，需要表的元数据、索引数据以及行数据。那么在InnoDB存储引擎内有什么不同吗？</p>
 
 <h3 id="innodb怎样存储数据">InnoDB怎样存储数据?</h3>
 
