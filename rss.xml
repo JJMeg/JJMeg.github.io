@@ -23,16 +23,16 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Thu, 02 Jan 2020 16:21:34 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 07 Jan 2020 11:18:36 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
         
             <item>
-                <title>cache2go源码阅读（二）</title>
-                <link>https://jjmeg.github.io/posts/cache2go_ii/</link>
-                <guid isPermaLink="true">https://jjmeg.github.io/posts/cache2go_ii/</guid>
-                <pubDate>Thu, 02 Jan 2020 15:54:51 +0800</pubDate>
+                <title>Mysql如何存储数据（一）?</title>
+                <link>https://jjmeg.github.io/posts/how-mysql-store-data/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/how-mysql-store-data/</guid>
+                <pubDate>Mon, 06 Jan 2020 14:15:32 +0800</pubDate>
                 
                     <author>jjmeg.he@gmail.com (JJMeg)</author>
                 
@@ -40,66 +40,8 @@
                 
                     <description><![CDATA[
 
-<h3 id="缓存表的排序">缓存表的排序</h3>
-
-<p>为了实现获取缓存表内最多访问的元素，引入这两个数据结构用于排序：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">CacheItemPair</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Key</span>         <span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
-	<span class="nx">AccessCount</span> <span class="kt">int64</span>
-<span class="p">}</span>
-
-<span class="kd">type</span> <span class="nx">CacheItemPairList</span> <span class="p">[</span><span class="p">]</span><span class="nx">CacheItemPair</span></code></pre></td></tr></table>
-</div>
-</div>
-<p><code>CacheItemPairList</code>是存储<code>CacheItemPair</code>的切片，有以下三个方法</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Swap</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span>      <span class="p">{</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">,</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">=</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span><span class="p">,</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">}</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Len</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span>           <span class="p">{</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">}</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">CacheItemPairList</span><span class="p">)</span> <span class="nf">Less</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">.</span><span class="nx">AccessCount</span> <span class="p">&gt;</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span><span class="p">.</span><span class="nx">AccessCount</span> <span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div>
-<p>为什么是这三个方法，进入<code>sort</code>包，包实现的排序都是对<code>Interface</code>这个接口做的，因此被排序的数据结构需要实现这三个方法</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Interface</span> <span class="kd">interface</span> <span class="p">{</span>
-	<span class="c1">// Len is the number of elements in the collection.
-</span><span class="c1"></span>	<span class="nf">Len</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span>
-	<span class="c1">// Less reports whether the element with
-</span><span class="c1"></span>	<span class="c1">// index i should sort before the element with index j.
-</span><span class="c1"></span>	<span class="nf">Less</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span>
-	<span class="c1">// Swap swaps the elements with indexes i and j.
-</span><span class="c1"></span>	<span class="nf">Swap</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span>
-<span class="p">}</span></code></pre></td></tr></table>
-</div>
-</div>
-<p>借助<code>CacheItemPair</code>，存储<code>key</code>和访问次数<code>accessCount</code>，通过<code>CacheItemPairList</code>实现排序，排序完的列表，再遍历得到元素，构造新顺序的元素表</p>
+<p><center>「 InnoDB 和 MyISAM 」</center>
+<p style="text-indent:2em">InnoDB和MyISAM都是MySQL常用的存储引擎，其中InnoDB是MySQL默认存储引擎和最常用的存储引擎。</p></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -114,56 +56,433 @@
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">MostAccessed</span><span class="p">(</span><span class="nx">count</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">[</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
-
-	<span class="nx">p</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="nx">CacheItemPairList</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">)</span><span class="p">)</span>
-	<span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span>
-	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">{</span>
-		<span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">CacheItemPair</span><span class="p">{</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">.</span><span class="nx">accessCount</span><span class="p">}</span>
-		<span class="nx">i</span><span class="o">++</span>
-	<span class="p">}</span>
-	<span class="nx">sort</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span>
-
-	<span class="kd">var</span> <span class="nx">r</span> <span class="p">[</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span>
-	<span class="nx">c</span> <span class="o">:=</span> <span class="nb">int64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-	<span class="c1">// p经过排序后，通过遍历构造新的items list
-</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">p</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="nx">c</span> <span class="o">&gt;=</span> <span class="nx">count</span> <span class="p">{</span>
-			<span class="k">break</span>
-		<span class="p">}</span>
-
-		<span class="nx">item</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">v</span><span class="p">.</span><span class="nx">Key</span><span class="p">]</span>
-		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
-			<span class="nx">r</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
-		<span class="p">}</span>
-		<span class="nx">c</span><span class="o">++</span>
-	<span class="p">}</span>
-
-	<span class="k">return</span> <span class="nx">r</span>
-<span class="p">}</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">      Engine: InnoDB
+     Support: DEFAULT
+     Comment: Supports transactions, row-level locking, and foreign keys
+Transactions: YES
+          XA: YES
+  Savepoints: YES
+  *************************** 1. row ***************************
+      Engine: MyISAM
+     Support: YES
+     Comment: MyISAM storage engine
+Transactions: NO
+          XA: NO</code></pre></td></tr></table>
 </div>
-</div>]]></description>
+</div>
+<p><strong>实验环境：MySQL-8.0.18.0，Windows-64</strong></p>
+
+<h3 id="myisam怎样存储数据">MyISAM怎样存储数据?</h3>
+
+<p>创建数据库<code>mydbs</code>，并创建数据库表<code>table_myisam</code>，并指定<code>engine</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; CREATE DATABASE mydbs<span class="p">;</span>
+mysql&gt; CREATE TABLE table_myisam <span class="o">(</span>column1 CHAR<span class="o">(</span>5<span class="o">)</span><span class="o">)</span> <span class="nv">ENGINE</span><span class="o">=</span>MYISAM COMMENT <span class="s1">&#39;*&#39;</span><span class="p">;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>查找数据库表的变量信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; SHOW VARIABLES LIKE <span class="s1">&#39;datadir&#39;</span><span class="p">;</span>
++---------------+---------------------------------------------+
+<span class="p">|</span> Variable_name <span class="p">|</span> Value                                       <span class="p">|</span>
++---------------+---------------------------------------------+
+<span class="p">|</span> datadir       <span class="p">|</span> C:<span class="se">\P</span>rogramData<span class="se">\M</span>ySQL<span class="se">\M</span>ySQL Server 8.0<span class="se">\D</span>ata<span class="se">\ </span><span class="p">|</span>
++---------------+---------------------------------------------+</code></pre></td></tr></table>
+</div>
+</div>
+<p>我们到对应的目录下去看看有什么:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">C:<span class="se">\P</span>rogramData<span class="se">\M</span>ySQL<span class="se">\M</span>ySQL Server 8.0<span class="se">\D</span>ata&gt; tree
+├─#innodb_temp
+├─mydbs
+├─mysql
+├─performance_schema
+├─sakila
+├─sys
+└─world</code></pre></td></tr></table>
+</div>
+</div>
+<p>新建数据库<code>mydbs</code>时，MySQL在存储数据的<code>Data</code>目录下新建了一个文件夹，命名与数据库表相同，再进入看看里面有什么：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">C:<span class="se">\P</span>rogramData<span class="se">\M</span>ySQL<span class="se">\M</span>ySQL Server 8.0<span class="se">\D</span>ata<span class="se">\m</span>ydbs&gt; ls
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----         2020/1/7     10:44              <span class="m">0</span> table_myisam.MYD
+-a----         2020/1/7     10:44           <span class="m">1024</span> table_myisam.MYI
+-a----         2020/1/7     10:44           <span class="m">1538</span> table_myisam_381.sdi</code></pre></td></tr></table>
+</div>
+</div>
+<p>MySQL在创建表时，创建了<code>.MYD</code> (&quot;MySQL Data&quot;)，<code>.MYI</code> (&quot;MySQL Index&quot;)，以及 <code>.sdi</code> (&quot;Serialized Dictionary Information&quot;)三个文件，在MySQL8.0以前，不是<code>.sdi</code>，而是<code>.frm</code> (&quot;Format&quot;)文件
+<code>.MYD</code>文件存储表数据，<code>.MYI</code>存储索引，<code>.sdi</code>存储表的元数据信息，从这三个文件看，能知道MySQL存储表时，需要表的元数据、索引数据以及行数据。那么在InnoDB存储引擎内有什么不同吗？</p>
+
+<h3 id="innodb怎样存储数据">InnoDB怎样存储数据?</h3>
+
+<p><img src="/images/how-mysql-store-data.png" alt="how-mysql-store-data" />
+<p style="text-indent:2em">数据行被逻辑地存储在表空间，表空间被分割为Segment（段），再细分为Extent（区）、Page（页），最终数据按行存储在Page（页）内。
+默认情况下Page的大小为16KB，可修改<code>innodb_page_size</code>选项改变页面大小，页面大小改变，Extent及Segment的大小会相应改变。</p></p>
+
+<p>创建数据库表<code>table_innodb</code>，未指定<code>engine</code>将默认选用<code>InnoDB</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; CREATE TABLE table_innodb <span class="o">(</span>column1 CHAR<span class="o">(</span>5<span class="o">)</span><span class="o">)</span> COMMENT <span class="s1">&#39;*&#39;</span><span class="p">;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>再进入<code>Data</code>目录下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">C:<span class="se">\P</span>rogramData<span class="se">\M</span>ySQL<span class="se">\M</span>ySQL Server 8.0<span class="se">\D</span>ata<span class="se">\m</span>ydbs&gt; ls
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----          2020/1/6     19:22         <span class="m">114688</span> table_innodb.ibd</code></pre></td></tr></table>
+</div>
+</div>
+<p>只新增了<code>.ibd</code>文件，InnoDB表没有创建<code>.sdi</code>文件，而是将SDI信息冗余存储到表空间中，那么<code>.ibd</code>文件就包含了数据库表的元数据、表内行数据以及索引数据，如何看到SDI信息呢？MySQL提供了<code>ibd2sdi</code>工具，可提取出表元数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ibd2sdi.exe <span class="s2">&#34;C:\ProgramData\MySQL\MySQL Server 8.0\Data\mydbs\table_innodb.ibd&#34;</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">[</span>
+    <span class="s2">&#34;ibd2sdi&#34;</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="nt">&#34;type&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">380</span><span class="p">,</span>
+        <span class="nt">&#34;object&#34;</span><span class="p">:</span><span class="p">{</span>
+            <span class="nt">&#34;mysqld_version_id&#34;</span><span class="p">:</span><span class="mi">80018</span><span class="p">,</span>
+            <span class="nt">&#34;dd_version&#34;</span><span class="p">:</span><span class="mi">80017</span><span class="p">,</span>
+            <span class="nt">&#34;sdi_version&#34;</span><span class="p">:</span><span class="mi">80016</span><span class="p">,</span>
+            <span class="nt">&#34;dd_object_type&#34;</span><span class="p">:</span><span class="s2">&#34;Table&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;dd_object&#34;</span><span class="p">:</span><span class="p">{</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;table_innodb&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;mysql_version_id&#34;</span><span class="p">:</span><span class="mi">80018</span><span class="p">,</span>
+                <span class="nt">&#34;created&#34;</span><span class="p">:</span><span class="mi">20200106112214</span><span class="p">,</span>
+                <span class="nt">&#34;last_altered&#34;</span><span class="p">:</span><span class="mi">20200106112214</span><span class="p">,</span>
+                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                <span class="nt">&#34;options&#34;</span><span class="p">:</span><span class="s2">&#34;avg_row_length=0;encrypt_type=N;key_block_size=0;keys_disabled=0;pack_record=0;stats_auto_recalc=0;stats_sample_pages=0;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;columns&#34;</span><span class="p">:</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;column1&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;type&#34;</span><span class="p">:</span><span class="mi">29</span><span class="p">,</span>
+                        <span class="nt">&#34;is_nullable&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;is_zerofill&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;is_unsigned&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;is_auto_increment&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;is_virtual&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;hidden&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;ordinal_position&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;char_length&#34;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span>
+                        <span class="nt">&#34;numeric_precision&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="nt">&#34;numeric_scale&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="nt">&#34;numeric_scale_null&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;datetime_precision&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="nt">&#34;datetime_precision_null&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;has_no_default&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;default_value_null&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;srs_id_null&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;srs_id&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="nt">&#34;default_value&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;default_value_utf8_null&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;default_value_utf8&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;default_option&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;update_option&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;comment&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;generation_expression&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;generation_expression_utf8&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;options&#34;</span><span class="p">:</span><span class="s2">&#34;interval_count=0;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;se_private_data&#34;</span><span class="p">:</span><span class="s2">&#34;table_id=1091;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;column_key&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;column_type_utf8&#34;</span><span class="p">:</span><span class="s2">&#34;char(5)&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;elements&#34;</span><span class="p">:</span><span class="p">[</span>
+
+                        <span class="p">]</span><span class="p">,</span>
+                        <span class="nt">&#34;collation_id&#34;</span><span class="p">:</span><span class="mi">255</span><span class="p">,</span>
+                        <span class="nt">&#34;is_explicit_collation&#34;</span><span class="p">:</span><span class="kc">false</span>
+                    <span class="p">}</span>
+                <span class="p">]</span><span class="p">,</span>
+                <span class="nt">&#34;schema_ref&#34;</span><span class="p">:</span><span class="s2">&#34;mydbs&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;se_private_id&#34;</span><span class="p">:</span><span class="mi">1091</span><span class="p">,</span>
+                <span class="nt">&#34;engine&#34;</span><span class="p">:</span><span class="s2">&#34;InnoDB&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;last_checked_for_upgrade_version_id&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;comment&#34;</span><span class="p">:</span><span class="s2">&#34;*&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;se_private_data&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;row_format&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+                <span class="nt">&#34;partition_type&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;partition_expression&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;partition_expression_utf8&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;default_partitioning&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;subpartition_type&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;subpartition_expression&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;subpartition_expression_utf8&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;default_subpartitioning&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;indexes&#34;</span><span class="p">:</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;PRIMARY&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;hidden&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;is_generated&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;ordinal_position&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;comment&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;options&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;se_private_data&#34;</span><span class="p">:</span><span class="s2">&#34;id=204;root=4;space_id=34;table_id=1091;trx_id=2436;&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;type&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="nt">&#34;algorithm&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="nt">&#34;is_algorithm_explicit&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+                        <span class="nt">&#34;is_visible&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                        <span class="nt">&#34;engine&#34;</span><span class="p">:</span><span class="s2">&#34;InnoDB&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;elements&#34;</span><span class="p">:</span><span class="p">[</span>
+                            <span class="p">{</span>
+                                <span class="nt">&#34;ordinal_position&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="nt">&#34;length&#34;</span><span class="p">:</span><span class="mi">4294967295</span><span class="p">,</span>
+                                <span class="nt">&#34;order&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+                                <span class="nt">&#34;hidden&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+                                <span class="nt">&#34;column_opx&#34;</span><span class="p">:</span><span class="mi">1</span>
+                            <span class="p">}</span>
+                        <span class="p">]</span><span class="p">,</span>
+                        <span class="nt">&#34;tablespace_ref&#34;</span><span class="p">:</span><span class="s2">&#34;mydbs/table_innodb&#34;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span><span class="p">,</span>
+                <span class="nt">&#34;foreign_keys&#34;</span><span class="p">:</span><span class="p">[</span>
+
+                <span class="p">]</span><span class="p">,</span>
+                <span class="nt">&#34;check_constraints&#34;</span><span class="p">:</span><span class="p">[</span>
+
+                <span class="p">]</span><span class="p">,</span>
+                <span class="nt">&#34;partitions&#34;</span><span class="p">:</span><span class="p">[</span>
+
+                <span class="p">]</span><span class="p">,</span>
+                <span class="nt">&#34;collation_id&#34;</span><span class="p">:</span><span class="mi">255</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="nt">&#34;type&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+        <span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">39</span><span class="p">,</span>
+        <span class="nt">&#34;object&#34;</span><span class="p">:</span><span class="p">{</span>
+            <span class="nt">&#34;mysqld_version_id&#34;</span><span class="p">:</span><span class="mi">80018</span><span class="p">,</span>
+            <span class="nt">&#34;dd_version&#34;</span><span class="p">:</span><span class="mi">80017</span><span class="p">,</span>
+            <span class="nt">&#34;sdi_version&#34;</span><span class="p">:</span><span class="mi">80016</span><span class="p">,</span>
+            <span class="nt">&#34;dd_object_type&#34;</span><span class="p">:</span><span class="s2">&#34;Tablespace&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;dd_object&#34;</span><span class="p">:</span><span class="p">{</span>
+                <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;mydbs/table_innodb&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;comment&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;options&#34;</span><span class="p">:</span><span class="s2">&#34;encryption=N;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;se_private_data&#34;</span><span class="p">:</span><span class="s2">&#34;flags=16417;id=34;server_version=80018;space_version=1;state=normal;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;engine&#34;</span><span class="p">:</span><span class="s2">&#34;InnoDB&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;files&#34;</span><span class="p">:</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="nt">&#34;ordinal_position&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="nt">&#34;filename&#34;</span><span class="p">:</span><span class="s2">&#34;.\mydbs\table_innodb.ibd&#34;</span><span class="p">,</span>
+                        <span class="nt">&#34;se_private_data&#34;</span><span class="p">:</span><span class="s2">&#34;id=34;&#34;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>提取出的信息主要包括以下部分，是所有表公用的：</p>
+
+<ol>
+<li><code>ibdata1</code>表属性，包括表的列信息，所属数据库，索引信息，外键信息等；</li>
+<li><code>ibdata2</code>表数据存储信息，数据存储位置等；</li>
+</ol>
+
+<h5 id="小节">小节</h5>
+
+<ol>
+<li>InnoDB按行存储数据</li>
+<li>存储数据的文件为<code>.idb</code>文件，包含表空间描述、行数据和索引信息</li>
+<li>一个数据库表对应一个<code>.idb</code>文件，为所有表公用</li>
+<li>可使用<code>ibd2sdi</code>工具提取出表空间描述信息</li>
+</ol>
+]]></description>
                 
                 
                 
@@ -177,13 +496,19 @@
                                 
                                 
                                 
-                                    <category domain="https://jjmeg.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">源码阅读</category>
+                                    <category domain="https://jjmeg.github.io/tags/mysql/">mysql</category>
                                 
                             
                                 
                                 
                                 
-                                    <category domain="https://jjmeg.github.io/tags/cache2go/">cache2go</category>
+                                    <category domain="https://jjmeg.github.io/tags/innodb/">InnoDB</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/myisam/">MyISAM</category>
                                 
                             
                         
