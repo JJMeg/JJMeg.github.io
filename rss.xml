@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Tue, 14 Jan 2020 17:12:10 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 14 Jan 2020 17:17:55 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
@@ -55,41 +55,65 @@
 <li>M - machine，实际运行 golang 程序作业</li>
 </ul>
 
-<p style="text-indent:2em">M 实际运行要绑定一个 P ，P 类似一个存放资源的队列，P 的 local 队列内存放 G 。M 与 P 绑定，不断从 P 的 local 队列内取 G(无锁操作)，切换到 G 的堆栈执行，若没有了 G，则从 Global 队列内取 G (有锁操作)，可能会取一批到 P 的 local 队列内，若 Global 内也没有 G ，则尝试从其他 P 中窃取 G ，一般窃取一半，当没有 G 时， M 和 P 解绑，进入休眠。</p>
-![go-scheduler.png](/images/channel-select/go-scheduler.png)
+<p><p style="text-indent:2em">M 实际运行要绑定一个 P ，P 类似一个存放资源的队列，P 的 local 队列内存放 G 。M 与 P 绑定，不断从 P 的 local 队列内取 G(无锁操作)，切换到 G 的堆栈执行，若没有了 G，则从 Global 队列内取 G (有锁操作)，可能会取一批到 P 的 local 队列内，若 Global 内也没有 G ，则尝试从其他 P 中窃取 G ，一般窃取一半，当没有 G 时， M 和 P 解绑，进入休眠。</p>
+<img src="/images/channel-select/go-scheduler.png" alt="go-scheduler.png" /></p>
+
+<h3 id="channel数据结构">channel数据结构</h3>
+
+<p><code>src/runtime/chan.go</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">hchan</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">qcount</span>   <span class="kt">uint</span>           <span class="c1">// 队列中的数据的量
+</span><span class="c1"></span>	<span class="nx">dataqsiz</span> <span class="kt">uint</span>           <span class="c1">// 环形队列的大小
+</span><span class="c1"></span>	<span class="nx">buf</span>      <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 指向 dataqsiz 大小的的数组
+</span><span class="c1"></span>	<span class="nx">elemsize</span> <span class="kt">uint16</span> <span class="c1">// 元素大小
+</span><span class="c1"></span>	<span class="nx">closed</span>   <span class="kt">uint32</span> <span class="c1">// 是否关闭
+</span><span class="c1"></span>	<span class="nx">elemtype</span> <span class="o">*</span><span class="nx">_type</span> <span class="c1">// 元素类型
+</span><span class="c1"></span>	<span class="nx">sendx</span>    <span class="kt">uint</span>   <span class="c1">// 发送索引
+</span><span class="c1"></span>	<span class="nx">recvx</span>    <span class="kt">uint</span>   <span class="c1">// 接收索引
+</span><span class="c1"></span>	<span class="nx">recvq</span>    <span class="nx">waitq</span>  <span class="c1">// 接收列表即 &lt;-chan
+</span><span class="c1"></span>	<span class="nx">sendq</span>    <span class="nx">waitq</span>  <span class="c1">// 发送列表即 ch&lt;-
+</span><span class="c1"></span>
+	<span class="nx">lock</span> <span class="nx">mutex</span>
+	<span class="c1">// lock保护 hchan 结构体内的所有字段，以及 waitq 内的 sudog，
+</span><span class="c1"></span>	<span class="c1">// 在持有该锁时，不要改变 G 的状态，因为在栈收缩时会死锁
+</span><span class="c1"></span><span class="p">}</span>
 
 
-
-### channel数据结构
-`src/runtime/chan.go`
-```Go
-type hchan struct {
-	qcount   uint           // 队列中的数据的量
-	dataqsiz uint           // 环形队列的大小
-	buf      unsafe.Pointer // 指向 dataqsiz 大小的的数组
-	elemsize uint16 // 元素大小
-	closed   uint32 // 是否关闭
-	elemtype *_type // 元素类型
-	sendx    uint   // 发送索引
-	recvx    uint   // 接收索引
-	recvq    waitq  // 接收列表即 <-chan
-	sendq    waitq  // 发送列表即 ch<-
-
-	lock mutex
-	// lock保护 hchan 结构体内的所有字段，以及 waitq 内的 sudog，
-	// 在持有该锁时，不要改变 G 的状态，因为在栈收缩时会死锁
-}
-
-
-type waitq struct {
-	first *sudog
-	last  *sudog
-}
-```
-
-`waitq` 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 `waitq` 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
-![channel-select-new.png](/images/channel-select/channel-select-new.png)
-<p style="text-indent:2em">如上图，初始化一个有 4 个缓冲区的通道，`buf` 指向一个有界数组，`sendx` 表示下一次发送数据时要访问 `buf` 数组的下标，`recvx` 则表示下一次接收数据时要访问的下标，`recvq` 保存待接收通道数据的 goroutine 链表，类似的，`sendq` 负责保存发送数据的 goroutine 。</p>
+<span class="kd">type</span> <span class="nx">waitq</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">first</span> <span class="o">*</span><span class="nx">sudog</span>
+	<span class="nx">last</span>  <span class="o">*</span><span class="nx">sudog</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>waitq</code> 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 <code>waitq</code> 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
+<img src="/images/channel-select/channel-select-new.png" alt="channel-select-new.png" />
+如上图，初始化一个有 4 个缓冲区的通道，<code>buf</code> 指向一个有界数组，<code>sendx</code> 表示下一次发送数据时要访问 <code>buf</code> 数组的下标，<code>recvx</code> 则表示下一次接收数据时要访问的下标，<code>recvq</code> 保存待接收通道数据的 goroutine 链表，类似的，<code>sendq</code> 负责保存发送数据的 goroutine 。</p>
 
 <p>以此 channel 为例，带有 4 个缓冲区，首先看看 channel 接收数据的流程。</p>
 
@@ -120,7 +144,7 @@ type waitq struct {
 
 <h5 id="总结">总结</h5>
 
-<p style="text-indent:2em">channel 接收数据时要考虑 `buf` 是否已满，影响的是 `sendx` 和 `sendq` 两个属性，缓冲区满时，协程入 `sendq` 队列；类似的， channel 发送数据时要考虑 `buf` 内没有数据的情况，影响 `recvx` 和 `recvq` 两个属性。`sendx` 及 `recvx` 的变化规律表明 channel 存取数据的方式是先入先出 FIFO 的形式。</p>
+<p>channel 接收数据时要考虑 <code>buf</code> 是否已满，影响的是 <code>sendx</code> 和 <code>sendq</code> 两个属性，缓冲区满时，协程入 <code>sendq</code> 队列；类似的， channel 发送数据时要考虑 <code>buf</code> 内没有数据的情况，影响 <code>recvx</code> 和 <code>recvq</code> 两个属性。<code>sendx</code> 及 <code>recvx</code> 的变化规律表明 channel 存取数据的方式是先入先出 FIFO 的形式。</p>
 ]]></description>
                 
                 

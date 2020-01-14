@@ -71,15 +71,15 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2020-01-14T11:25:07+08:00",
-        "dateModified": "2020-01-14T17:12:03+08:00",
+        "dateModified": "2020-01-14T17:15:40+08:00",
         "url": "https://jjmeg.github.io/posts/golang-channel-and-select/",
         "headline": "Golang源码阅读 - channel 和 select（一）",
         "description": "「 channel 和 select 」 Go 提供 channel 模型实现同步。 实现同步的两个思路：共享内存、消息通信（内存拷贝），……",
         "keywords": "golang, 源码阅读",
         "inLanguage" : "zh-CN",
         "articleSection": "posts",
-        "wordCount":  1155 ,
-        "image": ["https://jjmeg.github.io/images/channel-select/channel-select-G1.png","https://jjmeg.github.io/images/channel-select/channel-select-G2.png","https://jjmeg.github.io/images/channel-select/channel-select-G4.png","https://jjmeg.github.io/images/channel-select/channel-select-G5.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G2.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G3.png"],
+        "wordCount":  1288 ,
+        "image": ["https://jjmeg.github.io/images/channel-select/go-scheduler.png","https://jjmeg.github.io/images/channel-select/channel-select-new.png","https://jjmeg.github.io/images/channel-select/channel-select-G1.png","https://jjmeg.github.io/images/channel-select/channel-select-G2.png","https://jjmeg.github.io/images/channel-select/channel-select-G4.png","https://jjmeg.github.io/images/channel-select/channel-select-G5.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G2.png","https://jjmeg.github.io/images/channel-select/channel-select-send-G3.png"],
         "author": {
             "@type": "Person",
             "description": "It never rains but it pours.",
@@ -126,10 +126,10 @@
 <meta property="og:description" content="「 channel 和 select 」 Go 提供 channel 模型实现同步。 实现同步的两个思路：共享内存、消息通信（内存拷贝），……" />
 <meta property="og:url" content="https://jjmeg.github.io/posts/golang-channel-and-select/" />
 <meta property="og:site_name" content="JJMeg&#39;s blog" />
-<meta property="og:locale" content="zh-CN" /><meta property="og:image" content="https://jjmeg.github.io/images/channel-select/channel-select-G1.png" />
+<meta property="og:locale" content="zh-CN" /><meta property="og:image" content="https://jjmeg.github.io/images/channel-select/go-scheduler.png" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2020-01-14T11:25:07+08:00" />
-    <meta property="article:modified_time" content="2020-01-14T17:12:03+08:00" />
+    <meta property="article:modified_time" content="2020-01-14T17:15:40+08:00" />
     
     <meta property="article:section" content="posts" />
     <meta property="article:tag" content="golang, 源码阅读" />
@@ -212,7 +212,7 @@
     
     
         
-        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1155</span>
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1288</span>
     
     
         
@@ -238,41 +238,65 @@
 <li>M - machine，实际运行 golang 程序作业</li>
 </ul>
 
-<p style="text-indent:2em">M 实际运行要绑定一个 P ，P 类似一个存放资源的队列，P 的 local 队列内存放 G 。M 与 P 绑定，不断从 P 的 local 队列内取 G(无锁操作)，切换到 G 的堆栈执行，若没有了 G，则从 Global 队列内取 G (有锁操作)，可能会取一批到 P 的 local 队列内，若 Global 内也没有 G ，则尝试从其他 P 中窃取 G ，一般窃取一半，当没有 G 时， M 和 P 解绑，进入休眠。</p>
-![go-scheduler.png](/images/channel-select/go-scheduler.png)
+<p><p style="text-indent:2em">M 实际运行要绑定一个 P ，P 类似一个存放资源的队列，P 的 local 队列内存放 G 。M 与 P 绑定，不断从 P 的 local 队列内取 G(无锁操作)，切换到 G 的堆栈执行，若没有了 G，则从 Global 队列内取 G (有锁操作)，可能会取一批到 P 的 local 队列内，若 Global 内也没有 G ，则尝试从其他 P 中窃取 G ，一般窃取一半，当没有 G 时， M 和 P 解绑，进入休眠。</p>
+<img src="/images/channel-select/go-scheduler.png" alt="go-scheduler.png" /></p>
+
+<h3 id="channel数据结构"><a href="#channel数据结构" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>channel数据结构</h3>
+
+<p><code>src/runtime/chan.go</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">hchan</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">qcount</span>   <span class="kt">uint</span>           <span class="c1">// 队列中的数据的量
+</span><span class="c1"></span>	<span class="nx">dataqsiz</span> <span class="kt">uint</span>           <span class="c1">// 环形队列的大小
+</span><span class="c1"></span>	<span class="nx">buf</span>      <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 指向 dataqsiz 大小的的数组
+</span><span class="c1"></span>	<span class="nx">elemsize</span> <span class="kt">uint16</span> <span class="c1">// 元素大小
+</span><span class="c1"></span>	<span class="nx">closed</span>   <span class="kt">uint32</span> <span class="c1">// 是否关闭
+</span><span class="c1"></span>	<span class="nx">elemtype</span> <span class="o">*</span><span class="nx">_type</span> <span class="c1">// 元素类型
+</span><span class="c1"></span>	<span class="nx">sendx</span>    <span class="kt">uint</span>   <span class="c1">// 发送索引
+</span><span class="c1"></span>	<span class="nx">recvx</span>    <span class="kt">uint</span>   <span class="c1">// 接收索引
+</span><span class="c1"></span>	<span class="nx">recvq</span>    <span class="nx">waitq</span>  <span class="c1">// 接收列表即 &lt;-chan
+</span><span class="c1"></span>	<span class="nx">sendq</span>    <span class="nx">waitq</span>  <span class="c1">// 发送列表即 ch&lt;-
+</span><span class="c1"></span>
+	<span class="nx">lock</span> <span class="nx">mutex</span>
+	<span class="c1">// lock保护 hchan 结构体内的所有字段，以及 waitq 内的 sudog，
+</span><span class="c1"></span>	<span class="c1">// 在持有该锁时，不要改变 G 的状态，因为在栈收缩时会死锁
+</span><span class="c1"></span><span class="p">}</span>
 
 
-
-### channel数据结构
-`src/runtime/chan.go`
-```Go
-type hchan struct {
-	qcount   uint           // 队列中的数据的量
-	dataqsiz uint           // 环形队列的大小
-	buf      unsafe.Pointer // 指向 dataqsiz 大小的的数组
-	elemsize uint16 // 元素大小
-	closed   uint32 // 是否关闭
-	elemtype *_type // 元素类型
-	sendx    uint   // 发送索引
-	recvx    uint   // 接收索引
-	recvq    waitq  // 接收列表即 <-chan
-	sendq    waitq  // 发送列表即 ch<-
-
-	lock mutex
-	// lock保护 hchan 结构体内的所有字段，以及 waitq 内的 sudog，
-	// 在持有该锁时，不要改变 G 的状态，因为在栈收缩时会死锁
-}
-
-
-type waitq struct {
-	first *sudog
-	last  *sudog
-}
-```
-
-`waitq` 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 `waitq` 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
-![channel-select-new.png](/images/channel-select/channel-select-new.png)
-<p style="text-indent:2em">如上图，初始化一个有 4 个缓冲区的通道，`buf` 指向一个有界数组，`sendx` 表示下一次发送数据时要访问 `buf` 数组的下标，`recvx` 则表示下一次接收数据时要访问的下标，`recvq` 保存待接收通道数据的 goroutine 链表，类似的，`sendq` 负责保存发送数据的 goroutine 。</p>
+<span class="kd">type</span> <span class="nx">waitq</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">first</span> <span class="o">*</span><span class="nx">sudog</span>
+	<span class="nx">last</span>  <span class="o">*</span><span class="nx">sudog</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>waitq</code> 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 <code>waitq</code> 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
+<img src="/images/channel-select/channel-select-new.png" alt="channel-select-new.png" />
+如上图，初始化一个有 4 个缓冲区的通道，<code>buf</code> 指向一个有界数组，<code>sendx</code> 表示下一次发送数据时要访问 <code>buf</code> 数组的下标，<code>recvx</code> 则表示下一次接收数据时要访问的下标，<code>recvq</code> 保存待接收通道数据的 goroutine 链表，类似的，<code>sendq</code> 负责保存发送数据的 goroutine 。</p>
 
 <p>以此 channel 为例，带有 4 个缓冲区，首先看看 channel 接收数据的流程。</p>
 
@@ -303,7 +327,7 @@ type waitq struct {
 
 <h5 id="总结"><a href="#总结" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>总结</h5>
 
-<p style="text-indent:2em">channel 接收数据时要考虑 `buf` 是否已满，影响的是 `sendx` 和 `sendq` 两个属性，缓冲区满时，协程入 `sendq` 队列；类似的， channel 发送数据时要考虑 `buf` 内没有数据的情况，影响 `recvx` 和 `recvq` 两个属性。`sendx` 及 `recvx` 的变化规律表明 channel 存取数据的方式是先入先出 FIFO 的形式。</p>
+<p>channel 接收数据时要考虑 <code>buf</code> 是否已满，影响的是 <code>sendx</code> 和 <code>sendq</code> 两个属性，缓冲区满时，协程入 <code>sendq</code> 队列；类似的， channel 发送数据时要考虑 <code>buf</code> 内没有数据的情况，影响 <code>recvx</code> 和 <code>recvq</code> 两个属性。<code>sendx</code> 及 <code>recvx</code> 的变化规律表明 channel 存取数据的方式是先入先出 FIFO 的形式。</p>
 </div>
 
         </article>
@@ -331,7 +355,7 @@ type waitq struct {
 
 
         
-    <div class="updated-badge-container"><div title="Updated @ 2020-01-14 17:12:03 CST" style="cursor:help;display:inline-block">
+    <div class="updated-badge-container"><div title="Updated @ 2020-01-14 17:15:40 CST" style="cursor:help;display:inline-block">
 
 <svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-01-14</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-01-14</text></g></svg></div></div>
 
