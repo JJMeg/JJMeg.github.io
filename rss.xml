@@ -23,15 +23,136 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Tue, 07 Jan 2020 11:23:16 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 14 Jan 2020 17:12:10 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
         
             <item>
+                <title>Golang源码阅读 - channel 和 select（一）</title>
+                <link>https://jjmeg.github.io/posts/golang-channel-and-select/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/golang-channel-and-select/</guid>
+                <pubDate>Tue, 14 Jan 2020 11:25:07 +0800</pubDate>
+                
+                    <author>jjmeg.he@gmail.com (JJMeg)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description><![CDATA[
+
+<p><center>「 channel 和 select 」</center>
+<center>Go 提供 channel 模型实现同步。</center></p>
+
+<p style="text-indent:2em">实现同步的两个思路：共享内存、消息通信（内存拷贝），共享内存通常通过锁机制实现，消息通信则基于 [CSP理论](http://www.usingcsp.com/cspbook.pdf)。</p>
+
+<p style="text-indent:2em">go 显示使用 channel ，需要程序员显示的分配消息通道，channel 分为无缓冲的和缓冲两种类型。在了解 channel 内部实现之前，我们先了解 go 语言的调度模型。</p>
+
+<p>go 的调度模型 GPM 模型：</p>
+
+<ul>
+<li>G - goroutine，Global 队列存放 G</li>
+<li>P - processer，逻辑处理器，P 的 local 队列也存放 G</li>
+<li>M - machine，实际运行 golang 程序作业</li>
+</ul>
+
+<p style="text-indent:2em">M 实际运行要绑定一个 P ，P 类似一个存放资源的队列，P 的 local 队列内存放 G 。M 与 P 绑定，不断从 P 的 local 队列内取 G(无锁操作)，切换到 G 的堆栈执行，若没有了 G，则从 Global 队列内取 G (有锁操作)，可能会取一批到 P 的 local 队列内，若 Global 内也没有 G ，则尝试从其他 P 中窃取 G ，一般窃取一半，当没有 G 时， M 和 P 解绑，进入休眠。</p>
+![go-scheduler.png](/images/channel-select/go-scheduler.png)
+
+
+
+### channel数据结构
+`src/runtime/chan.go`
+```Go
+type hchan struct {
+	qcount   uint           // 队列中的数据的量
+	dataqsiz uint           // 环形队列的大小
+	buf      unsafe.Pointer // 指向 dataqsiz 大小的的数组
+	elemsize uint16 // 元素大小
+	closed   uint32 // 是否关闭
+	elemtype *_type // 元素类型
+	sendx    uint   // 发送索引
+	recvx    uint   // 接收索引
+	recvq    waitq  // 接收列表即 <-chan
+	sendq    waitq  // 发送列表即 ch<-
+
+	lock mutex
+	// lock保护 hchan 结构体内的所有字段，以及 waitq 内的 sudog，
+	// 在持有该锁时，不要改变 G 的状态，因为在栈收缩时会死锁
+}
+
+
+type waitq struct {
+	first *sudog
+	last  *sudog
+}
+```
+
+`waitq` 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 `waitq` 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
+![channel-select-new.png](/images/channel-select/channel-select-new.png)
+<p style="text-indent:2em">如上图，初始化一个有 4 个缓冲区的通道，`buf` 指向一个有界数组，`sendx` 表示下一次发送数据时要访问 `buf` 数组的下标，`recvx` 则表示下一次接收数据时要访问的下标，`recvq` 保存待接收通道数据的 goroutine 链表，类似的，`sendq` 负责保存发送数据的 goroutine 。</p>
+
+<p>以此 channel 为例，带有 4 个缓冲区，首先看看 channel 接收数据的流程。</p>
+
+<h5 id="channel接收数据流程">channel接收数据流程</h5>
+
+<p>① 协程 G 预往 channel 中插入数据 4，此时 <code>sendx</code> 为 0，表示若要插入数据，将数据放在 <code>buf</code> 下标为 0 处，缓冲区 <code>buf</code> 内空间未满，直接将 G 的数据插入到 <code>buf</code> 内，G 携带的数据放在 <code>buf[0]</code> 处， <code>sendx</code> 加一：
+<img src="/images/channel-select/channel-select-G1.png" alt="channel-select-G1.png" /></p>
+
+<p>② 第二个协程 G2 携带数据，与第 ① 步类似，<code>buf</code> 空间未满，直接插入，<code>sendx</code> 索引加一：
+<img src="/images/channel-select/channel-select-G2.png" alt="channel-select-G2.png" /></p>
+
+<p>③ 当插入数据到 <code>buf</code> ，<code>buf</code>空间恰好满了，此时 <code>sendx</code> 归为 0，如此设计让 channel 的缓冲区成为一个 FIFO 类型的通道：
+<img src="/images/channel-select/channel-select-G4.png" alt="channel-select-G4.png" /></p>
+
+<p>④ 协程 G5 要插入数据，但是 <code>buf</code> 空间已满，则将 G5 插入到发送数据等待队列 <code>sendq</code>，即被阻塞，直到 <code>buf</code> 有空间才从 <code>sendq</code> 取出 G 插入数据:
+<img src="/images/channel-select/channel-select-G5.png" alt="channel-select-G5.png" /></p>
+
+<h5 id="channel发送数据流程">channel发送数据流程</h5>
+
+<p>① 协程 G 预接收数据，<code>recvx</code> 表示 channel 下一个要发送的数据的下标，<code>buf</code> 内有数据，channel 直接将数据发送给 G ,<code>recvx</code> 加一：
+<img src="/images/channel-select/channel-select-send-G.png" alt="channel-select-send-G.png" /></p>
+
+<p>② 协程 G2 预接收数据，channel 最后一个数据发送给 G2 ， <code>buf</code> 为空，<code>recvx</code> 应归 0：
+<img src="/images/channel-select/channel-select-send-G2.png" alt="channel-select-send-G2.png" /></p>
+
+<p>③ 协程 G3 也要接收 channel 的数据，但是 <code>buf</code> 内已无数据，G3 则被挂起，被放入 <code>recvq</code> 队列内排队：
+<img src="/images/channel-select/channel-select-send-G3.png" alt="channel-select-send-G3.png" /></p>
+
+<h5 id="总结">总结</h5>
+
+<p style="text-indent:2em">channel 接收数据时要考虑 `buf` 是否已满，影响的是 `sendx` 和 `sendq` 两个属性，缓冲区满时，协程入 `sendq` 队列；类似的， channel 发送数据时要考虑 `buf` 内没有数据的情况，影响 `recvx` 和 `recvq` 两个属性。`sendx` 及 `recvx` 的变化规律表明 channel 存取数据的方式是先入先出 FIFO 的形式。</p>
+]]></description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/golang/">golang</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">源码阅读</category>
+                                
+                            
+                        
+                    
+                
+            </item>
+        
+            <item>
                 <title>Mysql如何存储数据（一）?</title>
-                <link>https://jjmeg.github.io/posts/how-mysql-store-data/</link>
-                <guid isPermaLink="true">https://jjmeg.github.io/posts/how-mysql-store-data/</guid>
+                <link>https://jjmeg.github.io/posts/how-mysql-store-data-i/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/how-mysql-store-data-i/</guid>
                 <pubDate>Mon, 06 Jan 2020 14:15:32 +0800</pubDate>
                 
                     <author>jjmeg.he@gmail.com (JJMeg)</author>
@@ -41,7 +162,7 @@
                     <description><![CDATA[
 
 <p><center>「 InnoDB 和 MyISAM 」</center>
-<p style="text-indent:2em">InnoDB和MyISAM都是MySQL常用的存储引擎，其中InnoDB是MySQL默认存储引擎和最常用的存储引擎。</p></p>
+<p style="text-indent:2em"> InnoDB 和 MyISAM 都是 MySQL 常用的存储引擎，其中 InnoDB 是 MySQL 默认存储引擎和最常用的存储引擎。</p></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -74,9 +195,9 @@ Transactions: NO
 </div>
 <p><strong>实验环境：MySQL-8.0.18.0，Windows-64</strong></p>
 
-<h3 id="myisam怎样存储数据">MyISAM怎样存储数据?</h3>
+<h3 id="myisam-怎样存储数据">MyISAM 怎样存储数据?</h3>
 
-<p>创建数据库<code>mydbs</code>，并创建数据库表<code>table_myisam</code>，并指定<code>engine</code></p>
+<p>创建数据库 <code>mydbs</code> ，并创建数据库表 <code>table_myisam</code> ，并指定 <code>engine</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -129,7 +250,7 @@ mysql&gt; CREATE TABLE table_myisam <span class="o">(</span>column1 CHAR<span cl
 └─world</code></pre></td></tr></table>
 </div>
 </div>
-<p>新建数据库<code>mydbs</code>时，MySQL在存储数据的<code>Data</code>目录下新建了一个文件夹，命名与数据库表相同，再进入看看里面有什么：</p>
+<p>新建数据库 <code>mydbs</code> 时，MySQL在存储数据的 <code>Data</code> 目录下新建了一个文件夹，命名与数据库表相同，再进入看看里面有什么：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -148,17 +269,17 @@ Mode                LastWriteTime         Length Name
 -a----         2020/1/7     10:44           <span class="m">1538</span> table_myisam_381.sdi</code></pre></td></tr></table>
 </div>
 </div>
-<p>MySQL在创建表时，创建了<code>.MYD</code> (&quot;MySQL Data&quot;)，<code>.MYI</code> (&quot;MySQL Index&quot;)，以及 <code>.sdi</code> (&quot;Serialized Dictionary Information&quot;)三个文件，在MySQL8.0以前，不是<code>.sdi</code>，而是<code>.frm</code> (&quot;Format&quot;)文件，<code>.sdi</code>文件内容为JSON文本。</p>
+<p>MySQL在创建表时，创建了 <code>.MYD</code> (&quot;MySQL Data&quot;)， <code>.MYI</code> (&quot;MySQL Index&quot;)，以及  <code>.sdi</code> (&quot;Serialized Dictionary Information&quot;)三个文件， <code>.sdi</code> 文件内容为JSON文本。在 MySQL8.0 以前，不是 <code>.sdi</code> ，而是 <code>.frm</code> (&quot;Format&quot;)文件。</p>
 
-<p><code>.MYD</code>文件存储表数据，<code>.MYI</code>存储索引，<code>.sdi</code>存储表的元数据信息，从这三个文件看，能知道MySQL存储表时，需要表的元数据、索引数据以及行数据。那么在InnoDB存储引擎内有什么不同吗？</p>
+<p><code>.MYD</code> 文件存储表数据， <code>.MYI</code> 存储索引， <code>.sdi</code> 存储表的元数据信息，从这三个文件看，能知道 MySQL 存储表时，需要表的元数据、索引数据以及行数据。那么在 InnoDB 存储引擎内有什么不同吗？</p>
 
-<h3 id="innodb怎样存储数据">InnoDB怎样存储数据?</h3>
+<h3 id="innodb-怎样存储数据">InnoDB 怎样存储数据?</h3>
 
 <p><img src="/images/how-mysql-store-data.png" alt="how-mysql-store-data" />
-<p style="text-indent:2em">数据行被逻辑地存储在表空间，表空间被分割为Segment（段），再细分为Extent（区）、Page（页），最终数据按行存储在Page（页）内。
-默认情况下Page的大小为16KB，可修改<code>innodb_page_size</code>选项改变页面大小，页面大小改变，Extent及Segment的大小会相应改变。</p></p>
+<p style="text-indent:2em">数据行被逻辑地存储在表空间，表空间被分割为 Segment（段），再细分为 Extent（区）、Page（页），最终数据按行存储在 Page（页）内。
+默认情况下 Page 的大小为16KB，可修改 <code>innodb_page_size</code> 选项改变页面大小，页面大小改变，Extent 及 Segment 的大小会相应改变。</p></p>
 
-<p>创建数据库表<code>table_innodb</code>，未指定<code>engine</code>将默认选用<code>InnoDB</code></p>
+<p>创建数据库表 <code>table_innodb</code> ，未指定 <code>engine</code> 将默认选用 <code>InnoDB</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -167,7 +288,7 @@ Mode                LastWriteTime         Length Name
 <pre class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; CREATE TABLE table_innodb <span class="o">(</span>column1 CHAR<span class="o">(</span>5<span class="o">)</span><span class="o">)</span> COMMENT <span class="s1">&#39;*&#39;</span><span class="p">;</span></code></pre></td></tr></table>
 </div>
 </div>
-<p>再进入<code>Data</code>目录下：</p>
+<p>再进入 <code>Data</code> 目录下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -182,7 +303,7 @@ Mode                LastWriteTime         Length Name
 -a----          2020/1/6     19:22         <span class="m">114688</span> table_innodb.ibd</code></pre></td></tr></table>
 </div>
 </div>
-<p>只新增了<code>.ibd</code>文件，InnoDB表没有创建<code>.sdi</code>文件，而是将SDI信息冗余存储到表空间中，那么<code>.ibd</code>文件就包含了数据库表的元数据、表内行数据以及索引数据，如何看到SDI信息呢？MySQL提供了<code>ibd2sdi</code>工具，可提取出表元数据</p>
+<p>只新增了 <code>.ibd</code> 文件，InnoDB 表没有创建 <code>.sdi</code> 文件，而是将 SDI 信息冗余存储到表空间中，那么 <code>.ibd</code> 文件就包含了数据库表的元数据、表内行数据以及索引数据，如何看到 SDI 信息呢？ MySQL 提供了 <code>ibd2sdi</code> 工具，可提取出表元数据</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -471,17 +592,17 @@ Mode                LastWriteTime         Length Name
 <p>提取出的信息主要包括以下部分，是所有表公用的：</p>
 
 <ol>
-<li><code>ibdata1</code>表属性，包括表的列信息，所属数据库，索引信息，外键信息等；</li>
-<li><code>ibdata2</code>表数据存储信息，数据存储位置等；</li>
+<li><code>ibdata1</code> 表属性，包括表的列信息，所属数据库，索引信息，外键信息等；</li>
+<li><code>ibdata2</code> 表数据存储信息，数据存储位置等；</li>
 </ol>
 
 <h5 id="小节">小节</h5>
 
 <ol>
-<li>InnoDB按行存储数据</li>
-<li>存储数据的文件为<code>.idb</code>文件，包含表空间描述、行数据和索引信息</li>
-<li>一个数据库表对应一个<code>.idb</code>文件，为所有表公用</li>
-<li>可使用<code>ibd2sdi</code>工具提取出表空间描述信息</li>
+<li>InnoDB 按行存储数据</li>
+<li>存储数据的文件为 <code>.idb</code> 文件，包含表空间描述、行数据和索引信息</li>
+<li>一个数据库表对应一个 <code>.idb</code> 文件，为所有表公用</li>
+<li>可使用 <code>ibd2sdi</code> 工具提取出表空间描述信息</li>
 </ol>
 ]]></description>
                 
