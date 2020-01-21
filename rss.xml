@@ -23,10 +23,365 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Tue, 14 Jan 2020 17:17:55 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 21 Jan 2020 17:04:42 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
+        
+            <item>
+                <title>Go实现一个支持动态扩容的数组</title>
+                <link>https://jjmeg.github.io/posts/buffered-array/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/buffered-array/</guid>
+                <pubDate>Tue, 21 Jan 2020 16:14:25 +0800</pubDate>
+                
+                    <author>jjmeg.he@gmail.com (JJMeg)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description><![CDATA[
+
+<p><center>「 数组 」</center>
+<center>一旦分配空间，不可再更改，容量限定，可能存在访问越界风险。</center></p>
+
+<hr />
+
+<p>在此实现支持动态扩容的数组，能完成基本的增删改查操作，其数据结构定义及构造函数如下，使用数组 <code>Data</code> 保存数据，用 <code>Size</code> 记录当前已保存的数据的个数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">MyArray</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Data</span> <span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">Size</span> <span class="kt">int</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewMyArray</span><span class="p">(</span><span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">MyArray</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">MyArray</span><span class="p">{</span>
+		<span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span><span class="p">,</span>
+		<span class="nx">size</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="快速访问">📜快速访问</h3>
+
+<ul>
+<li>📚<a href="#增">增</a></li>
+<li>📚<a href="#删">删</a></li>
+<li>📚<a href="#改">改</a></li>
+<li>📚<a href="#查">查</a></li>
+<li>📚<a href="#其他">其他</a></li>
+</ul>
+
+<h3 id="增">增</h3>
+
+<p><code>MyArray</code> 内的 <code>Data</code> 本质是一个数组，在插入数据时，要考虑 <code>Data</code> 是否还有多余的空间保存数据，当空间不够时，我们对其进行扩容。扩容时，将容量翻倍，即申请一段新的连续内存，将已有的数据保存到新的内存空间中，时间复杂度为 O(n):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">resize</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">newArray</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">newArray</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+	<span class="p">}</span>
+	<span class="nx">m</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">newArray</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>Data</code> 的最大容量为 <code>len(Data)</code> ，添加单个或多个数据时，比对 <code>Size</code> 和最大容量得知是否要扩容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">AddItem</span><span class="p">(</span><span class="nx">item</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span> <span class="o">==</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span> <span class="p">{</span>
+		<span class="nx">m</span><span class="p">.</span><span class="nf">resize</span><span class="p">(</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">]</span> <span class="p">=</span> <span class="nx">item</span>
+	<span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="o">++</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">AddItems</span><span class="p">(</span><span class="nx">items</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">items</span> <span class="p">{</span>
+		<span class="nx">m</span><span class="p">.</span><span class="nf">AddItem</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="删">删</h3>
+
+<p>删除操作有两种方式，删除具体数据，可能存在多个相同的数据，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 删
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">Remove</span><span class="p">(</span><span class="nx">target</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">newArray</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">target</span> <span class="p">{</span>
+			<span class="nx">newArray</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">newArray</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>以及删除数组指定下标的数据，在删除前，要检查下标是否合法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">RemoveWithIndex</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">index</span> <span class="p">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;Illegal index.&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">newArray</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">i</span> <span class="o">!=</span> <span class="nx">index</span> <span class="p">{</span>
+			<span class="nx">newArray</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">m</span><span class="p">.</span><span class="nx">Data</span> <span class="p">=</span> <span class="nx">newArray</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="改">改</h3>
+
+<p>修改一般是对指定下标的数据做修改，类似删除，也需要做下标合法检查：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">Set</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">item</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">index</span> <span class="p">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;Illegal index.&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="p">=</span> <span class="nx">item</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="查">查</h3>
+
+<p>查找支持查找单个和查找多个，根据数据内容查找对应的数组下标，并利用这个方法判断数据是否存在于数组中：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">FindItem</span><span class="p">(</span><span class="nx">target</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="nx">target</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="nx">i</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">FindAllItems</span><span class="p">(</span><span class="nx">target</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">(</span><span class="nx">result</span> <span class="p">[</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="nx">target</span> <span class="p">{</span>
+			<span class="nx">result</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">Contains</span><span class="p">(</span><span class="nx">target</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">m</span><span class="p">.</span><span class="nf">FindItem</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">false</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>根据数组下标查找具体的数据，批量查找应以列表的形式返回：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">GetItem</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">index</span> <span class="p">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span> <span class="o">||</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">GetItems</span><span class="p">(</span><span class="nx">indexes</span> <span class="o">...</span><span class="kt">int</span><span class="p">)</span> <span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
+	<span class="nx">result</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">indexes</span><span class="p">)</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">indexes</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span> <span class="p">{</span>
+			<span class="nx">result</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">result</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="其他">其他</h3>
+
+<p>获取最大容量及当前容量，使用当前容量判断数组是否为空：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">GetCapacity</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">GetSize</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">MyArray</span><span class="p">)</span> <span class="nf">IsEmpty</span><span class="p">(</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Size</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>]]></description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/%E6%95%B0%E7%BB%84/">数组</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</category>
+                                
+                            
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>Golang源码阅读 - channel 和 select（一）</title>
@@ -111,7 +466,7 @@
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
-<p><code>waitq</code> 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 <code>waitq</code> 指向了一个 goroutine 指针队列。初始化带缓冲的 hchan 时：
+<p><code>waitq</code> 是等待队列和发送队列的包装，包装了当前 goroutine 的指针，即 <code>waitq</code> 指向了一个 goroutine 指针队列，是一个双向队列。初始化带缓冲的 hchan 时：
 <img src="/images/channel-select/channel-select-new.png" alt="channel-select-new.png" />
 如上图，初始化一个有 4 个缓冲区的通道，<code>buf</code> 指向一个有界数组，<code>sendx</code> 表示下一次发送数据时要访问 <code>buf</code> 数组的下标，<code>recvx</code> 则表示下一次接收数据时要访问的下标，<code>recvq</code> 保存待接收通道数据的 goroutine 链表，类似的，<code>sendq</code> 负责保存发送数据的 goroutine 。</p>
 
