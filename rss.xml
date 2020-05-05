@@ -10,7 +10,7 @@
         <title>JJMeg&#39;s blog</title>
         <link>https://jjmeg.github.io/</link>
         <description>MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</description>
-        <generator>Hugo 0.60.1 https://gohugo.io/</generator>
+        <generator>Hugo 0.62.1 https://gohugo.io/</generator>
         
             <language>zh-CN</language>
         
@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Tue, 21 Jan 2020 17:04:42 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 05 May 2020 22:45:32 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
@@ -2809,7 +2809,14 @@ int类型是Go的内置类型，我们自定义的AInterface接口在Go中未实
 <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello</code></pre></li>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello</code></pre></td></tr></table>
+</div>
+</div></li>
 </ul>
 
 <p><strong>3. 实现某个接口中的所有方法才能称得上是接口实现</strong></p>
@@ -3862,7 +3869,14 @@ world</code></pre></td></tr></table>
     <span class="c1">// 后面的括号中的ss作为参数传到匿名函数中
 </span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello world!</code></pre>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world!</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="闭包">🐵闭包</h3>
 
 <p>闭包能够读取其他函数内部变量的函数。</p>
@@ -3911,7 +3925,14 @@ world</code></pre></td></tr></table>
   <span class="nf">f</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello world</code></pre>]]></description>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world</code></pre></td></tr></table>
+</div>
+</div>]]></description>
                 
                 
                 
@@ -4177,9 +4198,18 @@ number大于5</code></pre></td></tr></table>
 <h6 id="for循环">🐵for循环</h6>
 
 <p>Go语言中没有while语句，用for来描述循环</p>
-<pre><code>for 初始值 ; 满足范围; 操作{
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">for 初始值 ; 满足范围; 操作{
   ...
-}</code></pre><div class="highlight"><div class="chroma">
+}</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2

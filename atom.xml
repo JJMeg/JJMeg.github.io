@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-01-21T17:04:42+08:00</updated>
+    <updated>2020-05-05T22:45:32+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -15,12 +15,12 @@
                 <email>jjmeg.he@gmail.com</email>
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
-    <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.62.1">Hugo</generator>
         <entry>
             <title type="text">Go实现一个支持动态扩容的数组</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/buffered-array/" />
             <id>https://jjmeg.github.io/posts/buffered-array/</id>
-            <updated>2020-01-21T17:04:35+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2020-01-21T16:14:25+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -380,7 +380,7 @@
             <title type="text">Golang源码阅读 - channel 和 select（一）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-channel-and-select/" />
             <id>https://jjmeg.github.io/posts/golang-channel-and-select/</id>
-            <updated>2020-01-15T15:21:55+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2020-01-14T11:25:07+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -530,7 +530,7 @@
             <title type="text">Mysql如何存储数据（一）?</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/how-mysql-store-data-i/" />
             <id>https://jjmeg.github.io/posts/how-mysql-store-data-i/</id>
-            <updated>2020-01-07T14:22:14+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2020-01-06T14:15:32+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1024,7 +1024,7 @@ Mode                LastWriteTime         Length Name
             <title type="text">cache2go源码阅读（二）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_ii/" />
             <id>https://jjmeg.github.io/posts/cache2go_ii/</id>
-            <updated>2020-01-07T14:29:23+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2020-01-02T15:54:51+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1192,7 +1192,7 @@ Mode                LastWriteTime         Length Name
             <title type="text">cache2go源码阅读（一）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_i/" />
             <id>https://jjmeg.github.io/posts/cache2go_i/</id>
-            <updated>2020-01-21T10:58:22+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2020-01-02T15:17:51+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1949,7 +1949,7 @@ Mode                LastWriteTime         Length Name
             <title type="text">写在2019年最后</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/2019-summary/" />
             <id>https://jjmeg.github.io/posts/2019-summary/</id>
-            <updated>2019-12-30T16:43:42+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-30T16:23:29+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2029,7 +2029,7 @@ Mode                LastWriteTime         Length Name
             <title type="text">Golang系列教程--通道Channel</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-channel/" />
             <id>https://jjmeg.github.io/posts/golang-channel/</id>
-            <updated>2019-12-20T17:14:49+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-18T11:31:10+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2329,7 +2329,7 @@ Mode                LastWriteTime         Length Name
             <title type="text">Golang系列教程--协程Goroutine</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-goroutine/" />
             <id>https://jjmeg.github.io/posts/golang-goroutine/</id>
-            <updated>2019-12-17T10:13:01+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-17T10:02:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2675,7 +2675,7 @@ Round:B,	i:3</code></pre></td></tr></table>
             <title type="text">Golang系列教程--接口Interface</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-interface/" />
             <id>https://jjmeg.github.io/posts/golang-interface/</id>
-            <updated>2019-12-17T09:58:10+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-17T09:52:40+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2842,7 +2842,14 @@ int类型是Go的内置类型，我们自定义的AInterface接口在Go中未实
 <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello</code></pre></li>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello</code></pre></td></tr></table>
+</div>
+</div></li>
 </ul>
 
 <p><strong>3. 实现某个接口中的所有方法才能称得上是接口实现</strong></p>
@@ -3087,7 +3094,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--结构体struct和方法method</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
             <id>https://jjmeg.github.io/posts/golang-struct-and-method/</id>
-            <updated>2019-12-16T11:30:17+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-13T15:02:59+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3560,7 +3567,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--函数</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-function/" />
             <id>https://jjmeg.github.io/posts/golang-function/</id>
-            <updated>2019-12-16T11:29:56+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-13T14:44:55+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3905,7 +3912,14 @@ world</code></pre></td></tr></table>
     <span class="c1">// 后面的括号中的ss作为参数传到匿名函数中
 </span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello world!</code></pre>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world!</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="闭包">🐵闭包</h3>
 
 <p>闭包能够读取其他函数内部变量的函数。</p>
@@ -3954,7 +3968,14 @@ world</code></pre></td></tr></table>
   <span class="nf">f</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><pre><code>hello world</code></pre>]]></content>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world</code></pre></td></tr></table>
+</div>
+</div>]]></content>
             
             
             
@@ -3986,7 +4007,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--流程控制</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-process-control/" />
             <id>https://jjmeg.github.io/posts/golang-process-control/</id>
-            <updated>2019-12-16T11:30:11+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-13T14:21:15+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -4225,9 +4246,18 @@ number大于5</code></pre></td></tr></table>
 <h6 id="for循环">🐵for循环</h6>
 
 <p>Go语言中没有while语句，用for来描述循环</p>
-<pre><code>for 初始值 ; 满足范围; 操作{
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">for 初始值 ; 满足范围; 操作{
   ...
-}</code></pre><div class="highlight"><div class="chroma">
+}</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -4487,7 +4517,7 @@ i is :10</code></pre></td></tr></table>
             <title type="text">Golang系列教程--Map</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-map/" />
             <id>https://jjmeg.github.io/posts/golang-map/</id>
-            <updated>2019-12-16T11:30:05+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-12T14:14:35+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -4779,7 +4809,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--数组和切片</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-array-and-slice/" />
             <id>https://jjmeg.github.io/posts/golang-array-and-slice/</id>
-            <updated>2019-12-16T11:29:35+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-12T11:30:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5099,7 +5129,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础结构与类型</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
             <id>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</id>
-            <updated>2019-12-16T11:29:48+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-11T18:00:47+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5674,7 +5704,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础概念</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-concetps/" />
             <id>https://jjmeg.github.io/posts/golang-basic-concetps/</id>
-            <updated>2019-12-16T11:29:43+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-10T13:47:14+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5824,7 +5854,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
             <id>https://jjmeg.github.io/posts/hello-world/</id>
-            <updated>2019-12-18T09:58:05+08:00</updated>
+            <updated>2020-03-30T23:31:24+08:00</updated>
             <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
