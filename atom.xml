@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-05-05T23:15:19+08:00</updated>
+    <updated>2020-05-05T23:20:51+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">Go实现一个支持动态扩容的数组</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/buffered-array/" />
             <id>https://jjmeg.github.io/posts/buffered-array/</id>
-            <updated>2020-05-05T23:14:47+08:00</updated>
+            <updated>2020-05-05T23:19:46+08:00</updated>
             <published>2020-01-21T16:14:25+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -350,7 +350,7 @@
 </div>
 </div>
 <script src="https://utteranc.es/client.js"
-        repo="JJMeg/jjmeg.github.io"
+        repo="JJMeg/jjmeg.io.comment"
         issue-term="pathname"
         theme="github-light"
         crossorigin="anonymous"
