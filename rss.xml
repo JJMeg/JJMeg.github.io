@@ -23,10 +23,960 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Wed, 06 May 2020 08:32:54 +0800</lastBuildDate>
+        <lastBuildDate>Wed, 06 May 2020 20:52:05 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
+        
+            <item>
+                <title>Golang系列教程--JSON解析</title>
+                <link>https://jjmeg.github.io/posts/golang-json/</link>
+                <guid isPermaLink="true">https://jjmeg.github.io/posts/golang-json/</guid>
+                <pubDate>Wed, 06 May 2020 14:32:31 +0800</pubDate>
+                
+                    <author>jjmeg.he@gmail.com (JJMeg)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description><![CDATA[
+
+<p><center>「  <a href="https://golang.org/pkg/encoding/json/">json</a> 」</center>
+<center>
+ 提供了 JSON 与 Go 变量之间的序列化与反序列化。
+</center></p>
+
+<h1 id="本文内容">📜本文内容</h1>
+
+<ul>
+<li>📚 <a href="#JSON序列化">JSON序列化</a></li>
+<li>📚 <a href="#tag及使用技巧">tag及使用技巧</a>
+
+<ul>
+<li>📖 <a href="#1-省略空字段-omitempty">1. 省略空字段 omitempty</a></li>
+<li>📖 <a href="2-忽略特定字段" target="_blank">2. -忽略特定字段</a></li>
+<li>📖 <a href="#3-json字段类型转换">3. json字段类型转换</a></li>
+<li>📖 <a href="#4-临时添加新字段">4. 临时添加新字段</a></li>
+<li>📖 <a href="#5-多结构体组合成">5. 多结构体组合成</a></li>
+<li>📖 <a href="#6-对时间类型的序列化">6. 对时间类型的序列化</a></li>
+</ul></li>
+</ul>
+
+<p></br></p>
+
+<ul>
+<li>📚 <a href="#JSON反序列化">JSON反序列化</a></li>
+<li>📚 <a href="#JSON反序列化的常用技巧">JSON反序列化的常用技巧</a>
+
+<ul>
+<li>📖 <a href="#拆分成多个结构体">拆分成多个结构体</a></li>
+</ul></li>
+<li>📚 <a href="#JSON与私有属性">JSON与私有属性</a></li>
+</ul>
+
+<hr />
+
+<h3 id="json序列化">JSON序列化</h3>
+
+<blockquote>
+<p>func Marshal(v interface{}) ([]byte, error)</p>
+
+<p>func MarshalIndent(v interface{}, prefix, indent string) ([]byte, error)</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
+		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data1</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data1</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">data2</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data2</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>使用 <strong>MarshalIndent()</strong> 可使数据输出的形式美观一些</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;Amy&#34;</span>,<span class="s2">&#34;country&#34;</span>:<span class="s2">&#34;China&#34;</span>,<span class="s2">&#34;city&#34;</span>:<span class="s2">&#34;Beijing&#34;</span><span class="o">}</span>
+<span class="o">{</span>
+   <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+   <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;China&#34;</span>,
+   <span class="s2">&#34;city&#34;</span>: <span class="s2">&#34;Beijing&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="tag及使用技巧">tag及使用技巧</h3>
+
+<h6 id="1-省略空字段-omitempty">1. 省略空字段 <strong>omitempty</strong></h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city,omitempty&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>JSON内的 <strong>city</strong> 字段增加 <strong>omitempty</strong> 关键字，初始化对象时未对该字段赋值，在序列化后将不显示；<strong>country</strong> 字段未注明忽略空值，序列化赋了默认0值：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+    <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="2-忽略特定字段">2. 忽略特定字段 <strong>-</strong></h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;-&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
+		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>即使字段已经初始化，序列化后的内容也不会包含此字段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+    <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;China&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="3-json字段类型转换">3. JSON字段类型转换</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Age</span>     <span class="kt">int</span> <span class="s">`</span><span class="s">json:&#34;age,string&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Age</span><span class="p">:</span>     <span class="mi">25</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>结构体内的 <strong>Age</strong> 字段为整型，加上 <strong>string</strong> 将本字段的值转化为字符串类型：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+   <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+   <span class="s2">&#34;age&#34;</span>: <span class="s2">&#34;25&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="4-临时添加新字段">4. 临时添加新字段</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
+		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span>
+		<span class="kd">struct</span> <span class="p">{</span>
+			<span class="nx">person</span>
+			<span class="nx">Gender</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;gender&#34;</span><span class="s">`</span>
+		<span class="p">}</span><span class="p">{</span>
+			<span class="nx">person</span><span class="p">:</span> <span class="nx">amy</span><span class="p">,</span>
+			<span class="nx">Gender</span><span class="p">:</span> <span class="s">&#34;female&#34;</span><span class="p">,</span>
+		<span class="p">}</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>在序列化时新建一个结构体即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+    <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;China&#34;</span>,
+    <span class="s2">&#34;city&#34;</span>: <span class="s2">&#34;Beijing&#34;</span>,
+    <span class="s2">&#34;gender&#34;</span>: <span class="s2">&#34;female&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="5-多结构体组合成">5. 多结构体组合成</h6>
+
+<p>从4中得到启发，可将多个结构体的字段组合成一个JSON</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">occupation</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;company&#34;</span><span class="s">`</span>
+	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;position&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
+		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="nx">job</span> <span class="o">:=</span> <span class="nx">occupation</span><span class="p">{</span>
+		<span class="nx">Company</span><span class="p">:</span>  <span class="s">&#34;Google&#34;</span><span class="p">,</span>
+		<span class="nx">Position</span><span class="p">:</span> <span class="s">&#34;developer&#34;</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span>
+		<span class="kd">struct</span> <span class="p">{</span>
+			<span class="nx">person</span>
+			<span class="nx">occupation</span>
+		<span class="p">}</span><span class="p">{</span>
+			<span class="nx">person</span><span class="p">:</span>     <span class="nx">amy</span><span class="p">,</span>
+			<span class="nx">occupation</span><span class="p">:</span> <span class="nx">job</span><span class="p">,</span>
+		<span class="p">}</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+    <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;China&#34;</span>,
+    <span class="s2">&#34;city&#34;</span>: <span class="s2">&#34;Beijing&#34;</span>,
+    <span class="s2">&#34;company&#34;</span>: <span class="s2">&#34;Google&#34;</span>,
+    <span class="s2">&#34;position&#34;</span>: <span class="s2">&#34;developer&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h6 id="6-对时间类型的序列化">6. 对时间类型的序列化</h6>
+
+<p>Go对时间的序列化方式是格式化转化成字符串，并默认使用RFC3339标准 <strong>2006-01-02T15:04:05.999999999Z07:00</strong> 做格式化，时间对象转化为JSON默认使用 <strong>MarshalJSON()</strong> 方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="nx">Time</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">y</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">y</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">10000</span> <span class="p">{</span>
+		<span class="c1">// RFC 3339 is clear that years are 4 digits exactly.
+</span><span class="c1"></span>		<span class="c1">// See golang.org/issue/4556#c15 for more discussion.
+</span><span class="c1"></span>		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;Time.MarshalJSON: year outside of range [0,9999]&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">b</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">RFC3339Nano</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+	<span class="nx">b</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="sc">&#39;&#34;&#39;</span><span class="p">)</span>
+	<span class="nx">b</span> <span class="p">=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">AppendFormat</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">RFC3339Nano</span><span class="p">)</span>
+	<span class="nx">b</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="sc">&#39;&#34;&#39;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><strong>Marshaler</strong> 接口定义了 <strong>MarshalJSON()</strong> 方法，Go中的时间 <strong>time.Time</strong> 实现了 <strong>Marshaler</strong> 接口:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Marshaler</span> <span class="kd">interface</span> <span class="p">{</span>
+        <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>结合上述思路，我们可以自定义时间类型，实现 <strong>Marshaler</strong> 接口，达到自定义序列化的目的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="c1">//自定义时间类型
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">MyTime</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span>
+
+<span class="c1">// 实现Marshaler接口
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">mytime</span> <span class="nx">MyTime</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">n</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Time</span><span class="p">(</span><span class="nx">mytime</span><span class="p">)</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 15:04&#34;</span><span class="p">)</span>
+	<span class="nx">t</span> <span class="o">:=</span> <span class="s">&#34;\&#34;&#34;</span> <span class="o">+</span> <span class="nx">n</span> <span class="o">+</span> <span class="s">&#34;\&#34;&#34;</span>
+	<span class="k">return</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>     <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>     <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Birthday</span> <span class="nx">MyTime</span> <span class="s">`</span><span class="s">json:&#34;birthday&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
+		<span class="nx">Name</span><span class="p">:</span>     <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+		<span class="nx">Country</span><span class="p">:</span>  <span class="s">&#34;China&#34;</span><span class="p">,</span>
+		<span class="nx">City</span><span class="p">:</span>     <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
+		<span class="nx">Birthday</span><span class="p">:</span> <span class="nf">MyTime</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>本例将时间输出格式修改为 <strong>年-月-日 时:分</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>
+    <span class="s2">&#34;name&#34;</span>: <span class="s2">&#34;Amy&#34;</span>,
+    <span class="s2">&#34;country&#34;</span>: <span class="s2">&#34;China&#34;</span>,
+    <span class="s2">&#34;city&#34;</span>: <span class="s2">&#34;Beijing&#34;</span>,
+    <span class="s2">&#34;birthday&#34;</span>: <span class="s2">&#34;2019-09-05 18:42&#34;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<hr />
+
+<h3 id="json反序列化">JSON反序列化</h3>
+
+<blockquote>
+<p>func Unmarshal(data []byte, v interface{}) error</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+</span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
+</span><span class="s">	&#34;country&#34;: &#34;China&#34;,
+</span><span class="s">	&#34;city&#34;:&#34;Beijing&#34;
+</span><span class="s">	}</span><span class="s">`</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n%s\n%s\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">Country</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">City</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>反序列化完成字符串到对象的转化，当 <strong>Unmarshal()</strong> 方法返回错误不空表示反序列化失败</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Amy
+China
+Beijing</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="json反序列化的常用技巧">JSON反序列化的常用技巧</h3>
+
+<h6 id="拆分成多个结构体">拆分成多个结构体</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">occupation</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;company&#34;</span><span class="s">`</span>
+	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;position&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+</span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
+</span><span class="s">	&#34;country&#34;: &#34;China&#34;,
+</span><span class="s">	&#34;city&#34;:&#34;Beijing&#34;,
+</span><span class="s">	&#34;company&#34;:&#34;Google&#34;,
+</span><span class="s">	&#34;position&#34;:&#34;developer&#34;
+</span><span class="s">	}</span><span class="s">`</span>
+
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">job</span> <span class="o">:=</span> <span class="nx">occupation</span><span class="p">{</span><span class="p">}</span>
+
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">,</span>
+		<span class="o">&amp;</span><span class="kd">struct</span> <span class="p">{</span>
+			<span class="o">*</span><span class="nx">person</span>
+			<span class="o">*</span><span class="nx">occupation</span>
+		<span class="p">}</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">job</span><span class="p">}</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n%v\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">,</span> <span class="nx">job</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>Amy China Beijing<span class="o">}</span>
+<span class="o">{</span>Google developer<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<hr />
+
+<h3 id="json与私有属性">JSON与私有属性</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
+	<span class="nx">country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">d</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+</span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
+</span><span class="s">	&#34;country&#34;: &#34;China&#34;
+</span><span class="s">	}</span><span class="s">`</span>
+
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span><span class="p">}</span>
+
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">)</span>
+	<span class="p">}</span>
+
+  <span class="nx">Sam</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span>
+    <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Sam&#34;</span><span class="p">,</span>
+    <span class="nx">country</span><span class="p">:</span> <span class="s">&#34;CN&#34;</span><span class="p">,</span>
+  <span class="p">}</span>
+  <span class="nx">data</span><span class="p">,</span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">Sam</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>Person</code> 内的 <code>country</code> 是私有属性，JSON的序列化及反序列化都不会对私有属性转化。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span>Amy<span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;Sam&#34;</span><span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<script src="https://utteranc.es/client.js"
+        repo="JJMeg/jjmeg.io.comment"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+]]></description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/golang/">golang</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/">go基础</category>
+                                
+                            
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>Go实现一个支持动态扩容的数组</title>
