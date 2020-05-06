@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-05-06T20:52:05+08:00</updated>
+    <updated>2020-05-06T21:54:43+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -17,10 +17,507 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.62.1">Hugo</generator>
         <entry>
+            <title type="text">Kafka客户端--Go版本</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/kafka-golang-client/" />
+            <id>https://jjmeg.github.io/posts/kafka-golang-client/</id>
+            <updated>2020-05-06T21:54:38+08:00</updated>
+            <published>2020-05-06T20:56:46+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[「 数组 」 分布式消息平台，用Scala实现，本项目使用Go语言实现简单的消息生产和消费……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>「 数组 」</center>
+分布式消息平台，用Scala实现，本项目使用Go语言实现简单的消息生产和消费。</p>
+
+<h3 id="kafka-客户端-golang-版">Kafka 客户端 Golang 版</h3>
+
+<table>
+<thead>
+<tr>
+<th>project</th>
+<th>feature</th>
+<th>weakness</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Shopify/sarama</td>
+<td>最受欢迎</td>
+<td>集群式消费难实现，不支持Context</td>
+</tr>
+
+<tr>
+<td>bsm/sarama-cluster</td>
+<td>基于sarama补充集群式消费</td>
+<td>不支持Context</td>
+</tr>
+
+<tr>
+<td>confluentinc/confluent-kafka-go</td>
+<td></td>
+<td>依赖C语言库，不支持Context</td>
+</tr>
+
+<tr>
+<td>lovoo/goka</td>
+<td>依赖于sarama</td>
+<td>不支持Context</td>
+</tr>
+
+<tr>
+<td>segmentio/kafka-go</td>
+<td>同时支持集群模式，易与软件交互</td>
+<td>未正式发布，支持Context</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<p>下面将基于<a href="https://github.com/Shopify/sarama" target="_blank">sarama</a>实现简单的消费者及生产者。</p>
+
+<h3 id="基本数据结构">基本数据结构</h3>
+
+<ul>
+<li><p>Reporter
+生产者：包含一个Producer及一个logger用于日志记录</p></li>
+
+<li><p>Subscriber
+消费者：包含一个Consumer及logger
+具体实现</p></li>
+</ul>
+
+<h3 id="生产者">生产者</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">reporter</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;github.com/Shopify/sarama&#34;</span>
+	<span class="s">&#34;github.com/sirupsen/logrus&#34;</span>
+
+	<span class="s">&#34;../error_const&#34;</span>
+<span class="p">)</span>
+
+<span class="c1">// kafka server 端配置
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">KafkaCfg</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Host</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;host&#34;</span><span class="s">`</span>
+	<span class="nx">Topic</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;topic&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+
+<span class="c1">// 消息生产者数据结构
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Reporter</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Producer</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">SyncProducer</span>
+	<span class="nx">logger</span>   <span class="o">*</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span>
+<span class="p">}</span>
+
+<span class="c1">// 构造函数
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">NewReporter</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">KafkaCfg</span><span class="p">,</span> <span class="nx">log</span> <span class="o">*</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span><span class="p">)</span> <span class="o">*</span><span class="nx">Reporter</span> <span class="p">{</span>
+	<span class="nx">reporter</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Reporter</span><span class="p">{</span>
+		<span class="nx">logger</span><span class="p">:</span> <span class="nx">log</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="nx">reporter</span><span class="p">.</span><span class="nf">setProducer</span><span class="p">(</span><span class="nx">cfg</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">reporter</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">setProducer</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">KafkaCfg</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">broker</span> <span class="p">=</span> <span class="p">[</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">}</span>
+
+	<span class="nx">config</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConfig</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">config</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nx">Return</span><span class="p">.</span><span class="nx">Successes</span> <span class="p">=</span> <span class="kc">true</span>
+  <span class="c1">// new 一个Producer
+</span><span class="c1"></span>	<span class="nx">producer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewSyncProducer</span><span class="p">(</span><span class="nx">broker</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">InitProducerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">reporter</span><span class="p">.</span><span class="nx">Producer</span> <span class="p">=</span> <span class="nx">producer</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">DoReport</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">reporter</span><span class="p">.</span><span class="nf">do</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">do</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">kafkaMsg</span> <span class="o">:=</span> <span class="nf">generateProducerMessage</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
+	<span class="nx">_</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reporter</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nf">SendMessage</span><span class="p">(</span><span class="nx">kafkaMsg</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgError</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgSuccess</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">generateProducerMessage</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">message</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ProducerMessage</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ProducerMessage</span><span class="p">{</span>
+		<span class="nx">Topic</span><span class="p">:</span>     <span class="nx">topic</span><span class="p">,</span>
+		<span class="nx">Partition</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+		<span class="nx">Value</span><span class="p">:</span>     <span class="nx">sarama</span><span class="p">.</span><span class="nf">StringEncoder</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="消费者">消费者</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">subscriber</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;github.com/Shopify/sarama&#34;</span>
+	<span class="s">&#34;github.com/sirupsen/logrus&#34;</span>
+
+  <span class="s">&#34;../error_const&#34;</span>
+	<span class="s">&#34;../reporter&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Subscriber</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Consumer</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">Consumer</span>
+	<span class="nx">logger</span>   <span class="o">*</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewSubscriber</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">reporter</span><span class="p">.</span><span class="nx">KafkaCfg</span><span class="p">,</span> <span class="nx">log</span> <span class="o">*</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span><span class="p">)</span> <span class="o">*</span><span class="nx">Subscriber</span> <span class="p">{</span>
+	<span class="nx">subscriber</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Subscriber</span><span class="p">{</span>
+		<span class="nx">logger</span><span class="p">:</span> <span class="nx">log</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">subscriber</span><span class="p">.</span><span class="nf">setConsumer</span><span class="p">(</span><span class="nx">cfg</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">subscriber</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">subscriber</span> <span class="o">*</span><span class="nx">Subscriber</span><span class="p">)</span> <span class="nf">setConsumer</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">reporter</span><span class="p">.</span><span class="nx">KafkaCfg</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">consumer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConsumer</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">}</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span> <span class="p">=</span> <span class="nx">consumer</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">subscriber</span> <span class="o">*</span><span class="nx">Subscriber</span><span class="p">)</span> <span class="nf">Consume</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">SubcriberCloseConsumerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="p">(</span><span class="p">)</span>
+
+  <span class="c1">// 获取所有 partition
+</span><span class="c1"></span>	<span class="nx">partitionList</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Partitions</span><span class="p">(</span><span class="nx">topic</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">SubScriberGetPartitionsError</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">topic</span><span class="p">)</span>
+	<span class="p">}</span>
+
+  <span class="c1">// 遍历所有 partition 获取最新 offset 上的消息
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">partition</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">partitionList</span> <span class="p">{</span>
+		<span class="nx">pc</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">ConsumePartition</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">partition</span><span class="p">,</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">OffsetNewest</span><span class="p">)</span>
+    <span class="c1">// 启动一个 goroutine 用于持续监听消息
+</span><span class="c1"></span>		<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">pc</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">PartitionConsumer</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="nx">message</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">pc</span><span class="p">.</span><span class="nf">Messages</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">)</span>
+				<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span><span class="p">(</span><span class="nx">pc</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span> <span class="o">*</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ConsumerMessage</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">Value</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="main">main</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;encoding/json&#34;</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;os&#34;</span>
+
+	<span class="s">&#34;github.com/sirupsen/logrus&#34;</span>
+
+  <span class="s">&#34;./reporter&#34;</span>
+  <span class="s">&#34;./subscriber&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">var</span> <span class="p">(</span>
+	<span class="nx">config</span> <span class="p">=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+</span><span class="s">	&#34;host&#34;: &#34;localhost:9092&#34;,
+</span><span class="s">    &#34;topic&#34;: &#34;kafka_test&#34;
+</span><span class="s">  }</span><span class="s">`</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">cfg</span> <span class="nx">reporter</span><span class="p">.</span><span class="nx">KafkaCfg</span>
+	<span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">cfg</span><span class="p">)</span>
+	<span class="nx">log</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span><span class="p">{</span><span class="nx">Out</span><span class="p">:</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">}</span>
+
+	<span class="c1">//reporter
+</span><span class="c1"></span>	<span class="nx">producer</span> <span class="o">:=</span> <span class="nx">reporter</span><span class="p">.</span><span class="nf">NewReporter</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">cfg</span><span class="p">,</span> <span class="nx">log</span><span class="p">)</span>
+	<span class="c1">//subscriber
+</span><span class="c1"></span>	<span class="nx">consumer</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nf">NewSubscriber</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">cfg</span><span class="p">,</span> <span class="nx">log</span><span class="p">)</span>
+	<span class="nx">message</span> <span class="o">:=</span> <span class="s">&#34;Hello Kafka World.&#34;</span>
+
+	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span>
+	<span class="nx">consumer</span><span class="p">.</span><span class="nf">Consume</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Topic</span><span class="p">,</span> <span class="nx">ch</span><span class="p">)</span>
+	<span class="nx">producer</span><span class="p">.</span><span class="nf">DoReport</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Topic</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">)</span>
+
+	<span class="k">select</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="nx">msg</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">ch</span><span class="p">:</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Got msg: &#34;</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
+		<span class="k">break</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="其他">其他</h3>
+
+<p>为避免漏消费消息，可指定group，kafka确保每个partition只能同一个group中的同一个consumer消费，若要重复消费，更换group。</p>
+
+<p>项目代码：<a href="https://github.com/JJMeg/Kafka-with-golang/" target="_blank">kafka-client-golang</a>，项目结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">.
+├── README.md
+├── error_const
+│   └── error_const.go
+├── main.go
+├── reporter
+│   └── report.go
+└── subscriber
+    └── subscribe.go</code></pre></td></tr></table>
+</div>
+</div>
+<p><center>👏欢迎评论👏</center>
+<script src="https://utteranc.es/client.js"
+        repo="JJMeg/jjmeg.io.comment"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script></p>
+]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/kafka/" term="kafka" label="kafka" />
+                            
+                        
+                            
+                            
+                            
+                                <category scheme="https://jjmeg.github.io/tags/golang/" term="golang" label="golang" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">Golang系列教程--JSON解析</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-json/" />
             <id>https://jjmeg.github.io/posts/golang-json/</id>
-            <updated>2020-05-06T20:52:00+08:00</updated>
+            <updated>2020-05-06T21:52:08+08:00</updated>
             <published>2020-05-06T14:32:31+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -936,13 +1433,14 @@ Beijing</code></pre></td></tr></table>
 <span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;Sam&#34;</span><span class="o">}</span></code></pre></td></tr></table>
 </div>
 </div>
+<p><center>👏欢迎评论👏</center>
 <script src="https://utteranc.es/client.js"
         repo="JJMeg/jjmeg.io.comment"
         issue-term="pathname"
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script>
+</script></p>
 ]]></content>
             
             
