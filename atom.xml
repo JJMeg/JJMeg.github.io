@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-05-05T23:20:51+08:00</updated>
+    <updated>2020-05-06T08:32:54+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -5862,7 +5862,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
             <id>https://jjmeg.github.io/posts/hello-world/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2020-05-06T08:31:02+08:00</updated>
             <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5871,14 +5871,14 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     
-    <summary type="html"><![CDATA[This is a test article. 「What」 首次尝试博客是在2017年 👉 基于Hexo 👉 JJMeg0 学业繁忙（拖拉机本……]]></summary>
+    <summary type="html"><![CDATA[This is a test article. 「What」 首次尝试博客是在2017年 👉 基于 Hexo 👉 JJMeg0 学业繁忙（拖拉机本机💅）……]]></summary>
             
                 <content type="html"><![CDATA[<p>This is a <del>test</del> article.</p>
 
 <p><br />
 「What」</p>
 
-<p>首次尝试博客是在2017年 👉 基于<a href="https://hexo.io/" target="_blank">Hexo</a> 👉 <a href="https://github.com/JJMeg/JJMeg0.github.io" target="_blank">JJMeg0</a></p>
+<p>首次尝试博客是在2017年 👉 基于 <a href="https://hexo.io/" target="_blank">Hexo</a> 👉 <a href="https://github.com/JJMeg/JJMeg0.github.io" target="_blank">JJMeg0</a></p>
 
 <p><del>学业繁忙</del>（拖拉机本机💅），遂落灰...</p>
 
@@ -5887,12 +5887,14 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
 <p><br />
 「Why」</p>
 
-<p>云计算行业萌新，近半年接触<a href="https://golang.org/" target="_blank">Go</a>，听闻<a href="https://gohugo.io/" target="_blank">Hugo</a>构建编译速度，（搓手）尝试⚡，体验 hin👌。</p>
+<p>云计算行业萌新，近半年接触 <a href="https://golang.org/" target="_blank">Go</a>，听闻 <a href="https://gohugo.io/" target="_blank">Hugo</a> 构建编译速度，（搓手）尝试⚡，体验 hin👌。</p>
 
 <p><br />
 「How」</p>
 
 <p>🔍主题选用👻 <a href="https://io-oi.me/" target="_blank">一休儿</a> 👻超级优秀的💖 <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank">meme</a> 💖，</p>
+
+<p>📒评论插件为 <a href="https://utteranc.es/" target="_blank">utteranc</a>，</p>
 
 <p>✒ 编辑器为 <a href="https://atom.io/" target="_blank">Atom</a> ✒，写作由 <a href="https://www.markdown.cn/" target="_blank">Markdown</a> 支持。</p>
 
