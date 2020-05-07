@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Wed, 06 May 2020 21:54:43 +0800</lastBuildDate>
+        <lastBuildDate>Thu, 07 May 2020 21:17:45 +0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss+xml" href="https://jjmeg.github.io/rss.xml" />
         
@@ -40,7 +40,7 @@
                 
                     <description><![CDATA[
 
-<p><center>「 数组 」</center>
+<p><center>「 Kafka 」</center>
 分布式消息平台，用Scala实现，本项目使用Go语言实现简单的消息生产和消费。</p>
 
 <h3 id="kafka-客户端-golang-版">Kafka 客户端 Golang 版</h3>
@@ -208,7 +208,7 @@
 
 	<span class="nx">config</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConfig</span><span class="p">(</span><span class="p">)</span>
 	<span class="nx">config</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nx">Return</span><span class="p">.</span><span class="nx">Successes</span> <span class="p">=</span> <span class="kc">true</span>
-  <span class="c1">// new 一个Producer
+	<span class="c1">// new 一个Producer
 </span><span class="c1"></span>	<span class="nx">producer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewSyncProducer</span><span class="p">(</span><span class="nx">broker</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">InitProducerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
@@ -310,7 +310,7 @@
 	<span class="s">&#34;github.com/Shopify/sarama&#34;</span>
 	<span class="s">&#34;github.com/sirupsen/logrus&#34;</span>
 
-  <span class="s">&#34;../error_const&#34;</span>
+	<span class="s">&#34;../error_const&#34;</span>
 	<span class="s">&#34;../reporter&#34;</span>
 <span class="p">)</span>
 
@@ -342,16 +342,16 @@
 		<span class="p">}</span>
 	<span class="p">}</span><span class="p">(</span><span class="p">)</span>
 
-  <span class="c1">// 获取所有 partition
+	<span class="c1">// 获取所有 partition
 </span><span class="c1"></span>	<span class="nx">partitionList</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Partitions</span><span class="p">(</span><span class="nx">topic</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">SubScriberGetPartitionsError</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">topic</span><span class="p">)</span>
 	<span class="p">}</span>
 
-  <span class="c1">// 遍历所有 partition 获取最新 offset 上的消息
+	<span class="c1">// 遍历所有 partition 获取最新 offset 上的消息
 </span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">partition</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">partitionList</span> <span class="p">{</span>
 		<span class="nx">pc</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">ConsumePartition</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">partition</span><span class="p">,</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">OffsetNewest</span><span class="p">)</span>
-    <span class="c1">// 启动一个 goroutine 用于持续监听消息
+  	<span class="c1">// 启动一个 goroutine 用于持续监听消息
 </span><span class="c1"></span>		<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">pc</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">PartitionConsumer</span><span class="p">)</span> <span class="p">{</span>
 			<span class="k">for</span> <span class="nx">message</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">pc</span><span class="p">.</span><span class="nf">Messages</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 				<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">)</span>
@@ -421,14 +421,14 @@
 
 	<span class="s">&#34;github.com/sirupsen/logrus&#34;</span>
 
-  <span class="s">&#34;./reporter&#34;</span>
-  <span class="s">&#34;./subscriber&#34;</span>
+	<span class="s">&#34;./reporter&#34;</span>
+	<span class="s">&#34;./subscriber&#34;</span>
 <span class="p">)</span>
 
 <span class="kd">var</span> <span class="p">(</span>
 	<span class="nx">config</span> <span class="p">=</span> <span class="s">`</span><span class="s">{</span><span class="s">
 </span><span class="s">	&#34;host&#34;: &#34;localhost:9092&#34;,
-</span><span class="s">    &#34;topic&#34;: &#34;kafka_test&#34;
+</span><span class="s">	&#34;topic&#34;: &#34;kafka_test&#34;
 </span><span class="s">  }</span><span class="s">`</span>
 <span class="p">)</span>
 
@@ -484,14 +484,15 @@
     └── subscribe.go</code></pre></td></tr></table>
 </div>
 </div>
-<p><center>👏欢迎评论👏</center>
+<p><center>👏欢迎评论👏</center></p>
+
 <script src="https://utteranc.es/client.js"
         repo="JJMeg/jjmeg.io.comment"
         issue-term="pathname"
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script></p>
+</script>
 ]]></description>
                 
                 
@@ -1435,14 +1436,15 @@ Beijing</code></pre></td></tr></table>
 <span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;Sam&#34;</span><span class="o">}</span></code></pre></td></tr></table>
 </div>
 </div>
-<p><center>👏欢迎评论👏</center>
+<p><center>👏欢迎评论👏</center></p>
+
 <script src="https://utteranc.es/client.js"
         repo="JJMeg/jjmeg.io.comment"
         issue-term="pathname"
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script></p>
+</script>
 ]]></description>
                 
                 
