@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-05-07T21:17:45+08:00</updated>
+    <updated>2020-05-07T21:24:54+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">Kafka客户端--Go版本</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/kafka-golang-client/" />
             <id>https://jjmeg.github.io/posts/kafka-golang-client/</id>
-            <updated>2020-05-07T21:17:26+08:00</updated>
+            <updated>2020-05-07T21:24:45+08:00</updated>
             <published>2020-05-06T20:56:46+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -49,31 +49,31 @@
 
 <tbody>
 <tr>
-<td>Shopify/sarama</td>
+<td><a href="https://shopify.github.io/sarama">Shopify/sarama</a></td>
 <td>最受欢迎</td>
 <td>集群式消费难实现，不支持Context</td>
 </tr>
 
 <tr>
-<td>bsm/sarama-cluster</td>
+<td><a href="https://github.com/bsm/sarama-cluster">bsm/sarama-cluster</a></td>
 <td>基于sarama补充集群式消费</td>
 <td>不支持Context</td>
 </tr>
 
 <tr>
-<td>confluentinc/confluent-kafka-go</td>
+<td><a href="https://github.com/confluentinc/confluent-kafka-go">confluentinc/confluent-kafka-go</a></td>
 <td></td>
 <td>依赖C语言库，不支持Context</td>
 </tr>
 
 <tr>
-<td>lovoo/goka</td>
+<td><a href="https://github.com/lovoo/goka">lovoo/goka</a></td>
 <td>依赖于sarama</td>
 <td>不支持Context</td>
 </tr>
 
 <tr>
-<td>segmentio/kafka-go</td>
+<td><a href="https://github.com/segmentio/kafka-go">segmentio/kafka-go</a></td>
 <td>同时支持集群模式，易与软件交互</td>
 <td>未正式发布，支持Context</td>
 </tr>
@@ -82,7 +82,7 @@
 
 <hr />
 
-<p>下面将基于<a href="https://github.com/Shopify/sarama" target="_blank">sarama</a>实现简单的消费者及生产者。</p>
+<p>下面将基于 <a href="https://github.com/Shopify/sarama" target="_blank">Shopify/sarama</a>  实现简单的消费者及生产者。</p>
 
 <h3 id="基本数据结构">基本数据结构</h3>
 
@@ -450,7 +450,7 @@
 </div>
 <h3 id="其他">其他</h3>
 
-<p>为避免漏消费消息，可指定group，kafka确保每个partition只能同一个group中的同一个consumer消费，若要重复消费，更换group。</p>
+<p>为避免漏消费消息，可指定 group，Kafka 确保每个 partition 只能同一个 group 中的同一个 consumer 消费，若要重复消费，更换 group。</p>
 
 <p>项目代码：<a href="https://github.com/JJMeg/Kafka-with-golang/" target="_blank">kafka-client-golang</a>，项目结构：</p>
 <div class="highlight"><div class="chroma">
