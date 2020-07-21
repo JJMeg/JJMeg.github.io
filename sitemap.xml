@@ -3,213 +3,218 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jjmeg.github.io/posts/inter/mysql/innodb-myisam-scene/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
+    <loc>https://jjmeg.github.io/posts/fastjson-field-null/</loc>
+    <lastmod>2020-07-21T18:06:12+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jjmeg.github.io/tags/myisam/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jjmeg.github.io/tags/mysql/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
+    <lastmod>2020-07-21T18:06:12+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
+    <lastmod>2020-07-21T18:06:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/posts/inter/mysql/innodb-myisam-scene/</loc>
+    <lastmod>2020-05-28T13:56:55+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/tags/myisam/</loc>
+    <lastmod>2020-05-28T13:56:55+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jjmeg.github.io/tags/mysql/</loc>
+    <lastmod>2020-05-28T13:56:55+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
+    <lastmod>2020-05-28T13:56:55+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2020-05-28T23:10:05+08:00</lastmod>
+    <lastmod>2020-05-28T13:56:55+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/golang/</loc>
-    <lastmod>2020-05-07T21:24:45+08:00</lastmod>
+    <lastmod>2020-05-08T14:10:28+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/kafka/</loc>
-    <lastmod>2020-05-07T21:24:45+08:00</lastmod>
+    <lastmod>2020-05-08T14:10:28+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/kafka-golang-client/</loc>
-    <lastmod>2020-05-07T21:24:45+08:00</lastmod>
+    <lastmod>2020-05-08T14:10:28+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-json/</loc>
-    <lastmod>2020-05-07T21:17:33+08:00</lastmod>
+    <lastmod>2020-05-08T14:10:28+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/go%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-05-07T21:17:33+08:00</lastmod>
+    <lastmod>2020-05-08T14:10:28+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/buffered-array/</loc>
-    <lastmod>2020-05-05T23:19:46+08:00</lastmod>
+    <lastmod>2020-05-06T09:16:59+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2020-05-05T23:19:46+08:00</lastmod>
+    <lastmod>2020-05-06T09:16:59+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/%E6%95%B0%E7%BB%84/</loc>
-    <lastmod>2020-05-05T23:19:46+08:00</lastmod>
+    <lastmod>2020-05-06T09:16:59+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-channel-and-select/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2020-01-15T15:21:55+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2020-01-21T10:58:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/cache2go/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2020-01-21T10:58:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/cache2go_ii/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2020-01-07T14:29:23+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/cache2go_i/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2020-01-21T10:58:22+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/2019-summary/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-30T16:43:42+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/tags/%E7%A2%8E%E5%BF%B5/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-30T16:43:42+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-channel/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-20T17:14:49+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-goroutine/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-17T10:13:01+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-interface/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-17T09:58:10+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-struct-and-method/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:30:17+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-function/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:29:56+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-process-control/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:30:11+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-map/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:30:05+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-array-and-slice/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:29:35+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:29:48+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/about/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-12T15:04:02+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/golang-basic-concetps/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-16T11:29:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/posts/hello-world/</loc>
-    <lastmod>2020-05-06T08:31:02+08:00</lastmod>
+    <lastmod>2020-05-06T09:17:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income.1/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income.2/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income.3/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income.4/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income.5/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/amazon-increase-income/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/blog/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://jjmeg.github.io/portfolio/</loc>
-    <lastmod>2020-03-30T23:31:24+08:00</lastmod>
+    <lastmod>2019-12-09T17:05:53+08:00</lastmod>
   </url>
   
   <url>

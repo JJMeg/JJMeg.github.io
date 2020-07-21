@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-05-28T23:10:10+08:00</updated>
+    <updated>2020-07-21T18:24:29+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -15,12 +15,226 @@
                 <email>jjmeg.he@gmail.com</email>
             </author>
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
-    <generator uri="https://gohugo.io/" version="0.62.1">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.60.1">Hugo</generator>
+        <entry>
+            <title type="text">FastJson 反序列化部分字段为 Null</title>
+            <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/fastjson-field-null/" />
+            <id>https://jjmeg.github.io/posts/fastjson-field-null/</id>
+            <updated>2020-07-21T18:06:12+08:00</updated>
+            <published>2020-07-20T18:25:51+08:00</published>
+            <author>
+                    <name>JJMeg</name>
+                    <uri>https://jjmeg.github.io/</uri>
+                    <email>jjmeg.he@gmail.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
+    
+    <summary type="html"><![CDATA[⚠ 使用 FastJson 将 json 文件反序列化为 JavaBean 出现字段缺失 ⚠ 问题复现 json版本：1.2.70 1 2 3 4……]]></summary>
+            
+                <content type="html"><![CDATA[
+
+<p><center>⚠ 使用 FastJson 将 json 文件反序列化为 JavaBean 出现字段缺失 ⚠</center></p>
+
+<h3 id="问题复现">问题复现</h3>
+
+<p>json版本：1.2.70</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;groupId</span><span class="nt">&gt;</span>com.alibaba<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>fastjson<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version</span><span class="nt">&gt;</span>1.2.70<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>json 内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&#34;properties&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;jobName&#34;</span><span class="p">:</span> <span class="s2">&#34;this_is_a_test&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;for test json&#34;</span>
+  <span class="p">}</span><span class="p">,</span>
+  <span class="nt">&#34;task&#34;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;task_1&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;test&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;className&#34;</span><span class="p">:</span> <span class="s2">&#34;com.jjmeg.Task&#34;</span><span class="p">,</span>
+      <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&#34;topic&#34;</span><span class="p">:</span> <span class="s2">&#34;mockTopic&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;mockPin&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;password&#34;</span><span class="p">:</span> <span class="s2">&#34;mockPasswd&#34;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>设计的 JavaBean：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Java" data-lang="Java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Flow</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">properties</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">&gt;</span> <span class="n">task</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;Flow{&#34;</span> <span class="o">+</span>
+                <span class="s">&#34;properties=&#39;&#34;</span> <span class="o">+</span> <span class="n">properties</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="s">&#34;, task=&#39;&#34;</span> <span class="o">+</span> <span class="n">task</span> <span class="o">+</span><span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="sc">&#39;}&#39;</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Task</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">type</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">className</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">;</span>
+
+    <span class="c1">// 含参构造函数、无默认构造函数
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="nf">Task</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ConfigurationException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="n">filePath</span><span class="o">)</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Flow</span> <span class="n">flow</span> <span class="o">=</span> <span class="n">JSON</span><span class="o">.</span><span class="na">parseObject</span><span class="o">(</span><span class="n">text</span><span class="o">,</span> <span class="n">Flow</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>运行结果中，Task的内容有缺失：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Task<span class="o">{</span><span class="nv">name</span><span class="o">=</span><span class="s1">&#39;task_1&#39;</span>, <span class="nv">type</span><span class="o">=</span><span class="s1">&#39;null&#39;</span>, <span class="nv">className</span><span class="o">=</span><span class="s1">&#39;null&#39;</span>, <span class="nv">args</span><span class="o">=</span>null<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="问题原因">问题原因：</h3>
+
+<p>FastJson 反序列过程中，使用默认的构造函数创建实例，在没有默认构造函数情况下，FastJson 使用含参的构造函数。</p>
+
+<p>在 <code>Task</code> 类中，构造函数被重写为 <code>Task(String name)</code>，则只有 <code>name</code> 字段被赋值，同理，该示例中，只定义含三个参数的构造函数 <code>public Task(String name, String className, String type)</code> ，反序列化的 <code>Task</code> 对象的 <code>args</code> 属性为 <code>null</code>。</p>
+
+<h3 id="解决办法">解决办法：</h3>
+
+<p>添加无参构造函数或含所有参数的构造函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-Java" data-lang="Java"><span class="c1">// 无参函数
+</span><span class="c1"></span><span class="kd">public</span> <span class="nf">Task</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+
+<span class="c1">// 含所有参数的构造函数
+</span><span class="c1"></span><span class="kd">public</span> <span class="nf">Task</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">String</span> <span class="n">type</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">args</span> <span class="o">=</span> <span class="n">args</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">type</span> <span class="o">=</span> <span class="n">type</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">className</span> <span class="o">=</span> <span class="n">className</span><span class="o">;</span>
+<span class="o">}</span></code></pre></td></tr></table>
+</div>
+</div>]]></content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+        </entry>
+    
         <entry>
             <title type="text">InnoDB 与 MyISAM 区别及适用场景</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/inter/mysql/innodb-myisam-scene/" />
             <id>https://jjmeg.github.io/posts/inter/mysql/innodb-myisam-scene/</id>
-            <updated>2020-05-28T23:10:05+08:00</updated>
+            <updated>2020-05-28T13:56:55+08:00</updated>
             <published>2020-05-28T13:22:47+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -167,7 +381,7 @@
             <title type="text">Kafka客户端--Go版本</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/kafka-golang-client/" />
             <id>https://jjmeg.github.io/posts/kafka-golang-client/</id>
-            <updated>2020-05-07T21:24:45+08:00</updated>
+            <updated>2020-05-08T14:10:28+08:00</updated>
             <published>2020-05-06T20:56:46+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -665,7 +879,7 @@
             <title type="text">Golang系列教程--JSON解析</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-json/" />
             <id>https://jjmeg.github.io/posts/golang-json/</id>
-            <updated>2020-05-07T21:17:33+08:00</updated>
+            <updated>2020-05-08T14:10:28+08:00</updated>
             <published>2020-05-06T14:32:31+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1622,7 +1836,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">Go实现一个支持动态扩容的数组</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/buffered-array/" />
             <id>https://jjmeg.github.io/posts/buffered-array/</id>
-            <updated>2020-05-05T23:19:46+08:00</updated>
+            <updated>2020-05-06T09:16:59+08:00</updated>
             <published>2020-01-21T16:14:25+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -1990,7 +2204,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">Golang源码阅读 - channel 和 select（一）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-channel-and-select/" />
             <id>https://jjmeg.github.io/posts/golang-channel-and-select/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2020-01-15T15:21:55+08:00</updated>
             <published>2020-01-14T11:25:07+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2140,7 +2354,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">cache2go源码阅读（二）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_ii/" />
             <id>https://jjmeg.github.io/posts/cache2go_ii/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2020-01-07T14:29:23+08:00</updated>
             <published>2020-01-02T15:54:51+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -2308,7 +2522,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">cache2go源码阅读（一）</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/cache2go_i/" />
             <id>https://jjmeg.github.io/posts/cache2go_i/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2020-01-21T10:58:22+08:00</updated>
             <published>2020-01-02T15:17:51+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3065,7 +3279,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">写在2019年最后</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/2019-summary/" />
             <id>https://jjmeg.github.io/posts/2019-summary/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-30T16:43:42+08:00</updated>
             <published>2019-12-30T16:23:29+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3145,7 +3359,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">Golang系列教程--通道Channel</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-channel/" />
             <id>https://jjmeg.github.io/posts/golang-channel/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-20T17:14:49+08:00</updated>
             <published>2019-12-18T11:31:10+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3445,7 +3659,7 @@ Beijing</code></pre></td></tr></table>
             <title type="text">Golang系列教程--协程Goroutine</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-goroutine/" />
             <id>https://jjmeg.github.io/posts/golang-goroutine/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-17T10:13:01+08:00</updated>
             <published>2019-12-17T10:02:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3791,7 +4005,7 @@ Round:B,	i:3</code></pre></td></tr></table>
             <title type="text">Golang系列教程--接口Interface</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-interface/" />
             <id>https://jjmeg.github.io/posts/golang-interface/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-17T09:58:10+08:00</updated>
             <published>2019-12-17T09:52:40+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -3958,14 +4172,7 @@ int类型是Go的内置类型，我们自定义的AInterface接口在Go中未实
 <span class="nx">b</span><span class="p">.</span><span class="nf">Say</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello</code></pre></td></tr></table>
-</div>
-</div></li>
+</div><pre><code>hello</code></pre></li>
 </ul>
 
 <p><strong>3. 实现某个接口中的所有方法才能称得上是接口实现</strong></p>
@@ -4210,7 +4417,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--结构体struct和方法method</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-struct-and-method/" />
             <id>https://jjmeg.github.io/posts/golang-struct-and-method/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:30:17+08:00</updated>
             <published>2019-12-13T15:02:59+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -4683,7 +4890,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--函数</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-function/" />
             <id>https://jjmeg.github.io/posts/golang-function/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:29:56+08:00</updated>
             <published>2019-12-13T14:44:55+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5028,14 +5235,7 @@ world</code></pre></td></tr></table>
     <span class="c1">// 后面的括号中的ss作为参数传到匿名函数中
 </span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world!</code></pre></td></tr></table>
-</div>
-</div>
+</div><pre><code>hello world!</code></pre>
 <h3 id="闭包">🐵闭包</h3>
 
 <p>闭包能够读取其他函数内部变量的函数。</p>
@@ -5084,14 +5284,7 @@ world</code></pre></td></tr></table>
   <span class="nf">f</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">hello world</code></pre></td></tr></table>
-</div>
-</div>]]></content>
+</div><pre><code>hello world</code></pre>]]></content>
             
             
             
@@ -5123,7 +5316,7 @@ world</code></pre></td></tr></table>
             <title type="text">Golang系列教程--流程控制</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-process-control/" />
             <id>https://jjmeg.github.io/posts/golang-process-control/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:30:11+08:00</updated>
             <published>2019-12-13T14:21:15+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5362,18 +5555,9 @@ number大于5</code></pre></td></tr></table>
 <h6 id="for循环">🐵for循环</h6>
 
 <p>Go语言中没有while语句，用for来描述循环</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">for 初始值 ; 满足范围; 操作{
+<pre><code>for 初始值 ; 满足范围; 操作{
   ...
-}</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
+}</code></pre><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -5633,7 +5817,7 @@ i is :10</code></pre></td></tr></table>
             <title type="text">Golang系列教程--Map</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-map/" />
             <id>https://jjmeg.github.io/posts/golang-map/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:30:05+08:00</updated>
             <published>2019-12-12T14:14:35+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -5925,7 +6109,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--数组和切片</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-array-and-slice/" />
             <id>https://jjmeg.github.io/posts/golang-array-and-slice/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:29:35+08:00</updated>
             <published>2019-12-12T11:30:21+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -6245,7 +6429,7 @@ key: Lily, value: <span class="m">3</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础结构与类型</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-struct-and-types/" />
             <id>https://jjmeg.github.io/posts/golang-basic-struct-and-types/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:29:48+08:00</updated>
             <published>2019-12-11T18:00:47+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -6820,7 +7004,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Golang系列教程--基础概念</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/golang-basic-concetps/" />
             <id>https://jjmeg.github.io/posts/golang-basic-concetps/</id>
-            <updated>2020-03-30T23:31:24+08:00</updated>
+            <updated>2019-12-16T11:29:43+08:00</updated>
             <published>2019-12-10T13:47:14+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -6970,7 +7154,7 @@ level is: <span class="m">4</span></code></pre></td></tr></table>
             <title type="text">Hello World</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/hello-world/" />
             <id>https://jjmeg.github.io/posts/hello-world/</id>
-            <updated>2020-05-06T08:31:02+08:00</updated>
+            <updated>2020-05-06T09:17:00+08:00</updated>
             <published>2019-12-09T18:14:09+08:00</published>
             <author>
                     <name>JJMeg</name>
