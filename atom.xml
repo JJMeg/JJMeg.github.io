@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">JJMeg&#39;s blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2020-07-21T18:24:29+08:00</updated>
+    <updated>2020-07-22T11:06:36+08:00</updated>
     <id>https://jjmeg.github.io/</id>
     <link rel="alternate" type="text/html" href="https://jjmeg.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://jjmeg.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">FastJson 反序列化部分字段为 Null</title>
             <link rel="alternate" type="text/html" href="https://jjmeg.github.io/posts/fastjson-field-null/" />
             <id>https://jjmeg.github.io/posts/fastjson-field-null/</id>
-            <updated>2020-07-21T18:06:12+08:00</updated>
+            <updated>2020-07-22T11:06:19+08:00</updated>
             <published>2020-07-20T18:25:51+08:00</published>
             <author>
                     <name>JJMeg</name>
@@ -29,7 +29,7 @@
                     </author>
             <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     
-    <summary type="html"><![CDATA[⚠ 使用 FastJson 将 json 文件反序列化为 JavaBean 出现字段缺失 ⚠ 问题复现 json版本：1.2.70 1 2 3 4……]]></summary>
+    <summary type="html"><![CDATA[⚠ 使用 FastJson 将 json 文件反序列化为 JavaBean 出现字段缺失 ⚠ 问题复现 FastJson 版本：1.2.70 1 2 3 4 5 <dependency> <groupId>com.alibaba</groupId>……]]></summary>
             
                 <content type="html"><![CDATA[
 
@@ -37,7 +37,7 @@
 
 <h3 id="问题复现">问题复现</h3>
 
-<p>json版本：1.2.70</p>
+<p>FastJson 版本：1.2.70</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
