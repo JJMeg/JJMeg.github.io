@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Golang系列教程--数组和切片 | JJMeg&#39;s blog</title>
 
@@ -278,7 +278,7 @@
 
   <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-  <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">main</span><span class="p">(){</span>
     <span class="c1">//1
 </span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">num1</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="kt">int</span>
 
@@ -332,12 +332,12 @@
 
   <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-  <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">main</span><span class="p">(){</span>
     <span class="kd">var</span> <span class="nx">nums</span> <span class="p">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
 
     <span class="c1">//内置函数len取长度，通过数组索引做遍历
-</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d\n&#34;</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">)</span>
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">);</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d\n&#34;</span><span class="p">,</span><span class="nx">nums</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
     <span class="p">}</span>
 
     <span class="c1">//使用range遍历，i为下标，v为该下标存储的数值
@@ -403,7 +403,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">nums</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
-<span class="kd">var</span> <span class="nx">s</span> <span class="p">[</span><span class="p">]</span><span class="kt">int</span> <span class="p">=</span> <span class="nx">nums</span><span class="p">[</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span></code></pre></td></tr></table>
+<span class="kd">var</span> <span class="nx">s</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">=</span> <span class="nx">nums</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span></code></pre></td></tr></table>
 </div>
 </div></li>
 </ul>
@@ -427,11 +427,11 @@
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// 新建了一个int数组，将数组的引用分配给一个切片
 </span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">array</span> <span class="p">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">}</span>
   <span class="kd">var</span> <span class="nx">nums</span> <span class="p">=</span> <span class="nx">array</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;length of nums is:%d, the capacity is %d\n &#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">,</span> <span class="nb">cap</span><span class="p">(</span><span class="nx">nums</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;length of nums is:%d, the capacity is %d\n &#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">nums</span><span class="p">),</span> <span class="nb">cap</span><span class="p">(</span><span class="nx">nums</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -462,7 +462,7 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">i</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">i</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span></code></pre></td></tr></table>
 </div>
 </div></li>

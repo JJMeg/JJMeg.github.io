@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Golang系列教程--通道Channel | JJMeg&#39;s blog</title>
 
@@ -277,7 +277,7 @@
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nx">x</span> <span class="c1">//往channel中存入数据 x
 </span><span class="c1"></span><span class="o">&lt;-</span> <span class="nx">ch</span> <span class="c1">// 从channel中取出数据
 </span><span class="c1"></span><span class="nx">x</span> <span class="o">&lt;-</span> <span class="nx">ch</span> <span class="c1">//从channel中取出数据并赋值给 x
-</span><span class="c1"></span><span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span> <span class="o">/</span><span class="o">/</span> <span class="nx">关闭通道</span></code></pre></td></tr></table>
+</span><span class="c1"></span><span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span> <span class="o">//</span> <span class="nx">关闭通道</span></code></pre></td></tr></table>
 </div>
 </div>
 <h3 id="非缓冲channel"><a href="#非缓冲channel" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵非缓冲channel</h3>
@@ -305,12 +305,12 @@
 <span class="c1">// 等同于
 </span><span class="c1"></span><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">foo</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">foo</span><span class="p">()</span>  <span class="p">{</span>
 	<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">0</span><span class="c1">//存消息，如果没有其他goroutine来取走这个数据，那么挂起foo，直到main函数把这个0取走
 </span><span class="c1"></span><span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
-	<span class="k">go</span> <span class="nf">foo</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">foo</span><span class="p">()</span>
 	<span class="o">&lt;-</span> <span class="nx">ch</span><span class="c1">//从ch取消息，如果ch中没有数据，就挂起main线程，直到foo函数往ch内放数据
 </span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -335,15 +335,15 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">complete</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">loop</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">loop</span><span class="p">()</span>  <span class="p">{</span>
 	<span class="k">for</span> <span class="nx">i</span><span class="o">:=</span><span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span><span class="p">&lt;</span><span class="mi">10</span> <span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">{</span>
 		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span>
 	<span class="p">}</span>
 	<span class="nx">complete</span> <span class="o">&lt;-</span> <span class="mi">0</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
-	<span class="k">go</span> <span class="nf">loop</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
+	<span class="k">go</span> <span class="nf">loop</span><span class="p">()</span>
 	<span class="o">&lt;-</span> <span class="nx">complete</span> <span class="c1">//直到线程跑完，取到消息
 </span><span class="c1"></span><span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -365,7 +365,7 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">channel</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">messages</span> <span class="kd">chan</span> <span class="kt">string</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span>
 	<span class="k">go</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">message</span> <span class="kt">string</span><span class="p">)</span>  <span class="p">{</span>
 		<span class="nx">messages</span> <span class="o">&lt;-</span> <span class="nx">message</span> <span class="c1">// channel存消息
@@ -420,7 +420,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">//例子1
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span>
 	<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span><span class="c1">//死锁了，没有线程取走这个数据
 </span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;wrong&#34;</span><span class="p">)</span>
@@ -433,26 +433,26 @@
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
 	<span class="nx">ch1</span> <span class="o">&lt;-</span> <span class="o">&lt;-</span> <span class="nx">ch2</span><span class="c1">//ch1等待ch2的输出
 </span><span class="c1"></span><span class="p">}</span>
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span>  <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span>  <span class="p">{</span>
 	<span class="k">go</span> <span class="nf">say</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)</span>
 	<span class="o">&lt;-</span> <span class="nx">ch1</span>
 <span class="p">}</span>
 
 <span class="c1">//例子3
-</span><span class="c1"></span><span class="nx">c</span><span class="p">,</span> <span class="nx">quit</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span><span class="p">,</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
-<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="nx">c</span><span class="p">,</span> <span class="nx">quit</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">),</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
    <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>  <span class="c1">// c通道的数据没有被其他goroutine读取走 堵塞当前goroutine
 </span><span class="c1"></span>   <span class="nx">quit</span> <span class="o">&lt;-</span> <span class="mi">0</span> <span class="c1">// quit始终没有办法写入数据
-</span><span class="c1"></span><span class="p">}</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span><span class="p">}()</span>
 <span class="o">&lt;-</span> <span class="nx">quit</span> <span class="c1">// quit 等待数据的写
 </span><span class="c1"></span>
 <span class="c1">//反例
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
-    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
        <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>
-    <span class="p">}</span><span class="p">(</span><span class="p">)</span>
-<span class="p">}</span><span class="o">/</span><span class="o">/</span><span class="nx">main未等待其他goroutine</span> <span class="nx">自己先运行完毕了</span> <span class="nx">没有数据流入c通道</span> <span class="nx">一共执行了一个goroutine</span> <span class="nx">没有阻塞</span> <span class="nx">没有死锁</span></code></pre></td></tr></table>
+    <span class="p">}()</span>
+<span class="p">}</span><span class="o">//</span><span class="nx">main未等待其他goroutine</span> <span class="nx">自己先运行完毕了</span> <span class="nx">没有数据流入c通道</span> <span class="nx">一共执行了一个goroutine</span> <span class="nx">没有阻塞</span> <span class="nx">没有死锁</span></code></pre></td></tr></table>
 </div>
 </div>
 <h3 id="缓冲channel"><a href="#缓冲channel" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>🐵缓冲channel</h3>
@@ -470,12 +470,12 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">var</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// 写入2个元素都不会阻塞当前goroutine, 存储个数达到2的时候会阻塞
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span>
     <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">2</span>
     <span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">3</span>
-<span class="p">}</span><span class="o">/</span><span class="o">/</span><span class="nx">若再流入一个数据</span> <span class="nx">信道ch会阻塞main线程</span> <span class="nx">报死锁</span></code></pre></td></tr></table>
+<span class="p">}</span><span class="o">//</span><span class="nx">若再流入一个数据</span> <span class="nx">信道ch会阻塞main线程</span> <span class="nx">报死锁</span></code></pre></td></tr></table>
 </div>
 </div></div>
 

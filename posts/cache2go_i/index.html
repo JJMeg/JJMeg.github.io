@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>cache2go源码阅读（一） | JJMeg&#39;s blog</title>
 
@@ -278,15 +278,15 @@
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 待存储的元素的结构体定义
 </span><span class="c1"></span><span class="kd">type</span> <span class="nx">myStruct</span> <span class="kd">struct</span> <span class="p">{</span>
 	<span class="nx">text</span>     <span class="kt">string</span>
-	<span class="nx">moreData</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span>
+	<span class="nx">moreData</span> <span class="p">[]</span><span class="kt">byte</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="c1">// 创建一个缓存表
 </span><span class="c1"></span>	<span class="nx">cache</span> <span class="o">:=</span> <span class="nx">cache2go</span><span class="p">.</span><span class="nf">Cache</span><span class="p">(</span><span class="s">&#34;myCache&#34;</span><span class="p">)</span>
 
   <span class="c1">// 准备元素
-</span><span class="c1"></span>	<span class="nx">val</span> <span class="o">:=</span> <span class="nx">myStruct</span><span class="p">{</span><span class="s">&#34;This is a test!&#34;</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">{</span><span class="p">}</span><span class="p">}</span>
+</span><span class="c1"></span>	<span class="nx">val</span> <span class="o">:=</span> <span class="nx">myStruct</span><span class="p">{</span><span class="s">&#34;This is a test!&#34;</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}}</span>
 
   <span class="c1">// 缓存表添加元素，设定过期时间
 </span><span class="c1"></span>	<span class="nx">cache</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="s">&#34;someKey&#34;</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">val</span><span class="p">)</span>
@@ -294,7 +294,7 @@
 	<span class="c1">// 从缓存中获取元素
 </span><span class="c1"></span>	<span class="nx">res</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">Value</span><span class="p">(</span><span class="s">&#34;someKey&#34;</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Found value in cache:&#34;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nf">Data</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="p">(</span><span class="o">*</span><span class="nx">myStruct</span><span class="p">)</span><span class="p">.</span><span class="nx">text</span><span class="p">)</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Found value in cache:&#34;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nf">Data</span><span class="p">().(</span><span class="o">*</span><span class="nx">myStruct</span><span class="p">).</span><span class="nx">text</span><span class="p">)</span>
 	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error retrieving value from cache:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -311,14 +311,14 @@
 
 	<span class="c1">// 设置删除元素时给反馈
 </span><span class="c1"></span>	<span class="nx">cache</span><span class="p">.</span><span class="nf">SetAboutToDeleteItemCallback</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">cache2go</span><span class="p">.</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Deleting:&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">Key</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">Data</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="p">(</span><span class="o">*</span><span class="nx">myStruct</span><span class="p">)</span><span class="p">.</span><span class="nx">text</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">CreatedOn</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
-	<span class="p">}</span><span class="p">)</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Deleting:&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">Key</span><span class="p">(),</span> <span class="nx">e</span><span class="p">.</span><span class="nf">Data</span><span class="p">().(</span><span class="o">*</span><span class="nx">myStruct</span><span class="p">).</span><span class="nx">text</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">CreatedOn</span><span class="p">())</span>
+	<span class="p">})</span>
 
 	<span class="c1">// 移除元素
 </span><span class="c1"></span>	<span class="nx">cache</span><span class="p">.</span><span class="nf">Delete</span><span class="p">(</span><span class="s">&#34;someKey&#34;</span><span class="p">)</span>
 
 	<span class="c1">// 清空缓存
-</span><span class="c1"></span>	<span class="nx">cache</span><span class="p">.</span><span class="nf">Flush</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">cache</span><span class="p">.</span><span class="nf">Flush</span><span class="p">()</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -363,9 +363,9 @@
 	<span class="nx">sync</span><span class="p">.</span><span class="nx">RWMutex</span>
 
 	<span class="c1">// 元素的key
-</span><span class="c1"></span>	<span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
+</span><span class="c1"></span>	<span class="nx">key</span> <span class="kd">interface</span><span class="p">{}</span>
 	<span class="c1">// 元素内容
-</span><span class="c1"></span>	<span class="nx">data</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
+</span><span class="c1"></span>	<span class="nx">data</span> <span class="kd">interface</span><span class="p">{}</span>
 	<span class="c1">// 元素生命周期
 </span><span class="c1"></span>	<span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span>
 
@@ -377,7 +377,7 @@
 </span><span class="c1"></span>	<span class="nx">accessCount</span> <span class="kt">int64</span>
 
 	<span class="c1">// 到期签可触发的方法
-</span><span class="c1"></span>	<span class="nx">aboutToExpire</span> <span class="p">[</span><span class="p">]</span><span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">aboutToExpire</span> <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{})</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -398,8 +398,8 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewCacheItem</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
-	<span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewCacheItem</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
+	<span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
 	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">CacheItem</span><span class="p">{</span>
 		<span class="nx">key</span><span class="p">:</span>           <span class="nx">key</span><span class="p">,</span>
 		<span class="nx">lifeSpan</span><span class="p">:</span>      <span class="nx">lifeSpan</span><span class="p">,</span>
@@ -456,43 +456,43 @@
 </span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">KeepAlive</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nx">accessedOn</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">KeepAlive</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nx">accessedOn</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
 	<span class="nx">item</span><span class="p">.</span><span class="nx">accessCount</span><span class="o">++</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AccessedOn</span><span class="p">(</span><span class="p">)</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="p">{</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AccessedOn</span><span class="p">()</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span> <span class="p">{</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 	<span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">accessedOn</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AccessCount</span><span class="p">(</span><span class="p">)</span> <span class="kt">int64</span> <span class="p">{</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AccessCount</span><span class="p">()</span> <span class="kt">int64</span> <span class="p">{</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 	<span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">accessCount</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">SetAboutToExpireCallback</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">SetAboutToExpireCallback</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="kd">interface</span><span class="p">{}))</span> <span class="p">{</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nf">RemoveAboutToExpireCallback</span><span class="p">(</span><span class="p">)</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nf">RemoveAboutToExpireCallback</span><span class="p">()</span>
 	<span class="p">}</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 	<span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AddAboutToExpireCallback</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">AddAboutToExpireCallback</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="kd">interface</span><span class="p">{}))</span> <span class="p">{</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 	<span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span><span class="p">,</span> <span class="nx">f</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">RemoveAboutToExpireCallback</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span> <span class="nf">RemoveAboutToExpireCallback</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">item</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">item</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 	<span class="nx">item</span><span class="p">.</span><span class="nx">aboutToExpire</span> <span class="p">=</span> <span class="kc">nil</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -530,7 +530,7 @@
 	<span class="c1">// 缓存表命名
 </span><span class="c1"></span>	<span class="nx">name</span> <span class="kt">string</span>
 	<span class="c1">// 缓存表内存储的所有元素，是个slice
-</span><span class="c1"></span>	<span class="nx">items</span> <span class="kd">map</span><span class="p">[</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span>
+</span><span class="c1"></span>	<span class="nx">items</span> <span class="kd">map</span><span class="p">[</span><span class="kd">interface</span><span class="p">{}]</span><span class="o">*</span><span class="nx">CacheItem</span>
 
 	<span class="c1">// 触发清楚的定时器
 </span><span class="c1"></span>	<span class="nx">cleanupTimer</span> <span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Timer</span>
@@ -540,11 +540,11 @@
 	<span class="nx">logger</span> <span class="o">*</span><span class="nx">log</span><span class="p">.</span><span class="nx">Logger</span>
 
 	<span class="c1">// Callback method triggered when trying to load a non-existing key.
-</span><span class="c1"></span>	<span class="nx">loadData</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="o">*</span><span class="nx">CacheItem</span>
+</span><span class="c1"></span>	<span class="nx">loadData</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">CacheItem</span>
 	<span class="c1">// Callback method triggered when adding a new item to the cache.
-</span><span class="c1"></span>	<span class="nx">addedItem</span> <span class="p">[</span><span class="p">]</span><span class="kd">func</span><span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">addedItem</span> <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
 	<span class="c1">// Callback method triggered before deleting an item from the cache.
-</span><span class="c1"></span>	<span class="nx">aboutToDeleteItem</span> <span class="p">[</span><span class="p">]</span><span class="kd">func</span><span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">aboutToDeleteItem</span> <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -570,16 +570,16 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="c1">// 获取元素个数
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Count</span><span class="p">(</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Count</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 	<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="c1">// 遍历
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Foreach</span><span class="p">(</span><span class="nx">trans</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Foreach</span><span class="p">(</span><span class="nx">trans</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">item</span> <span class="o">*</span><span class="nx">CacheItem</span><span class="p">))</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 
 	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">{</span>
 		<span class="nf">trans</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
@@ -603,11 +603,11 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">CacheItem</span> <span class="p">{</span>
 	<span class="nx">item</span> <span class="o">:=</span> <span class="nf">NewCacheItem</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">lifeSpan</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
 
 	<span class="c1">// Add item to cache.
-</span><span class="c1"></span>	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
 	<span class="nx">table</span><span class="p">.</span><span class="nf">addInternal</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
 
 	<span class="k">return</span> <span class="nx">item</span>
@@ -633,11 +633,11 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">NotFoundAdd</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">NotFoundAdd</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">lifeSpan</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
 
-	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="p">;</span> <span class="nx">ok</span> <span class="p">{</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+		<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 		<span class="k">return</span> <span class="kc">false</span>
 	<span class="p">}</span>
 
@@ -686,7 +686,7 @@
 	<span class="c1">// Cache values so we don&#39;t keep blocking the mutex.
 </span><span class="c1"></span>	<span class="nx">expDur</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">cleanupInterval</span>
 	<span class="nx">addedItem</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">addedItem</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 
 	<span class="c1">// Trigger callback after adding an item to cache.
 </span><span class="c1"></span>	<span class="k">if</span> <span class="nx">addedItem</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
@@ -697,7 +697,7 @@
 
 	<span class="c1">// If we haven&#39;t set up any expiration check timer or found a more imminent item.
 </span><span class="c1"></span>	<span class="k">if</span> <span class="nx">item</span><span class="p">.</span><span class="nx">lifeSpan</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">expDur</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">item</span><span class="p">.</span><span class="nx">lifeSpan</span> <span class="p">&lt;</span> <span class="nx">expDur</span><span class="p">)</span> <span class="p">{</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nf">expirationCheck</span><span class="p">(</span><span class="p">)</span>
+		<span class="nx">table</span><span class="p">.</span><span class="nf">expirationCheck</span><span class="p">()</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -713,9 +713,9 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Delete</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Delete</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 
 	<span class="k">return</span> <span class="nx">table</span><span class="p">.</span><span class="nf">deleteInternal</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
@@ -757,7 +757,7 @@
 </span><span class="lnt">31
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">deleteInternal</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">deleteInternal</span><span class="p">(</span><span class="nx">key</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
 	<span class="nx">r</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
 	<span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
 		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">ErrKeyNotFound</span>
@@ -765,7 +765,7 @@
 
 	<span class="c1">// Cache value so we don&#39;t keep blocking the mutex.
 </span><span class="c1"></span>	<span class="nx">aboutToDeleteItem</span> <span class="o">:=</span> <span class="nx">table</span><span class="p">.</span><span class="nx">aboutToDeleteItem</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 
 	<span class="c1">// Trigger callbacks before deleting an item from cache.
 </span><span class="c1"></span>	<span class="k">if</span> <span class="nx">aboutToDeleteItem</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
@@ -774,15 +774,15 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">r</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">r</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 	<span class="k">if</span> <span class="nx">r</span><span class="p">.</span><span class="nx">aboutToExpire</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">callback</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">r</span><span class="p">.</span><span class="nx">aboutToExpire</span> <span class="p">{</span>
 			<span class="nf">callback</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
 	<span class="nx">table</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s">&#34;Deleting item with key&#34;</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="s">&#34;created on&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">createdOn</span><span class="p">,</span> <span class="s">&#34;and hit&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">accessCount</span><span class="p">,</span> <span class="s">&#34;times from table&#34;</span><span class="p">,</span> <span class="nx">table</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 	<span class="nb">delete</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 
@@ -849,10 +849,10 @@
 </span><span class="lnt">49
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">expirationCheck</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">expirationCheck</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
 	<span class="k">if</span> <span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span><span class="p">.</span><span class="nf">Stop</span><span class="p">(</span><span class="p">)</span>
+		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span><span class="p">.</span><span class="nf">Stop</span><span class="p">()</span>
 	<span class="p">}</span>
 	<span class="k">if</span> <span class="nx">table</span><span class="p">.</span><span class="nx">cleanupInterval</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
 		<span class="nx">table</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s">&#34;Expiration check triggered after&#34;</span><span class="p">,</span> <span class="nx">table</span><span class="p">.</span><span class="nx">cleanupInterval</span><span class="p">,</span> <span class="s">&#34;for table&#34;</span><span class="p">,</span> <span class="nx">table</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
@@ -862,14 +862,14 @@
 
 	<span class="c1">// To be more accurate with timers, we would need to update &#39;now&#39; on every
 </span><span class="c1"></span>	<span class="c1">// loop iteration. Not sure it&#39;s really efficient though.
-</span><span class="c1"></span>	<span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
 	<span class="nx">smallestDuration</span> <span class="o">:=</span> <span class="mi">0</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
 	<span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">{</span>
 		<span class="c1">// Cache values so we don&#39;t keep blocking the mutex.
-</span><span class="c1"></span>		<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">(</span><span class="p">)</span>
+</span><span class="c1"></span>		<span class="nx">item</span><span class="p">.</span><span class="nf">RLock</span><span class="p">()</span>
 		<span class="nx">lifeSpan</span> <span class="o">:=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">lifeSpan</span>
 		<span class="nx">accessedOn</span> <span class="o">:=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">accessedOn</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">(</span><span class="p">)</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nf">RUnlock</span><span class="p">()</span>
 
 		<span class="c1">// 为0的元素永久保留
 </span><span class="c1"></span>		<span class="k">if</span> <span class="nx">lifeSpan</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
@@ -892,11 +892,11 @@
 	<span class="c1">// Setup the interval for the next cleanup run.
 </span><span class="c1"></span>	<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupInterval</span> <span class="p">=</span> <span class="nx">smallestDuration</span>
 	<span class="k">if</span> <span class="nx">smallestDuration</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">AfterFunc</span><span class="p">(</span><span class="nx">smallestDuration</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-			<span class="k">go</span> <span class="nx">table</span><span class="p">.</span><span class="nf">expirationCheck</span><span class="p">(</span><span class="p">)</span>
-		<span class="p">}</span><span class="p">)</span>
+		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">AfterFunc</span><span class="p">(</span><span class="nx">smallestDuration</span><span class="p">,</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">go</span> <span class="nx">table</span><span class="p">.</span><span class="nf">expirationCheck</span><span class="p">()</span>
+		<span class="p">})</span>
 	<span class="p">}</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div></li>
@@ -921,16 +921,16 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Flush</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">(</span><span class="p">)</span>
-	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">(</span><span class="p">)</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">table</span> <span class="o">*</span><span class="nx">CacheTable</span><span class="p">)</span> <span class="nf">Flush</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">table</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
 
 	<span class="nx">table</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s">&#34;Flushing table&#34;</span><span class="p">,</span> <span class="nx">table</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 
-	<span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">]</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
+	<span class="nx">table</span><span class="p">.</span><span class="nx">items</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kd">interface</span><span class="p">{}]</span><span class="o">*</span><span class="nx">CacheItem</span><span class="p">)</span>
 	<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupInterval</span> <span class="p">=</span> <span class="mi">0</span>
 	<span class="k">if</span> <span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span><span class="p">.</span><span class="nf">Stop</span><span class="p">(</span><span class="p">)</span>
+		<span class="nx">table</span><span class="p">.</span><span class="nx">cleanupTimer</span><span class="p">.</span><span class="nf">Stop</span><span class="p">()</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>

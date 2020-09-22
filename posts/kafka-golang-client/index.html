@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Kafka客户端--Go版本 | JJMeg&#39;s blog</title>
 
@@ -78,7 +78,7 @@
         "keywords": "kafka, golang",
         "inLanguage" : "zh-CN",
         "articleSection": "posts",
-        "wordCount":  973 ,
+        "wordCount":  974 ,
         "image": "https://jjmeg.github.io/icons/jjmeg.png",
         "author": {
             "@type": "Person",
@@ -211,7 +211,7 @@
     
     
         
-        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>973</span>
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>974</span>
     
     
         
@@ -365,8 +365,8 @@
 
 <span class="c1">// kafka server 端配置
 </span><span class="c1"></span><span class="kd">type</span> <span class="nx">KafkaCfg</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Host</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;host&#34;</span><span class="s">`</span>
-	<span class="nx">Topic</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;topic&#34;</span><span class="s">`</span>
+	<span class="nx">Host</span>  <span class="kt">string</span> <span class="s">`json:&#34;host&#34;`</span>
+	<span class="nx">Topic</span> <span class="kt">string</span> <span class="s">`json:&#34;topic&#34;`</span>
 <span class="p">}</span>
 
 <span class="c1">// 消息生产者数据结构
@@ -386,9 +386,9 @@
 <span class="p">}</span>
 
 <span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">setProducer</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">KafkaCfg</span><span class="p">)</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">broker</span> <span class="p">=</span> <span class="p">[</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">}</span>
+	<span class="kd">var</span> <span class="nx">broker</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">}</span>
 
-	<span class="nx">config</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConfig</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">config</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConfig</span><span class="p">()</span>
 	<span class="nx">config</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nx">Return</span><span class="p">.</span><span class="nx">Successes</span> <span class="p">=</span> <span class="kc">true</span>
 	<span class="c1">// new 一个Producer
 </span><span class="c1"></span>	<span class="nx">producer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewSyncProducer</span><span class="p">(</span><span class="nx">broker</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span>
@@ -399,24 +399,24 @@
 	<span class="nx">reporter</span><span class="p">.</span><span class="nx">Producer</span> <span class="p">=</span> <span class="nx">producer</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">DoReport</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">DoReport</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
 	<span class="nx">reporter</span><span class="p">.</span><span class="nf">do</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">do</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">reporter</span> <span class="o">*</span><span class="nx">Reporter</span><span class="p">)</span> <span class="nf">do</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">msg</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
 	<span class="nx">kafkaMsg</span> <span class="o">:=</span> <span class="nf">generateProducerMessage</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
 	<span class="nx">_</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">reporter</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nf">SendMessage</span><span class="p">(</span><span class="nx">kafkaMsg</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgError</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span><span class="p">)</span>
+		<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgError</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">))</span>
 	<span class="p">}</span>
-	<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgSuccess</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">reporter</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">ReportKafkaMsgSuccess</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">msg</span><span class="p">))</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">generateProducerMessage</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">message</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ProducerMessage</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">generateProducerMessage</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">message</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ProducerMessage</span> <span class="p">{</span>
 	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">sarama</span><span class="p">.</span><span class="nx">ProducerMessage</span><span class="p">{</span>
 		<span class="nx">Topic</span><span class="p">:</span>     <span class="nx">topic</span><span class="p">,</span>
 		<span class="nx">Partition</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-		<span class="nx">Value</span><span class="p">:</span>     <span class="nx">sarama</span><span class="p">.</span><span class="nf">StringEncoder</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">,</span>
+		<span class="nx">Value</span><span class="p">:</span>     <span class="nx">sarama</span><span class="p">.</span><span class="nf">StringEncoder</span><span class="p">(</span><span class="nx">message</span><span class="p">),</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -510,7 +510,7 @@
 <span class="p">}</span>
 
 <span class="kd">func</span> <span class="p">(</span><span class="nx">subscriber</span> <span class="o">*</span><span class="nx">Subscriber</span><span class="p">)</span> <span class="nf">setConsumer</span><span class="p">(</span><span class="nx">cfg</span> <span class="o">*</span><span class="nx">reporter</span><span class="p">.</span><span class="nx">KafkaCfg</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">consumer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConsumer</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">}</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+	<span class="nx">consumer</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sarama</span><span class="p">.</span><span class="nf">NewConsumer</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Host</span><span class="p">},</span> <span class="kc">nil</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -518,11 +518,11 @@
 <span class="p">}</span>
 
 <span class="kd">func</span> <span class="p">(</span><span class="nx">subscriber</span> <span class="o">*</span><span class="nx">Subscriber</span><span class="p">)</span> <span class="nf">Consume</span><span class="p">(</span><span class="nx">topic</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 			<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="nx">error_const</span><span class="p">.</span><span class="nx">SubcriberCloseConsumerError</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="p">(</span><span class="p">)</span>
+	<span class="p">}()</span>
 
 	<span class="c1">// 获取所有 partition
 </span><span class="c1"></span>	<span class="nx">partitionList</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">Partitions</span><span class="p">(</span><span class="nx">topic</span><span class="p">)</span>
@@ -535,11 +535,11 @@
 		<span class="nx">pc</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">subscriber</span><span class="p">.</span><span class="nx">Consumer</span><span class="p">.</span><span class="nf">ConsumePartition</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">partition</span><span class="p">,</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">OffsetNewest</span><span class="p">)</span>
   	<span class="c1">// 启动一个 goroutine 用于持续监听消息
 </span><span class="c1"></span>		<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">pc</span> <span class="nx">sarama</span><span class="p">.</span><span class="nx">PartitionConsumer</span><span class="p">)</span> <span class="p">{</span>
-			<span class="k">for</span> <span class="nx">message</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">pc</span><span class="p">.</span><span class="nf">Messages</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-				<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">)</span>
+			<span class="k">for</span> <span class="nx">message</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">pc</span><span class="p">.</span><span class="nf">Messages</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">subscriber</span><span class="p">.</span><span class="nx">logger</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">))</span>
 				<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nf">messageReceived</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="p">(</span><span class="nx">pc</span><span class="p">)</span>
+		<span class="p">}(</span><span class="nx">pc</span><span class="p">)</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
@@ -608,15 +608,15 @@
 <span class="p">)</span>
 
 <span class="kd">var</span> <span class="p">(</span>
-	<span class="nx">config</span> <span class="p">=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+	<span class="nx">config</span> <span class="p">=</span> <span class="s">`{
 </span><span class="s">	&#34;host&#34;: &#34;localhost:9092&#34;,
 </span><span class="s">	&#34;topic&#34;: &#34;kafka_test&#34;
-</span><span class="s">  }</span><span class="s">`</span>
+</span><span class="s">  }`</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">cfg</span> <span class="nx">reporter</span><span class="p">.</span><span class="nx">KafkaCfg</span>
-	<span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">cfg</span><span class="p">)</span>
+	<span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">config</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">cfg</span><span class="p">)</span>
 	<span class="nx">log</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">logrus</span><span class="p">.</span><span class="nx">Logger</span><span class="p">{</span><span class="nx">Out</span><span class="p">:</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">}</span>
 
 	<span class="c1">//reporter
@@ -627,7 +627,7 @@
 
 	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span>
 	<span class="nx">consumer</span><span class="p">.</span><span class="nf">Consume</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Topic</span><span class="p">,</span> <span class="nx">ch</span><span class="p">)</span>
-	<span class="nx">producer</span><span class="p">.</span><span class="nf">DoReport</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Topic</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">producer</span><span class="p">.</span><span class="nf">DoReport</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">Topic</span><span class="p">,</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">message</span><span class="p">))</span>
 
 	<span class="k">select</span> <span class="p">{</span>
 	<span class="k">case</span> <span class="nx">msg</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">ch</span><span class="p">:</span>

@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Golang系列教程--JSON解析 | JJMeg&#39;s blog</title>
 
@@ -78,7 +78,7 @@
         "keywords": "golang, go基础",
         "inLanguage" : "zh-CN",
         "articleSection": "posts",
-        "wordCount":  1727 ,
+        "wordCount":  1730 ,
         "image": "https://jjmeg.github.io/icons/jjmeg.png",
         "author": {
             "@type": "Person",
@@ -211,7 +211,7 @@
     
     
         
-        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1727</span>
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>1730</span>
     
     
         
@@ -300,21 +300,21 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
 		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
 	<span class="p">}</span>
 	<span class="nx">data1</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">amy</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data1</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data1</span><span class="p">))</span>
 	<span class="nx">data2</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data2</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data2</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -372,17 +372,17 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city,omitempty&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city,omitempty&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 	<span class="p">}</span>
 	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -436,19 +436,19 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;-&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;-&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
 		<span class="nx">City</span><span class="p">:</span>    <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
 	<span class="p">}</span>
 	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -501,18 +501,18 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Age</span>     <span class="kt">int</span> <span class="s">`</span><span class="s">json:&#34;age,string&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Age</span>     <span class="kt">int</span> <span class="s">`json:&#34;age,string&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Age</span><span class="p">:</span>     <span class="mi">25</span><span class="p">,</span>
 	<span class="p">}</span>
 
 	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -573,12 +573,12 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
@@ -587,12 +587,12 @@
 	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span>
 		<span class="kd">struct</span> <span class="p">{</span>
 			<span class="nx">person</span>
-			<span class="nx">Gender</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;gender&#34;</span><span class="s">`</span>
-		<span class="p">}</span><span class="p">{</span>
+			<span class="nx">Gender</span> <span class="kt">string</span> <span class="s">`json:&#34;gender&#34;`</span>
+		<span class="p">}{</span>
 			<span class="nx">person</span><span class="p">:</span> <span class="nx">amy</span><span class="p">,</span>
 			<span class="nx">Gender</span><span class="p">:</span> <span class="s">&#34;female&#34;</span><span class="p">,</span>
-		<span class="p">}</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+		<span class="p">},</span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -669,17 +669,17 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
 <span class="p">}</span>
 
 <span class="kd">type</span> <span class="nx">occupation</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;company&#34;</span><span class="s">`</span>
-	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;position&#34;</span><span class="s">`</span>
+	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`json:&#34;company&#34;`</span>
+	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`json:&#34;position&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>    <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Country</span><span class="p">:</span> <span class="s">&#34;China&#34;</span><span class="p">,</span>
@@ -694,11 +694,11 @@
 		<span class="kd">struct</span> <span class="p">{</span>
 			<span class="nx">person</span>
 			<span class="nx">occupation</span>
-		<span class="p">}</span><span class="p">{</span>
+		<span class="p">}{</span>
 			<span class="nx">person</span><span class="p">:</span>     <span class="nx">amy</span><span class="p">,</span>
 			<span class="nx">occupation</span><span class="p">:</span> <span class="nx">job</span><span class="p">,</span>
-		<span class="p">}</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+		<span class="p">},</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -741,14 +741,14 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="nx">Time</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nx">y</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">y</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">10000</span> <span class="p">{</span>
+<pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="nx">Time</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">()</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">y</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">();</span> <span class="nx">y</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">10000</span> <span class="p">{</span>
 		<span class="c1">// RFC 3339 is clear that years are 4 digits exactly.
 </span><span class="c1"></span>		<span class="c1">// See golang.org/issue/4556#c15 for more discussion.
 </span><span class="c1"></span>		<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;Time.MarshalJSON: year outside of range [0,9999]&#34;</span><span class="p">)</span>
 	<span class="p">}</span>
 
-	<span class="nx">b</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">RFC3339Nano</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+	<span class="nx">b</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">RFC3339Nano</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
 	<span class="nx">b</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="sc">&#39;&#34;&#39;</span><span class="p">)</span>
 	<span class="nx">b</span> <span class="p">=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">AppendFormat</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">RFC3339Nano</span><span class="p">)</span>
 	<span class="nx">b</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="sc">&#39;&#34;&#39;</span><span class="p">)</span>
@@ -765,7 +765,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="nx">Marshaler</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+        <span class="nf">MarshalJSON</span><span class="p">()</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -821,28 +821,28 @@
 </span><span class="c1"></span><span class="kd">type</span> <span class="nx">MyTime</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span>
 
 <span class="c1">// 实现Marshaler接口
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">mytime</span> <span class="nx">MyTime</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">(</span><span class="p">)</span> <span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">n</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Time</span><span class="p">(</span><span class="nx">mytime</span><span class="p">)</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 15:04&#34;</span><span class="p">)</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">mytime</span> <span class="nx">MyTime</span><span class="p">)</span> <span class="nf">MarshalJSON</span><span class="p">()</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">n</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Time</span><span class="p">(</span><span class="nx">mytime</span><span class="p">).</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 15:04&#34;</span><span class="p">)</span>
 	<span class="nx">t</span> <span class="o">:=</span> <span class="s">&#34;\&#34;&#34;</span> <span class="o">+</span> <span class="nx">n</span> <span class="o">+</span> <span class="s">&#34;\&#34;&#34;</span>
-	<span class="k">return</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span><span class="p">,</span> <span class="kc">nil</span>
+	<span class="k">return</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">t</span><span class="p">),</span> <span class="kc">nil</span>
 <span class="p">}</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>     <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>     <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
-	<span class="nx">Birthday</span> <span class="nx">MyTime</span> <span class="s">`</span><span class="s">json:&#34;birthday&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>     <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span>  <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>     <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
+	<span class="nx">Birthday</span> <span class="nx">MyTime</span> <span class="s">`json:&#34;birthday&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span>
 		<span class="nx">Name</span><span class="p">:</span>     <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
 		<span class="nx">Country</span><span class="p">:</span>  <span class="s">&#34;China&#34;</span><span class="p">,</span>
 		<span class="nx">City</span><span class="p">:</span>     <span class="s">&#34;Beijing&#34;</span><span class="p">,</span>
-		<span class="nx">Birthday</span><span class="p">:</span> <span class="nf">MyTime</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">,</span>
+		<span class="nx">Birthday</span><span class="p">:</span> <span class="nf">MyTime</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()),</span>
 	<span class="p">}</span>
 	<span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">MarshalIndent</span><span class="p">(</span><span class="nx">amy</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;    &#34;</span><span class="p">)</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div>
@@ -909,19 +909,19 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`{
 </span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
 </span><span class="s">	&#34;country&#34;: &#34;China&#34;,
 </span><span class="s">	&#34;city&#34;:&#34;Beijing&#34;
-</span><span class="s">	}</span><span class="s">`</span>
-	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span><span class="p">}</span>
-	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
+</span><span class="s">	}`</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{}</span>
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n%s\n%s\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">Country</span><span class="p">,</span> <span class="nx">amy</span><span class="p">.</span><span class="nx">City</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -995,33 +995,33 @@ Beijing</code></pre></td></tr></table>
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
-	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;city&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">Country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
+	<span class="nx">City</span>    <span class="kt">string</span> <span class="s">`json:&#34;city&#34;`</span>
 <span class="p">}</span>
 
 <span class="kd">type</span> <span class="nx">occupation</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;company&#34;</span><span class="s">`</span>
-	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;position&#34;</span><span class="s">`</span>
+	<span class="nx">Company</span>  <span class="kt">string</span> <span class="s">`json:&#34;company&#34;`</span>
+	<span class="nx">Position</span> <span class="kt">string</span> <span class="s">`json:&#34;position&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">data</span> <span class="o">:=</span> <span class="s">`{
 </span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
 </span><span class="s">	&#34;country&#34;: &#34;China&#34;,
 </span><span class="s">	&#34;city&#34;:&#34;Beijing&#34;,
 </span><span class="s">	&#34;company&#34;:&#34;Google&#34;,
 </span><span class="s">	&#34;position&#34;:&#34;developer&#34;
-</span><span class="s">	}</span><span class="s">`</span>
+</span><span class="s">	}`</span>
 
-	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{</span><span class="p">}</span>
-	<span class="nx">job</span> <span class="o">:=</span> <span class="nx">occupation</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">person</span><span class="p">{}</span>
+	<span class="nx">job</span> <span class="o">:=</span> <span class="nx">occupation</span><span class="p">{}</span>
 
-	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">,</span>
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
 		<span class="o">&amp;</span><span class="kd">struct</span> <span class="p">{</span>
 			<span class="o">*</span><span class="nx">person</span>
 			<span class="o">*</span><span class="nx">occupation</span>
-		<span class="p">}</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">job</span><span class="p">}</span><span class="p">)</span>
+		<span class="p">}{</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">job</span><span class="p">})</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n%v\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">,</span> <span class="nx">job</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -1086,19 +1086,19 @@ Beijing</code></pre></td></tr></table>
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;name&#34;</span><span class="s">`</span>
-	<span class="nx">country</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json:&#34;country&#34;</span><span class="s">`</span>
+	<span class="nx">Name</span>    <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+	<span class="nx">country</span> <span class="kt">string</span> <span class="s">`json:&#34;country&#34;`</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">d</span> <span class="o">:=</span> <span class="s">`</span><span class="s">{</span><span class="s">
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">d</span> <span class="o">:=</span> <span class="s">`{
 </span><span class="s">	&#34;name&#34;: &#34;Amy&#34;,
 </span><span class="s">	&#34;country&#34;: &#34;China&#34;
-</span><span class="s">	}</span><span class="s">`</span>
+</span><span class="s">	}`</span>
 
-	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{</span><span class="p">}</span>
+	<span class="nx">amy</span> <span class="o">:=</span> <span class="nx">Person</span><span class="p">{}</span>
 
-	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
+	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">d</span><span class="p">),</span><span class="o">&amp;</span><span class="nx">amy</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
 		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nx">amy</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -1109,7 +1109,7 @@ Beijing</code></pre></td></tr></table>
   <span class="p">}</span>
   <span class="nx">data</span><span class="p">,</span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">Sam</span><span class="p">)</span>
 	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>

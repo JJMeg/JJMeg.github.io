@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Golang系列教程--基础结构与类型 | JJMeg&#39;s blog</title>
 
@@ -429,7 +429,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-Go" data-lang="Go"><span class="kd">type</span> <span class="kt">error</span> <span class="kd">interface</span> <span class="p">{</span>
-<span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="nf">Error</span><span class="p">()</span> <span class="kt">string</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -457,7 +457,7 @@
 <span class="p">}</span>
 
 <span class="c1">// 实现了Error接口
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="nx">TestError</span><span class="p">)</span> <span class="nf">Error</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="nx">TestError</span><span class="p">)</span> <span class="nf">Error</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
 	<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Msg</span><span class="p">)</span>
 <span class="p">}</span></code></pre></td></tr></table>
 </div>
@@ -532,7 +532,7 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">i</span> <span class="p">=</span> <span class="mi">1</span>
 <span class="kd">var</span> <span class="nx">ptr</span> <span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">i</span>
-<span class="kd">var</span> <span class="nx">pptr</span> <span class="o">*</span><span class="o">*</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ptr</span></code></pre></td></tr></table>
+<span class="kd">var</span> <span class="nx">pptr</span> <span class="o">**</span><span class="kt">int</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ptr</span></code></pre></td></tr></table>
 </div>
 </div>
 <table>
@@ -598,7 +598,7 @@
 <span class="kd">type</span> <span class="nx">qq</span> <span class="kt">int</span>
 <span class="kd">type</span> <span class="nx">pp</span> <span class="kt">float32</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
  <span class="c1">// 用var声明变量，用 = 赋值，Go会自动检测变量的类型
 </span><span class="c1"></span> <span class="kd">var</span> <span class="nx">name</span> <span class="p">=</span> <span class="s">&#34;haha&#34;</span>
  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
@@ -736,7 +736,7 @@ hahaha
 	<span class="nx">State5</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d, %d, %d, %d, %d\n&#34;</span><span class="p">,</span><span class="nx">State1</span><span class="p">,</span> <span class="nx">State2</span><span class="p">,</span> <span class="nx">State3</span><span class="p">,</span> <span class="nx">State4</span><span class="p">,</span> <span class="nx">State5</span><span class="p">)</span>
 
   <span class="kd">var</span> <span class="nx">level</span> <span class="nx">Weight</span> <span class="p">=</span> <span class="nx">State5</span>

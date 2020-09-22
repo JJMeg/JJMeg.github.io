@@ -30,7 +30,7 @@
     
     <meta name="renderer" content="webkit" />
 
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
 
     <title>Golang系列教程--Map | JJMeg&#39;s blog</title>
 
@@ -277,7 +277,7 @@
 
 <span class="kn">import</span>	<span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// 声明map
 </span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">personAge</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
   <span class="c1">// 初始化map
@@ -329,7 +329,7 @@
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// 声明map
 </span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">personAge</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
   <span class="c1">// 初始化map
@@ -387,7 +387,7 @@ Delete Amy : map<span class="o">[</span>Daming:2<span class="o">]</span></code><
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">personAge</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
   	<span class="s">&#34;Amy&#34;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   	<span class="s">&#34;Daming&#34;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
@@ -395,8 +395,8 @@ Delete Amy : map<span class="o">[</span>Daming:2<span class="o">]</span></code><
   <span class="p">}</span>
 
   <span class="c1">// 1. 通过key的内容直接获取：不存在则返回值类型的0值，例如map[string]string，不存在的返回&#34;&#34;
-</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Jimmy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Jimmy&#34;</span><span class="p">]</span><span class="p">)</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Amy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">]</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Jimmy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Jimmy&#34;</span><span class="p">])</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Get Amy :&#34;</span><span class="p">,</span><span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Amy&#34;</span><span class="p">])</span>
 
   <span class="c1">// 2. personAge[&#34;Jimmy&#34;]返回两个参数
 </span><span class="c1"></span>  <span class="nx">value</span> <span class="p">,</span><span class="nx">ok</span> <span class="o">:=</span> <span class="nx">personAge</span><span class="p">[</span><span class="s">&#34;Jimmy&#34;</span><span class="p">]</span>
@@ -446,7 +446,7 @@ Amy exists ? <span class="nb">true</span> the value is :1</code></pre></td></tr>
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">personAge</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
   	<span class="s">&#34;Amy&#34;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   	<span class="s">&#34;Daming&#34;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
